@@ -1,0 +1,31 @@
+{
+  "name": "snezinka",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "hugo server -v --gc --disableFastRender --navigateToChanged --buildDrafts --buildFuture",
+    "prod": "hugo -v --gc --minify",
+    "highlight": "hugo gen chromastyles --style=monokai > assets/styles/_highlight.scss",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gregor Cerar",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@fullhuman/postcss-purgecss": "^4.0.3",
+    "autoprefixer": "^10.2.5",
+    "cssnano": "^5.0.1",
+    "postcss": "^8.2.10",
+    "postcss-cli": "^8.3.1",
+    "postcss-preset-env": "^6.7.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.0.0",
+    "core-js": "^3.10.1",
+    "regenerator-runtime": "^0.13.7"
+  }
+}

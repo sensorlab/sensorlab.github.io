@@ -1,0 +1,76 @@
+baseURL = "/"
+
+title = "SensorLab"
+
+languageCode = "en"
+DefaultContentLanguage = "en"
+
+
+#enableEmoji = true
+#enableGitInfo = false
+#enableRobotsTXT = true
+#canonifyURLs = true
+
+[params]
+    author = "SensorLab"
+    github = "https://github.com/sensorlab"
+
+    inlineCSS = true
+    toc = true
+
+    opengraph = true
+    dateFormat = "Mon, Jan 2, 2006"
+
+    ISO8061 = "2006-01-02T15:04:05Z07:00"
+
+
+#[languages]
+#    [language.en]
+#        title = "SensorLab -- Jožef Stefan Institute"
+#        languageName = "English"
+#        weight = 1
+#
+#    [languages.sl]
+#        title = 'SensorLab -- Inštitut "Jožef Stefan"'
+#        languageName = "Slovensko"
+#        weight = 2
+
+
+[taxonomies]
+    category = "categories"
+    series = "series"
+    tag = "tags"
+
+[sitemap]
+    changefreq = "weekly"
+    priority = 0.5
+
+[permalinks]
+    posts = "/:year/:month/:slug/"
+    page = "/:slug/"
+
+
+
+[[menu.main]]
+    name = "Research"
+    indentifier = "research"
+    url = "/research"
+    weight = 2
+
+[[menu.main]]
+    name = "People"
+    indentifier = "people"
+    url = "/people"
+    weight = 3
+
+[[menu.main]]
+    name = "Blog"
+    indentifier = "blog"
+    url = "/blog"
+    weight = 4
+
+[[menu.main]]
+    name = "Contact"
+    indentifier = "contact"
+    url = "/contact"
+    weight = 5

@@ -1,0 +1,62 @@
+@charset "utf-8";
+
+/* variables */
+//$enable-shadows: true; // enable shadows in bootstrap
+//$enable-gradients: true;
+
+$blue: #305b8e;
+//$navbar-light-color: white;
+//$navbar-light-active-color: white;
+
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "./highlight";
+
+
+
+$slab-blue: #305b8e;
+$slab-gray: #999999;
+
+html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+
+
+
+.card img {
+    overflow: hidden;
+    object-fit: cover;
+    //display: flex;
+    //align-items: center;
+    //justify-content: center;
+    height: 12em;
+}
+
+
+.sl-card-anim {
+    transition: transform 500ms ease;
+
+    &:hover, &:focus-within {
+        transform: scale(1.05);
+    }
+}
+
+
+body > footer div:nth-child(2) {
+    background-color: rgba($color: #000000, $alpha: 0.2);
+}

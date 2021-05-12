@@ -1,0 +1,78 @@
+{{ define "main" }}
+<main aria-role="main" class="container">
+    <!--<header class="homepage-header">
+            <h1>{{ .Title }}</h1>
+            {{ with .Params.subtitle }}
+                <span class="subtitle">{{.}}</span>
+            {{ end }}
+        </header>-->
+
+    <div class="container-fluid d-flex flex-wrap row pt-2">
+
+        {{ $logo := resources.Get "images/embedded.jpg" }}
+        <div class="col col-12 col-lg-3 col-md-4 col-sm-6 p-2">
+            <div class="card shadow-sm sl-card-anim">
+                <img src="{{ $logo.Permalink }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Embedded devices</h5>
+                    <p class="card-text">
+                        Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                </div>
+            </div>
+        </div>
+
+        {{ $mesh := resources.Get "images/mesh.jpg" }}
+        <div class="col col-lg-3 col-md-4 col-sm-6 p-2">
+            <div class="card shadow-sm sl-card-anim">
+                <img src="{{ $mesh.Permalink }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">AI for Wireless</h5>
+                    <p class="card-text">
+                        Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                </div>
+            </div>
+        </div>
+
+
+        {{ $mesh := resources.Get "images/mesh.jpg" }}
+        <div class="col col-lg-3 col-md-4 col-sm-6 p-2">
+            <div class="card shadow-sm sl-card-anim">
+                <img src="{{ $mesh.Permalink }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Energy</h5>
+                    <p class="card-text">
+                        Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                </div>
+            </div>
+        </div>
+
+
+        {{ $mesh := resources.Get "images/mesh.jpg" }}
+        <div class="col col-lg-3 col-md-4 col-sm-6 p-2">
+            <div class="card shadow-sm sl-card-anim">
+                <img src="{{ $mesh.Permalink }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Experimental Wireless Sensor Network</h5>
+                    <p class="card-text">
+                        Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="homepage-content">
+        {{ .Content }}
+    </div>
+    <div>
+        {{ range first 10 .Site.RegularPages }}
+        {{ .Render "summary" }}
+        {{ end }}
+    </div>
+</main>
+{{ end }}
