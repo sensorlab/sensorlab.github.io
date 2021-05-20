@@ -1,78 +1,54 @@
 {{ define "main" }}
-<main aria-role="main" class="container">
-    <!--<header class="homepage-header">
-            <h1>{{ .Title }}</h1>
-            {{ with .Params.subtitle }}
-                <span class="subtitle">{{.}}</span>
-            {{ end }}
-        </header>-->
 
-    <div class="container-fluid d-flex flex-wrap row pt-2">
+<main class="flex-fill container" aria-role="main">
 
-        {{ $logo := resources.Get "images/embedded.jpg" }}
-        <div class="col col-12 col-lg-3 col-md-4 col-sm-6 p-2">
-            <div class="card shadow-sm sl-card-anim">
-                <img src="{{ $logo.Permalink }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Embedded devices</h5>
-                    <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
+
+  <header class="px-4 py-5 my-5 text-center">
+    {{ $img := .Params.image }}
+    <img class="d-block mx-auto mb-4" src="{{ $img }}" alt="" width="72" height="57">
+    <h1 class="display-5 fw-bold">{{ .Title }}</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">{{ .Content }}</p>
+    </div>
+  </header>
+
+  <hr>
+  <h2 class="text-center">Research &amp; Development</h2>
+
+  <div class="row">
+    {{ range $index, $element := .Pages }}
+    <div class="col-md-4">
+      <div class="card card-special">
+        <img src="{{ $element.Params.image }}" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">{{ $element.Title }}</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+          <a href="#" class="btn btn-primary">More</a>
         </div>
-
-        {{ $mesh := resources.Get "images/mesh.jpg" }}
-        <div class="col col-lg-3 col-md-4 col-sm-6 p-2">
-            <div class="card shadow-sm sl-card-anim">
-                <img src="{{ $mesh.Permalink }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">AI for Wireless</h5>
-                    <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
-        </div>
+      </div>
+    </div>
+    {{ end }}
+  </div>
 
 
-        {{ $mesh := resources.Get "images/mesh.jpg" }}
-        <div class="col col-lg-3 col-md-4 col-sm-6 p-2">
-            <div class="card shadow-sm sl-card-anim">
-                <img src="{{ $mesh.Permalink }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Energy</h5>
-                    <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
-        </div>
 
-
-        {{ $mesh := resources.Get "images/mesh.jpg" }}
-        <div class="col col-lg-3 col-md-4 col-sm-6 p-2">
-            <div class="card shadow-sm sl-card-anim">
-                <img src="{{ $mesh.Permalink }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Experimental Wireless Sensor Network</h5>
-                    <p class="card-text">
-                        Some quick example text to build on the card title and make up the bulk of the
-                        card's content.</p>
-                </div>
-            </div>
-        </div>
-
+  {{ range $index, $element := .Pages }}
+  <section class="row flex-lg-row{{ if not (modBool $index 2) }}-reverse{{ end }} align-items-center g-5 py-5">
+    <div class="col-10 col-sm-8 col-lg-6">
+      <img src="{{ $element.Params.image }}" class="d-block mx-lg-auto img-fluid rounded" alt="Bootstrap Themes"
+        loading="lazy" width="700" height="400">
+    </div>
+    <div class="col-lg-6">
+      <h1 class="display-5 fw-bold lh-1 mb-3">{{ $element.Title }}</h1>
+      <p class="lead">{{ $element.Content }}</p>
 
     </div>
+    </div>
+  </section>
+  {{ end }}
 
-    <div class="homepage-content">
-        {{ .Content }}
-    </div>
-    <div>
-        {{ range first 10 .Site.RegularPages }}
-        {{ .Render "summary" }}
-        {{ end }}
-    </div>
+
+
 </main>
 {{ end }}

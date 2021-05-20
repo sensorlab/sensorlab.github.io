@@ -1,40 +1,90 @@
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+{{- $favicon := resources.Get "images/sensorlab.svg" -}}
+<link rel="icon" type="image/svg" href="{{ $favicon.RelPermalink }}" />
 
 
-<!-- Manifest File -->
-<link rel="manifest" href="{{ .Site.BaseURL }}manifest.json" />
+<!-- Just some meta tag on Hugo static site generator -->
+{{ hugo.Generator }}
 
-<!-- Theme Color -->
-<meta name="theme-color" content="#141414" />
-<meta name="msapplication-TileColor" content="#141414" />
 
-<meta name="keywords" content="" />
-<meta name="imagemode" content="force" />
-<meta name="coverage" content="Worldwide" />
-<meta name="distribution" content="Global" />
-<meta name="HandheldFriendly" content="True" />
-<meta name="msapplication-tap-highlight" content="no" />
-<meta name="apple-mobile-web-app-title" content="{{ .Site.Params.sitename }}" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<meta name="apple-touch-fullscreen" content="yes" />
+<!-- Produce authors variable -->
+{{- $authors := slice -}}
+{{- if .Params.author -}}
+    {{- $authors = slice .Params.author -}}
+{{- else if .Params.authors }}
+    {{- $authors = .Params.authors -}}
+{{- else if .Site.Params.author -}}
+    {{- $authors = slice .Site.Params.author -}}
+{{- end -}}
+{{- .Scratch.Set "authors" $authors -}}
+
+<!-- Tag with authors -->
+{{ with $authors }}
+	<meta name="author" content="{{ delimit . ", " }}" />
+{{ end }}
+
+
+<!-- Produce summary -->
+{{- $summary := "" -}}
+{{- if .Params.summary -}}
+    {{- $summary = .Params.summary -}}
+{{- else if .Params.abstract -}}
+    {{- $summary = .Params.abstract -}}
+{{- else if .IsPage -}}
+    {{- $summary = .Summary -}}
+{{- else if .Site.Params.description -}}
+    {{- $summary = .Site.Params.description -}}
+{{- end -}}
+{{- .Scratch.Set "summary" $summary -}}
+
+{{ with $summary }}
+	<meta name="description" content="{{ plainify . }}" />
+{{ end }}
+
+
+
+
+{{/* canonical links to alternative representations */}}
+<link rel="canonical" href="{{ .Permalink }}" />
+<link rel="alternate" hreflang="{{ site.LanguageCode | default "en-us" }}" href="{{ .Permalink }}" />
+{{ range .Translations }}
+    <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}" />
+{{ end }}
+
+{{ range .AlternativeOutputFormats }}
+    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ end }}
+
+
+<!-- Keywords are ignore nowadays by search engines -->
+{{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production") }}
+	<!-- robots; TODO: disable index on lists -->
+	<meta name="robots" content="index,follow" />
+{{ else }}
+	<meta name="robots" content="noindex,nofollow" />
+{{ end }}
+
+
+{{ with .Site.Params.themeColor }}
+<meta name="theme-color" content="{{ . }}" />
+{{ end }}
+
+<meta name="keywords" content="{{ with .Params.tags }}{{ delimit . ", "}}{{ end }}" />
+
 
 <title>{{ if not .IsHome }}{{ .Params.name | default .Title }} | {{ end }}{{ site.Title }}</title>
 
-{{ range .AlternativeOutputFormats -}}
-    {{ printf `<link rel="%s" type="%s+%s" href="%s" title="%s" />` .Rel .MediaType.Type .MediaType.Suffix .Permalink $.Site.Title | safeHTML }}
-{{ end -}}
 
-{{ $opts := (dict "targetPath" "style.css" "outputStyle" "compressed" "enableSourceMap" true "includePaths" (slice "node_modules/myscss")) }}
-{{ $style := resources.Get "styles/main.scss" | toCSS $opts | postCSS | minify | fingerprint }}
-<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+{{- $opts := (dict "inlineImports" true "targetPath" "style.css" "outputStyle" "compressed" "enableSourceMap" true) -}}
+{{- $css := resources.Get "styles/app.scss" | toCSS | postCSS | fingerprint -}}
+<style>{{ $css.Content | safeCSS }}</style>
 
 {{ $opts := dict "noComments" true }}
-{{ $js := resources.Get "scripts/main.js" | babel $opts | minify | fingerprint }}
-<script type="text/javascript" src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
-
-<!-- OpenGraph -->
-{{ template "_internal/opengraph.html" . }}
-
-
-<!-- Schema -->
-{{ template "_internal/schema.html" . }}
+{{ $js := resources.Get "scripts/app.js" | babel $opts | js.Build | fingerprint }}
+<script>{{ $js.Content | safeJS }}</script>
+{{/*
+<script type="text/javascript" src="{{ $js.RelPermalink }}"  integrity="{{ $js.Data.Integrity }}" defer></script>
+*/}}

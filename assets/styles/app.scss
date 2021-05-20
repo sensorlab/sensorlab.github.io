@@ -1,0 +1,24 @@
+@charset "utf-8";
+
+@import "./node_modules/bootstrap/scss/bootstrap";
+
+body, html {
+    // Reuse classes from Bootstrap 5.
+    @extend .min-vh-100;
+    @extend .d-flex;
+    @extend .flex-column;
+
+    //min-height: 100vh;
+    //display: flex;
+    //flex-direction: column;
+}
+
+
+
+.card-special {
+    transition: all .25s ease;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}

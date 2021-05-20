@@ -22,9 +22,9 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
 
 module.exports = {
   plugins: [
-    //require('postcss-import'),
+    require('postcss-import'),
+    //require('postcss-nested'),
     require('postcss-preset-env'),
-    require('autoprefixer'),
     ...(process.env.HUGO_ENVIRONMENT === 'production'
         ? [purgecss, cssnano]
         : []
