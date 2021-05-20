@@ -79,7 +79,7 @@
 
 
 {{- $opts := (dict "inlineImports" true "targetPath" "style.css" "outputStyle" "compressed" "enableSourceMap" true) -}}
-{{- $css := resources.Get "styles/app.scss" | toCSS | postCSS | fingerprint -}}
+{{- $css := resources.Get "styles/app.scss" | toCSS | postCSS | minify | fingerprint -}}
 <style>{{ $css.Content | safeCSS }}</style>
 
 {{ $opts := dict "noComments" true }}
