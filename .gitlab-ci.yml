@@ -1,0 +1,23 @@
+# All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
+image: klakegg/hugo:0.83.1-ext-alpine-ci
+
+variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+
+pages:
+    before_script:
+        - npm install
+
+    script:
+        - NODE_ENV=production hugo -v --gc --minify --baseURL=https://gcerar.gitlab.io/sensorlab.ijs.si/
+
+    after_script:
+        - du -csh public/
+
+    artifacts:
+        paths:
+            - public
+
+    only:
+        - master
+
