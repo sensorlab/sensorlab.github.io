@@ -9,7 +9,7 @@ pages:
         - npm install
 
     script:
-        - NODE_ENV=production hugo -v --gc --minify --baseURL=https://gcerar.gitlab.io/sensorlab.ijs.si/
+        - hugo -v --gc --minify --baseURL=https://gcerar.gitlab.io/sensorlab.ijs.si/
 
     after_script:
         - du -csh public/
