@@ -11,6 +11,9 @@ DefaultContentLanguage = "en"
 #enableRobotsTXT = true
 #canonifyURLs = true
 
+[build]
+  writeStats = true
+
 [params]
     author = "SensorLab"
     github = "https://github.com/sensorlab"

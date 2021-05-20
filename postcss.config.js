@@ -1,22 +1,11 @@
 
 const cssnano = require('cssnano')({ preset: 'default' });
 const purgecss = require('@fullhuman/postcss-purgecss')({
-  content: [
-    './layouts/**/*.html',
-    './static/scripts/*.js',
-  ],
-  whitelist: [
-    'highlight',
-    'language-bash',
-    'pre',
-    'video',
-    'code',
-    'content',
-    'h3',
-    'h4',
-    'ul',
-    'li'
-  ]
+  content: [ './hugo_stats.json' ],
+  defaultExtractor: (content) => {
+      let els = JSON.parse(content).htmlElements;
+      return els.tags.concat(els.classes, els.ids);
+  }
 });
 
 
