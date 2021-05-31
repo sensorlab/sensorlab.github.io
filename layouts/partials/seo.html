@@ -1,0 +1,72 @@
+{{ with .Site.Params.themeColor }}
+    <meta name="theme-color" content="{{ . }}" />
+{{ end }}
+
+<!-- Just some meta tag on Hugo static site generator -->
+{{ hugo.Generator }}
+
+<!-- Produce authors variable -->
+{{- $authors := slice -}}
+{{- if .Params.author -}}
+    {{- $authors = slice .Params.author -}}
+{{- else if .Params.authors }}
+    {{- $authors = .Params.authors -}}
+{{- else if .Site.Params.author -}}
+    {{- $authors = slice .Site.Params.author -}}
+{{- end -}}
+{{- .Scratch.Set "authors" $authors -}}
+
+<!-- Tag with authors -->
+{{ with $authors }}
+	<meta name="author" content="{{ delimit . ", " }}" />
+{{ end }}
+
+
+<meta name="keywords" content="{{ with .Params.tags }}{{ delimit . ", "}}{{ end }}" />
+
+
+<!-- Produce summary -->
+{{- $summary := "" -}}
+{{- if .Params.summary -}}
+    {{- $summary = .Params.summary -}}
+{{- else if .Params.abstract -}}
+    {{- $summary = .Params.abstract -}}
+{{- else if .IsPage -}}
+    {{- $summary = .Summary -}}
+{{- else if .Site.Params.description -}}
+    {{- $summary = .Site.Params.description -}}
+{{- end -}}
+{{- .Scratch.Set "summary" $summary -}}
+
+{{ with $summary }}
+	<meta name="description" content="{{ plainify . }}" />
+{{ end }}
+
+<!-- Keywords are ignore nowadays by search engines -->
+{{ if hugo.IsProduction }}
+	<!-- robots; TODO: disable index on lists -->
+	<meta name="robots" content="index,follow" />
+{{ else }}
+	<meta name="robots" content="noindex,nofollow" />
+{{ end }}
+
+
+{{/* canonical links to alternative representations */}}
+<link rel="canonical" href="{{ .Permalink }}" />
+<link rel="alternate" hreflang="{{ site.LanguageCode | default "en-us" }}" href="{{ .Permalink }}" />
+{{ range .Translations }}
+    <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}" />
+{{ end }}
+
+{{ range .AlternativeOutputFormats }}
+    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
+{{ end }}
+
+{{ $favicon := resources.Get "images/sensorlab.svg" }}
+<link rel="icon" type="image/svg" href="{{ $favicon.RelPermalink }}" />
+
+
+<title>
+    {{- if not .IsHome }}{{ .Params.name | default .Title }} &mdash; {{ end -}}
+    {{- site.Title -}}
+</title>

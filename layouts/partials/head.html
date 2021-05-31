@@ -1,90 +1,16 @@
-<meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-{{- $favicon := resources.Get "images/sensorlab.svg" -}}
-<link rel="icon" type="image/svg" href="{{ $favicon.RelPermalink }}" />
-
-
-<!-- Just some meta tag on Hugo static site generator -->
-{{ hugo.Generator }}
+    {{ $opts := (dict "inlineImports" true "targetPath" "style.css" "outputStyle" "compressed" "enableSourceMap" true) }}
+    {{ $css := resources.Get "styles/app.scss" | toCSS $opts | postCSS | minify | fingerprint }}
+    <link href="{{ $css.RelPermalink }}" rel="stylesheet" integrity="{{ $css.Data.Integrity }}" />
 
 
-<!-- Produce authors variable -->
-{{- $authors := slice -}}
-{{- if .Params.author -}}
-    {{- $authors = slice .Params.author -}}
-{{- else if .Params.authors }}
-    {{- $authors = .Params.authors -}}
-{{- else if .Site.Params.author -}}
-    {{- $authors = slice .Site.Params.author -}}
-{{- end -}}
-{{- .Scratch.Set "authors" $authors -}}
+    {{ $opts := dict "noComments" true }}
+    {{ $js := resources.Get "scripts/app.js" | babel $opts | js.Build | fingerprint }}
+    <script type="text/javascript" src="{{ $js.RelPermalink }}"  integrity="{{ $js.Data.Integrity }}" defer></script>
 
-<!-- Tag with authors -->
-{{ with $authors }}
-	<meta name="author" content="{{ delimit . ", " }}" />
-{{ end }}
-
-
-<!-- Produce summary -->
-{{- $summary := "" -}}
-{{- if .Params.summary -}}
-    {{- $summary = .Params.summary -}}
-{{- else if .Params.abstract -}}
-    {{- $summary = .Params.abstract -}}
-{{- else if .IsPage -}}
-    {{- $summary = .Summary -}}
-{{- else if .Site.Params.description -}}
-    {{- $summary = .Site.Params.description -}}
-{{- end -}}
-{{- .Scratch.Set "summary" $summary -}}
-
-{{ with $summary }}
-	<meta name="description" content="{{ plainify . }}" />
-{{ end }}
-
-
-
-
-{{/* canonical links to alternative representations */}}
-<link rel="canonical" href="{{ .Permalink }}" />
-<link rel="alternate" hreflang="{{ site.LanguageCode | default "en-us" }}" href="{{ .Permalink }}" />
-{{ range .Translations }}
-    <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}" />
-{{ end }}
-
-{{ range .AlternativeOutputFormats }}
-    {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
-{{ end }}
-
-
-<!-- Keywords are ignore nowadays by search engines -->
-{{ if eq (getenv "HUGO_ENV") "production" | or (eq .Site.Params.env "production") }}
-	<!-- robots; TODO: disable index on lists -->
-	<meta name="robots" content="index,follow" />
-{{ else }}
-	<meta name="robots" content="noindex,nofollow" />
-{{ end }}
-
-
-{{ with .Site.Params.themeColor }}
-<meta name="theme-color" content="{{ . }}" />
-{{ end }}
-
-<meta name="keywords" content="{{ with .Params.tags }}{{ delimit . ", "}}{{ end }}" />
-
-
-<title>{{ if not .IsHome }}{{ .Params.name | default .Title }} | {{ end }}{{ site.Title }}</title>
-
-
-{{- $opts := (dict "inlineImports" true "targetPath" "style.css" "outputStyle" "compressed" "enableSourceMap" true) -}}
-{{- $css := resources.Get "styles/app.scss" | toCSS | postCSS | minify | fingerprint -}}
-<style>{{ $css.Content | safeCSS }}</style>
-
-{{ $opts := dict "noComments" true }}
-{{ $js := resources.Get "scripts/app.js" | babel $opts | js.Build | fingerprint }}
-<script>{{ $js.Content | safeJS }}</script>
-{{/*
-<script type="text/javascript" src="{{ $js.RelPermalink }}"  integrity="{{ $js.Data.Integrity }}" defer></script>
-*/}}
+    {{ partial "seo.html" . }}
+</head>

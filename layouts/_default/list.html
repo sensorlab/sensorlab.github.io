@@ -1,0 +1,22 @@
+{{ define "main" }}
+<main class="flex-fill container" aria-role="main">
+    <div class="list-group my-5">
+        {{ range .Paginator.Pages }}
+        <a href="{{ .Permalink }}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ .Title }}</h5>
+                <small>{{ .Date }}</small>
+            </div>
+            <p class="mb-1">{{ .Summary }}</p>
+            <small>{{ .Lastmod }}</small>
+        </a>
+        {{ end }}
+    </div>
+</main>
+
+<div class="container-fluid">
+    <nav class="d-flex d-content justify-content-center">
+        {{ template "_internal/pagination.html" . }}
+    </nav>
+</div>
+{{ end }}
