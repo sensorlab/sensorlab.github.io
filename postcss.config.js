@@ -15,7 +15,7 @@ module.exports = {
     //require('postcss-nested'),
     require('postcss-preset-env'),
     ...(process.env.HUGO_ENVIRONMENT === 'production'
-        ? [purgecss, cssnano]
+        ? [cssnano]
         : []
     )
   ]
