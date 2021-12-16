@@ -1,6 +1,68 @@
 @charset "utf-8";
 
+// Custom.scss
+// Option B: Include parts of Bootstrap
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "./node_modules/bootstrap/scss/functions";
+
+$color1: #17BEBC;
+$color2: #1270B4;
+
+// 2. Include any default variable overrides here
+$blue:    #1270B4;//#0d6efd;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #d63384;
+$red:     #dc3545;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #198754;
+$teal:    #20c997;
+$cyan:    #17BEBC;//#0dcaf0;
+
+//$primary:        #1270B4;
+//$secondary:     $gray-600 !default;
+//$success:       $green !default;
+//$info:          #17BEBC;
+//$warning:       $yellow !default;
+//$danger:        $red !default;
+//$light:         $gray-100 !default;
+//$dark:          $gray-900 !default;
+
+$navbar-dark-color: rgba(#fff, .90);
+$navbar-dark-hover-color: rgba(#fff, 1.00);
+
+
+//@import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100;0,300;0,400;0,700');
+//$font-family-sans-serif: "Public Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+
+
+// 3. Include remainder of required Bootstrap stylesheets
+@import "./node_modules/bootstrap/scss/variables";
+@import "./node_modules/bootstrap/scss/mixins";
+@import "./node_modules/bootstrap/scss/utilities";
+
+
+// 4. Include any optional Bootstrap components as you like
+//@import "./node_modules/bootstrap/scss/root";
+//@import "./node_modules/bootstrap/scss/reboot";
+//@import "./node_modules/bootstrap/scss/type";
+//@import "./node_modules/bootstrap/scss/images";
+//@import "./node_modules/bootstrap/scss/containers";
+//@import "./node_modules/bootstrap/scss/grid";
 @import "./node_modules/bootstrap/scss/bootstrap";
+
+
+
+// 5. Add additional custom code here
+@import "highlight";
+
+
+/*:root {
+    --sl-gradient: gradient-x($blue, $cyan);
+}*/
 
 body, html {
     // Reuse classes from Bootstrap 5.
@@ -14,11 +76,164 @@ body, html {
 }
 
 
+.featured img {
+    max-height: 12em;
+}
 
-.card-special {
-    transition: all .25s ease;
+
+
+.btn-sensorlab {
+    @extend .btn-outline-primary;
+    //@include button-variant($color2, $color2);
+}
+
+.btn-outline-sensorlab {
+    @extend .btn-outline-primary;
+    //@include button-outline-variant($color2, white);
+  }
+
+.bg-sensorlab {
+    @include gradient-x($blue, $cyan)
+    //background-image: linear-gradient(to right, $blue, $cyan);
+}
+
+
+
+.banner {
+    //@extend .d-flex;
+    /*
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;*/
+
+    & > header {
+        /*display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+
+        position: absolute;*/
+        //position: absolute;
+        background: rgba($color: $white, $alpha: .8);
+    }
+}
+
+/*#particles-js, #particle-js > canvas {
+    max-height: 25vw;
+}*/
+
+
+
+
+.navbar-sensorlab {
+    @extend .navbar-dark;
+
+    .navbar-nav {
+        .nav-link {
+            transition: font-weight 250ms;
+
+            &:hover,
+            &:focus {
+                //font-weight: bolder;
+            }
+
+            & .active {
+                //font-weight: bolder;
+            }
+        }
+    }
+}
+
+/*
+.navbar-sensorlab {
+    .navbar-brand {
+      color: $navbar-dark-brand-color;
+
+      &:hover,
+      &:focus {
+        color: $navbar-dark-brand-hover-color;
+      }
+    }
+
+    .navbar-nav {
+      .nav-link {
+        color: $navbar-dark-color;
+
+        text-decoration: underline rgba(0, 0, 0, 0);
+        transition: text-decoration-color 250ms;
+
+
+        &:hover,
+        &:focus {
+          color: $navbar-dark-hover-color;
+          //font-weight: bolder;
+          text-decoration-color: $navbar-dark-hover-color;
+
+
+        }
+
+        &.disabled {
+          color: $navbar-dark-disabled-color;
+        }
+      }
+
+      .show > .nav-link,
+      .nav-link.active {
+        color: $navbar-dark-active-color;
+      }
+    }
+
+    .navbar-toggler {
+      color: $navbar-dark-color;
+      border-color: $navbar-dark-toggler-border-color;
+    }
+
+    .navbar-toggler-icon {
+      background-image: escape-svg($navbar-dark-toggler-icon-bg);
+    }
+
+    .navbar-text {
+      color: $navbar-dark-color;
+      a,
+      a:hover,
+      a:focus {
+        color: $navbar-dark-active-color;
+      }
+    }
+  }
+*/
+
+/*
+hr {
+    background: linear-gradient(to right, $blue, $cyan);
+}*/
+
+
+a.remove-styling {
+
+    color: $body-color;
+    text-decoration: none;
 
     &:hover {
-        transform: scale(1.05);
+        color: $body-color;
+        text-decoration: none;
     }
+
+
+    /*
+    &, &:hover, &:focus, &visited {
+        text-decoration: none;
+    }*/
+
+
+    & > .card {
+        transition: 0.25s;
+
+        &:hover, &:focus {
+            border-color: $cyan;
+        }
+    }
+
 }

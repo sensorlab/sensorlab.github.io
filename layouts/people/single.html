@@ -1,0 +1,34 @@
+{{ define "main" }}
+<main class="flex-fill container my-4" aria-role="main">
+    <article>
+        <header class="row">
+            <div class="col-12 col-md-4">
+                {{ $resource := .Resources.GetMatch .Params.avatar }}
+                {{ $img := $resource.Fill "200x200 q90" }}
+                <img class="rounded" src="{{ $img.Permalink }}">
+            </div>
+            <div class="col-12 col-md-8">
+                <h4><small class="text-muted">{{ .Params.prefix }}</small>&nbsp;{{ .Params.title }}</h4>
+                <p>{{ .Params.role }}</p>
+                <hr>
+                <p>
+                    Affiliations:
+                    <ul class="">
+                    {{ range .Params.organizations }}
+                        <li class=""><a href="{{ .url }}">{{ .name }}</a></li>
+                    {{ end }}
+                    </ul>
+                </p>
+            </div>
+        </header>
+
+        <div class="mt-4">
+            {{ .Content }}
+        </div>
+
+        <footer>
+            <p>Main research interests are {{ delimit .Params.interests ", " ", and " }}.</p>
+        </footer>
+    </article>
+</main>
+{{ end }}

@@ -1,54 +1,172 @@
 {{ define "main" }}
 
-<main class="flex-fill container" aria-role="main">
+{{- $logo := resources.Get "images/sensorlab-color.svg" | minify -}}
 
-
-  <header class="px-4 py-5 my-5 text-center">
-    {{ $img := .Params.image }}
-    <img class="d-block mx-auto mb-4" src="{{ $img }}" alt="" width="72" height="57">
-    <h1 class="display-5 fw-bold">{{ .Title }}</h1>
-    <div class="col-lg-6 mx-auto">
-      <p class="lead mb-4">{{ .Content }}</p>
-    </div>
+<main class="flex-fill" aria-role="main">
+  <header class="d-flex flex-column justify-content-center align-items-center
+  text-center my-4" style="min-height: 50vh;">
+      <img class="d-block mx-auto my-4" src="{{ $logo.Permalink }}" alt="SensorLab logo" height="128">
+      <h1 class="my-2">{{ .Title | title }}</h1>
+      <div class="col-lg-6 mx-auto lead mb-6">
+        {{ .Content }}
+      </div>
   </header>
 
-  <hr>
-  <h2 class="text-center">Research &amp; Development</h2>
+  <!--
+  <header class="py-5 text-center">
+    <img class="d-block mx-auto my-4" src="{{ $logo.Permalink }}" alt="SensorLab logo" height="128">
+    <h1 class="my-2">{{ .Title | title }}</h1>
+    <div class="col-lg-6 mx-auto lead mb-6">
+      {{ .Content }}
+    </div>
+  </header>
+  -->
 
-  <div class="row">
-    {{ range $index, $element := .Pages }}
-    <div class="col-md-4">
-      <div class="card card-special">
-        <img src="{{ $element.Params.image }}" class="card-img-top" alt="">
-        <div class="card-body">
-          <h5 class="card-title">{{ $element.Title }}</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
-          <a href="#" class="btn btn-primary">More</a>
+
+  <!-- Fatures & Benefits, or research topics -->
+  <section class="container mt-4 featured">
+    <div class="row d-flex align-items-baseline">
+      {{ $pageScope := . }}
+      {{ range $index, $page := (where .Pages "Section" "==" "") }}
+        <div class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
+          <div class="my-2 mx-5 text-center">
+            {{ $img := $pageScope.Page.Resources.GetMatch .Params.featured_image }}
+            <img src="{{ $img.Permalink }}" class="img-fluid">
+          </div>
+          <h2>{{ .Title | title }}</h2>
+          {{ $page.Content }}
+          <a href="#" class="btn btn-md btn-outline-primary">Read More</a>
         </div>
+      {{ end }}
+
+      <!-- Mockup -->
+      <div class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
+        <div class="my-2 mx-5 text-center">
+          <img src="" class="img-fluid">
+        </div>
+        <h2>DevOps</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <a href="#" class="btn btn-md btn-outline-primary">Read More</a>
       </div>
-    </div>
-    {{ end }}
-  </div>
+
+      <div class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
+        <div class="my-2 mx-5 text-center">
+          <img src="" class="img-fluid">
+        </div>
+        <h2>Radio Spectrum</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <a href="#" class="btn btn-md btn-outline-primary">Read More</a>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
+        <div class="my-2 mx-5 text-center">
+          <img src="" class="img-fluid">
+        </div>
+        <h2>MLOps</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <a href="#" class="btn btn-md btn-outline-primary">Read More</a>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
+        <div class="my-2 mx-5 text-center">
+          <img src="" class="img-fluid">
+        </div>
+        <h2>EU Project Partner</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <a href="#" class="btn btn-md btn-outline-primary">Read More</a>
+      </div>
 
 
-
-  {{ range $index, $element := .Pages }}
-  <section class="row flex-lg-row{{ if not (modBool $index 2) }}-reverse{{ end }} align-items-center g-5 py-5">
-    <div class="col-10 col-sm-8 col-lg-6">
-      <img src="{{ $element.Params.image }}" class="d-block mx-lg-auto img-fluid rounded" alt="Bootstrap Themes"
-        loading="lazy" width="700" height="400">
-    </div>
-    <div class="col-lg-6">
-      <h1 class="display-5 fw-bold lh-1 mb-3">{{ $element.Title }}</h1>
-      <p class="lead">{{ $element.Content }}</p>
-
-    </div>
     </div>
   </section>
-  {{ end }}
+
+  <section class="container mt-4 featured">
+    <h2 class="border-bottom">Recent Blog Posts:</h2>
+  </section>
 
 
+  <section class="container mt-4 featured">
+    <h2 class="border-bottom">Recent &amp; Feature Publications:</h2>
+  </section>
+
+  <section class="container mt-4 featured">
+    <h2 class="border-bottom">Recent Funding Projects:</h2>
+  </section>
+
+<!-- TODO: Featured posts -->
+
+
+<!-- TODO: Featured Projects -->
+
+
+{{/*
+  <div class="container">
+    {{ $pageScope := . }}
+    {{ range $index, $page := (where .Pages "Section" "==" "") }}
+      <section class="row flex-lg-row{{ if not (modBool $index 2) }}-reverse{{ end }} align-items-top g-5 py-5">
+        <div class="col-12 col-md-6 col-lg-6">
+          {{ $original := $pageScope.Page.Resources.GetMatch ($page.Params.featured_image) }}
+          {{ $img := $original.Fit "700x400" }}
+          <img src="{{ $img.Permalink }}" class="d-block mx-lg-auto img-fluid rounded" loading="lazy">
+        </div>
+        <div class="col-12 col-md-6 col-lg-6">
+          <h1 class="display-5 fw-bold lh-1 mb-3">{{ $page.Title }}</h1>
+          <hr>
+          <p class="lead">{{ $page.Content }}</p>
+
+          <p class="card-text">
+            <a href="#" class="btn btn-md btn-sensorlab">Read More</a>
+          </p>
+
+        </div>
+      </section>
+    {{ end }}
+*/}}
 
 </main>
+
+
+
+
+
+
+{{/*
+
+<main class="flex-fill" aria-role="main">
+
+
+<header class="px-4 py-5 text-center">
+  <img class="d-block mx-auto mb-4" src="{{ $logo.Permalink }}" alt="SensorLab logo" height="128">
+  <h1>{{ .Title }}</h1>
+  <div class="col-lg-6 mx-auto lead mb-6">
+    {{ .Content }}
+  </div>
+</header>
+
+<div class="container">
+  {{ $pageScope := . }}
+  {{ range $index, $page := (where .Pages "Section" "==" "") }}
+    <section class="row flex-lg-row{{ if not (modBool $index 2) }}-reverse{{ end }} align-items-top g-5 py-5">
+      <div class="col-12 col-md-6 col-lg-6">
+        {{ $original := $pageScope.Page.Resources.GetMatch ($page.Params.featured_image) }}
+        {{ $img := $original.Fit "700x400" }}
+        <img src="{{ $img.Permalink }}" class="d-block mx-lg-auto img-fluid rounded" loading="lazy">
+      </div>
+      <div class="col-12 col-md-6 col-lg-6">
+        <h1 class="display-5 fw-bold lh-1 mb-3">{{ $page.Title }}</h1>
+        <hr>
+        <p class="lead">{{ $page.Content }}</p>
+
+        <p class="card-text">
+          <a href="#" class="btn btn-md btn-sensorlab">Read More</a>
+        </p>
+
+      </div>
+    </section>
+  {{ end }}
+
+</div>
+
+</main>
+*/}}
 {{ end }}

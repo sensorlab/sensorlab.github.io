@@ -1,0 +1,24 @@
+{{ define "main" }}
+{{ $publications := where $.Site.Data.cobiss "code" "in" (slice "1.01" "1.08")  }}
+<main class="flex-fill container my-4" aria-role="main">
+    <h1>{{ .Title }}:</h1>
+
+    <ul class="list-group list-group-flush">
+        {{ range sort $publications "year" "desc" }}
+        {{ if ge .year ((now.AddDate -10 0 0).Format "2006") }}
+
+        {{- $authors := slice -}}
+        {{- range sort .authors ".order" "asc" -}}
+            {{ $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) }}
+        {{- end -}}
+
+        <li class="list-group-item">
+            <span>{{- delimit $authors ", " -}}</span><br>
+            <strong>{{ .title | title }}</strong><br>
+            {{ .journal | default .conf_title | title }}, {{ .year }}
+        </li>
+        {{end}}
+        {{ end }}
+    </ul>
+</main>
+{{ end }}

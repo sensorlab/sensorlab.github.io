@@ -11,6 +11,10 @@ DefaultContentLanguage = "en"
 #enableRobotsTXT = true
 #canonifyURLs = true
 
+copyright = "SensorLab"
+
+# themes = "future-imperfect"
+
 [build]
   writeStats = true
 
@@ -18,7 +22,7 @@ DefaultContentLanguage = "en"
     author = "SensorLab"
     github = "https://github.com/sensorlab"
 
-    inlineCSS = true
+    inlineCSS = false
     toc = true
 
     opengraph = true
@@ -61,19 +65,31 @@ DefaultContentLanguage = "en"
     weight = 2
 
 [[menu.main]]
+    name = "Projects"
+    indentifier = "projects"
+    url = "/projects"
+    weight = 3
+
+[[menu.main]]
+    name = "Publications"
+    indentifier = "publications"
+    url = "/publications"
+    weight = 4
+
+[[menu.main]]
     name = "People"
     indentifier = "people"
     url = "/people"
-    weight = 3
+    weight = 5
 
 [[menu.main]]
     name = "Blog"
     indentifier = "blog"
-    url = "/blog"
-    weight = 4
+    url = "/posts"
+    weight = 6
 
 [[menu.main]]
     name = "Contact"
     indentifier = "contact"
     url = "/contact"
-    weight = 5
+    weight = 7

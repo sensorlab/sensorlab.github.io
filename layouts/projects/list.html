@@ -1,0 +1,23 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+
+<main class="flex-fill container" aria-role="main">
+    <div class="list-group my-5">
+        {{ range sort .Pages ".Params.date_end" "desc" }}
+        <a href="{{ .Permalink }}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+                <div>
+                    <h5 class="mb-1">{{ .Title }}</h5>
+                    {{ .Params.date_start | time.Format "Jan 2006" }} &mdash; {{ .Params.date_end | time.Format "Jan 2006" }}
+                </div>
+                {{/*
+                    {{ $img := .Resources.GetMatch .Params.featured_image }}
+                    <img src="{{ $img.Permalink }}">
+                */}}
+            </div>
+            <p class="mb-1">{{ .Params.summary | markdownify }}</p>
+        </a>
+        {{ end }}
+    </div>
+</main>
+{{ end }}

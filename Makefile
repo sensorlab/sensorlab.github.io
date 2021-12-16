@@ -6,7 +6,8 @@ prod:
 	hugo server -v --gc --minify --disableFastRender
 
 dev:
-	hugo server -v --gc --disableFastRender --navigateToChanged --buildDrafts --buildFuture
+#	hugo server -v --gc --disableFastRender --navigateToChanged --buildDrafts --buildFuture
+	hugo server -v --gc --disableFastRender --buildDrafts --buildFuture
 
 
 build:

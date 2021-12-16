@@ -1,0 +1,25 @@
+{{ define "main" }}
+
+<main class="flex-fill container my-4" aria-role="main">
+    <h1>{{ .Title }}</h1>
+
+    <div class="row d-flex align-items-baseline">
+    {{ range sort .Pages ".Params.position" "asc" }}
+        {{ if in .Params.user_groups "leaders" }}
+            {{ .Render "person" }}
+        {{ end }}
+    {{ end }}
+    </div>
+
+    <hr class="bg-primary border-2 border-top border-primary">
+
+    <div class="row d-flex align-items-baseline">
+    {{ range sort .Pages ".Params.position" "asc" }}
+        {{ if (in .Params.user_groups "researchers") | and (not (in .Params.user_groups "leaders")) }}
+            {{ .Render "person" }}
+        {{ end }}
+    {{ end }}
+    </div>
+
+</main>
+{{ end }}

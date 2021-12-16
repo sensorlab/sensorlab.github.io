@@ -21,9 +21,9 @@
 	<meta name="author" content="{{ delimit . ", " }}" />
 {{ end }}
 
-
-<meta name="keywords" content="{{ with .Params.tags }}{{ delimit . ", "}}{{ end }}" />
-
+{{ with .Params.tags }}
+    <meta name="keywords" content="{{ delimit . ", "}}" />
+{{ end }}
 
 <!-- Produce summary -->
 {{- $summary := "" -}}

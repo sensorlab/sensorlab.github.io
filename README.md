@@ -1,13 +1,21 @@
 # sensorlab.ijs.si
 
-Refresh of SensorLab webpage
+New SensorLab webpage
 
-## How to start developent?
+## How to start developent and contribute?
 
 - Install Hugo "extended version" with SCSS support. [Instructions](https://gohugo.io/getting-started/installing/)
-- install nodeJS. [Instructions](https://nodejs.org/en/download/)
+- install NodeJS. [Instructions](https://nodejs.org/en/download/)
 - Install NodeJS dependencies using ``npm install``
-- Run development server using ``npm start`` or ``make dev``
+- Run development server using ``npm start``
 
+## How to contribute content?
 
-The output of CI system is visible on [https://gcerar.gitlab.io/sensorlab.ijs.si/](https://gcerar.gitlab.io/sensorlab.ijs.si/)
+### To add new funding project
+
+1. Under `content/projects/` add new directory (e.g. `<brand-new-project>`).
+2. Copy `archetypes/project.md` to `content/projects/<brand-new-project>/index.md`.
+3. Edit content accordingly, provide logo, etc.
+4. Optionally add supplemental material into `content/projects/<brand-new-project>/` directory.
+5. Preview the outcome using `npm start`.
+6. Commit the changes.

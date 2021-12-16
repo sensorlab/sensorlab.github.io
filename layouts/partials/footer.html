@@ -1,18 +1,125 @@
-<footer class="footer bg-light text-center text-black">
-    <!--
-    <div class="container p-4 pb-0 d-flex justify-content-evenly">
-        <section class="mb-4">
-            <a class="btn btn-outline-dark btn-floating m-1" role="button">F</a>
-            <a class="btn btn-outline-dark btn-floating m-1" role="button">T</a>
-        </section>
+{{- $logo := resources.Get "images/sensorlab-color.svg" | minify -}}
 
-        <section class="mb-4">
-            <a class="btn btn-outline-dark btn-floating m-1" role="button">F</a>
-            <a class="btn btn-outline-dark btn-floating m-1" role="button">T</a>
-        </section>
+
+<footer class="container d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+  <div class="col-md-5 d-flex align-items-center">
+    <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+      <img src="{{ $logo.Permalink }}" style="height: 2.5rem">
+    </a>
+    <span class="text-muted">&copy; 2014&nbsp;-&nbsp;{{ now.Format "2006" }} Sensorlab, Jožef Stefan Institute</span>
+  </div>
+
+  <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+    <li class="ms-3">
+      <a class="text-muted" target="_blank" href="https://github.com/sensorlab">GitHub</a>
+    </li>
+    <li class="ms-3">
+      <a class="text-muted" target="_blank" href="https://twitter.com/CommSysJSI">Twitter</a>
+    </li>
+    <li class="ms-3">
+      <a class="text-muted" target="_blank" href="https://www.researchgate.net/institution/Joef_Stefan_Institute/department/Komunikacijski_sistemi">ResearchGate</a>
+    </li>
+    <li class="ms-3">
+      <a class="text-muted" target="_blank" href="https://e6.ijs.si/">Department's site</a>
+    </li>
+  </ul>
+
+</footer>
+
+{{/*
+
+
+<footer class="container d-flex justify-content-between align-items-center py-3 my-4 border-top">
+
+  <section class="col-6">
+    <h4>Visiting Address:</h4>
+    <p class="text-white">
+      <address>
+        <strong>Department of Communication Systems &mdash; E6</strong><br>
+        Jozef Stefan Institute<br>
+        Jamova cesta 39, 1000 Ljubljana<br>
+        Slovenia, Europe<br>
+        <abbr title="Phone">P:</abbr> +386 1 000 0000<br>
+        <abbr title="Email">M:</abbr> sensorlab@ijs.si
+      </address>
+    </p>
+  </section>
+
+  <nav class="col-6">
+    <h4>Contact:</h4>
+    <ul class="nav justify-content-end list-unstyled d-flex">
+      <li><a class="btn btn-outline-primary btn-floating m-1" href="mailto:sensorlab@ijs.si">E-Mail</a></li>
+      <li><a class="btn btn-outline-primary btn-floating m-1" href="#" role="button">Facebook</a></li>
+      <li><a class="btn btn-outline-primary btn-floating m-1" href="#" role="button">Twitter</a></li>
+      <li><a class="btn btn-outline-primary btn-floating m-1" href="#" role="button">COBISS</a></li>
+      <li><a class="btn btn-outline-primary btn-floating m-1" href="#" role="button">GScholar</a></li>
+      <li><a class="btn btn-outline-primary btn-floating m-1" href="#" role="button">ResearchGate</a></li>
+    </ul>
+  </nav>
+
+</footer>
+
+
+<!--
+<footer class="footer bg-sensorlab text-white">
+  <div class="container"></div>
+    <div class="text-center my-2">
+      &copy; 2014 &mdash; 2021 Copyright <span class="font-weight-bold">SensorLab</span>
     </div>
-    -->
-  <div class="text-center p-3">
-    &copy; 2014 &mdash; 2021 Copyright <a class="text-dark" href="{{ .Permalink }}">SensorLab</a>
+</div>
+</footer>
+-->
+
+
+
+
+
+
+<footer class="footer bg-sensorlab text-white">
+  <div class="container p-4 pb-0">
+    <div class=" row justify-content-evenly">
+
+      <section class="col-8">
+        <h4>Visiting Address:</h4>
+        <p class="text-white">
+          <address>
+            <strong>Department of Communication Systems &mdash; E6</strong>
+            <br>
+            Jozef Stefan Institute
+            <br>
+            Jamova cesta 39, 1000 Ljubljana
+            <br>
+            Slovenia, Europe
+            <br>
+            <abbr title="Phone">P:</abbr> +386 1 000 0000
+            <br>
+            <abbr title="Email">M:</abbr> sensorlab@ijs.si
+          </address>
+        </p>
+      </section>
+
+
+      <nav class="col-4">
+        <h4>Contact:</h4>
+        <p class="text-white text-center">
+          <a class="btn btn-outline-light btn-floating m-1" href="mailto:sensorlab@ijs.si">E-Mail</a>
+          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">Facebook</a>
+          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">Twitter</a>
+          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">COBISS</a>
+          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">GScholar</a>
+          <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button">ResearchGate</a>
+        </p>
+      </nav>
+
+
+    </div>
+
+    <hr>
+
+    <div class="text-center mb-2">
+      &copy; 2014 &mdash; 2021 Copyright <span class="font-weight-bold">SensorLab</span>
+    </div>
   </div>
 </footer>
+
+*/}}

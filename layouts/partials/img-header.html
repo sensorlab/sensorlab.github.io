@@ -1,5 +1,5 @@
-{{ if (isset .Params "cover_image") }}
-  {{ $cover_image := printf "*%s*" .Params.cover_image }}
+{{ if (isset .Params "image") }}
+  {{ $cover_image := printf "*%s*" .Params.image }}
   {{ $src := .Page.Resources.GetMatch ($cover_image) }}
 
   {{/* set image sizes, these are hardcoded for now, x dictates that images are resized to this width */}}

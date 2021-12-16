@@ -1,8 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ .Site.LanguageCode }}" class="no-js">
-{{ partial "head.html" . }}
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    {{ $opts := (dict "inlineImports" true "targetPath" "style.css" "outputStyle" "compressed" "enableSourceMap" true "includePaths" (slice "node_modules/")) }}
+    {{ $css := resources.Get "styles/app.scss" | toCSS $opts | postCSS | minify | fingerprint | resources.PostProcess }}
+    {{ if .Site.Params.inlineCSS }}
+        <style>{{ $css.Content | safeCSS }}</style>
+    {{ else }}
+        <link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous" />
+    {{ end }}
+
+    {{ $opts := dict "noComments" true }}
+    {{ $js := resources.Get "scripts/app.js" | babel $opts | js.Build | fingerprint }}
+    <script type="text/javascript" src="{{ $js.RelPermalink }}"  integrity="{{ $js.Data.Integrity }}" defer></script>
+
+    {{ partial "seo.html" . }}
+</head>
 <body>
-    {{ partial "header.html" . }}
+    {{ partial "navbar.html" . }}
     {{ block "main" . }}{{ end }}
     {{ partial "footer.html" . }}
 </body>
