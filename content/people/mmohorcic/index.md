@@ -12,7 +12,7 @@ prefix: "Dr."
 title: Mihael "Miha" Mohorčič
 
 # Role/position
-role: "Senior Researcher and Senior Lecturer"
+role: "Senior Researcher"
 
 # Organizations/Affiliations
 organizations:

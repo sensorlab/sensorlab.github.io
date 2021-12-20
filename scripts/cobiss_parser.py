@@ -20,7 +20,7 @@ import json
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+formatter = logging.Formatter('[%(levelname)-8s] %(message)s')
 console = logging.StreamHandler(sys.stdout)
 console.setFormatter(formatter)
 logger.addHandler(console)
@@ -28,13 +28,8 @@ logger.addHandler(console)
 
 CWD = Path(__file__).resolve().parent
 
-# this should give back json version of laboratory page
-SICRIS_LAB_JSON_URL = "https://www.sicris.si/Common/rest.aspx?sessionID=1234CRIS12002B01B01A03IZUMBFICDOSKJHS588Nn44131&fields=&country=SI_JSON&entity=prg&methodCall=id=18064%20and%20lang=eng"
-
 # this template will (after ajax redirect) return xml of a bibligraphy from a researcher with desired id
 SICRIS_BIB_XML_TEMPLATE_URL = "https://bib.cobiss.net/biblioweb/direct/si/eng/cris/{0}?formatbib=ISO&format=X&code={0}&langbib=eng&formatbib=2&format=11"
-
-
 
 DEFAULT_TIMEOUT = 12
 
@@ -102,13 +97,14 @@ def make_argparser() -> argparse.ArgumentParser:
 
     parser.add_argument(
         '-o', '--output',
-        default='./cobiss.json',
+        default=str(CWD.parent / 'data' / 'cobiss.json'),
         help='Biblio output file path (default: ./cobiss.json)'
     )
 
     parser.add_argument(
         '-i', '--input',
         required=False,
+        default=str(CWD.parent / 'data' / 'people.json'),
         help='List of researcher IDs (default: None)'
     )
 
@@ -120,30 +116,13 @@ def get_researcher_ids_from_page_people(people: Dict[int, Any]):
 
     for key, person in people.items():
         if person.get('cobiss_id', None):
-            logger.info(f'{person["cobiss_id"]}\t<-->\t{person["last_name"]} {person["first_name"]}')
+            logger.info(f'({person["cobiss_id"]}) {person["last_name"]} {person["first_name"]}')
             ids.append((
                 person.get('cobiss_id', None),
                 person.get('member_from', None),
                 person.get("member_to", None),
             ))
     return ids
-
-
-def get_researcher_ids_from_sicris_page():
-    """Parse json containing researcher IDs, and return array containing that information only."""
-    session = make_session()
-    response = session.get(SICRIS_LAB_JSON_URL, timeout=DEFAULT_TIMEOUT)
-    session.close()
-
-    data = json.loads(response.text)
-    employees = data[0]["EMPLOY"]
-
-    ids = []
-    for employee in employees:
-        print(employee["MSTID"], employee["LNAME"], employee["FNAME"])
-        ids.append(employee["MSTID"])
-    return ids
-
 
 
 def get_bib_in_xml(researcher_id):
@@ -199,7 +178,7 @@ def get_bib_in_xml(researcher_id):
 
 
 
-def get_cobiss_data_for_researchers(researcher_ids: Tuple[int]):
+def get_cobiss_data_for_researchers(researcher_ids: Tuple[int]) -> list:
     """Combine all researchers into a single object. Do a basic test to filter out duplicates."""
 
     def elementValue(element, tag) -> str:
@@ -282,6 +261,9 @@ def get_cobiss_data_for_researchers(researcher_ids: Tuple[int]):
 
         logger.info(f'Biblio now contains {len(bib_items)} entries')
 
+    # Convert dict to list
+    bib_items = list([entry for key, entry in bib_items.items()])
+
     return bib_items
 
 
@@ -291,12 +273,6 @@ if __name__ == '__main__':
 
     parser = make_argparser()
     args = parser.parse_args()
-
-    if args.use_sicris_group_page:
-        logger.debug('Parsing page')
-        for id in get_researcher_ids_from_sicris_page():
-            if not (id in researcher_ids):
-                researcher_ids.append(id)
 
     if args.input is not None:
         logger.info("Parsing people JSON file.")

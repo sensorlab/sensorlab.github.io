@@ -19,6 +19,8 @@ organizations:
 - name: Jožef Stefan Institute
   url: https://ijs.si
 
+# TODO: When collaboration duration
+
 # Short bio (displayed in user profile at end of posts)
 bio: ""
 

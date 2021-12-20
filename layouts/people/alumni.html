@@ -1,0 +1,16 @@
+<a class="remove-styling" style="max-width: 250px;" href="#">
+    <div class="card">
+        {{ $resource := .Resources.GetMatch .Params.avatar }}
+        {{ $img := $resource.Fill "250x250 q90" | images.Filter (images.Grayscale) }}
+        <img class="card-img-top" src="{{ $img.Permalink }}" loading="lazy">
+        <div class="card-body text-center">
+            <h5 class="card-title">
+                {{- with .Params.prefix -}}
+                    <small class="text-muted">{{ . }}</small>&nbsp;
+                {{- end -}}
+                {{- .Params.title -}}
+            </h5>
+            <p class="card-text">{{ .Params.role | markdownify }}</p>
+        </div>
+    </div>
+</a>

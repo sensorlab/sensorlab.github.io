@@ -1,0 +1,33 @@
+{
+  "0": {
+    "cobiss_id": 39131,
+    "first_name": "Gregor",
+    "last_name": "Cerar",
+    "member_from": 2016
+  },
+  "1": {
+    "cobiss_id": 29521,
+    "first_name": "Carolina",
+    "last_name": "Fortuna",
+    "member_from": 2006
+  },
+  "2": {
+    "cobiss_id": 54683,
+    "first_name": "Blaž",
+    "last_name": "Bertalanič",
+    "member_from": 2021
+  },
+  "3": {
+    "cobiss_id": 15087,
+    "first_name": "Mihael",
+    "last_name": "Mohorčič",
+    "member_from": 1994
+  },
+  "4": {
+    "cobiss_id": 53669,
+    "first_name": "Halil",
+    "last_name": "Yetgin",
+    "member_from": 2019,
+    "member_to": 2021
+  }
+}
