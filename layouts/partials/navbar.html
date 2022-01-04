@@ -1,9 +1,9 @@
-{{- $logo := resources.Get "images/sensorlab.svg" | minify -}}
+{{- $logo := resources.Get "images/sensorlab-white.svg" | minify -}}
 
 <header class="navbar navbar-expand-md navbar-sensorlab bg-sensorlab">
   <div class="container">
     <a href="{{ .Site.BaseURL }}" class="navbar-brand">
-      <img src="{{ $logo.Permalink }}" alt="" class="d-inline-block align-top me-2" height="42">
+      <img src="{{ $logo.Permalink }}" alt="SensorLab logo" class="d-inline-block align-top me-2" height="42">
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
