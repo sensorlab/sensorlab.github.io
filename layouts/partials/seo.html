@@ -67,6 +67,7 @@
 
 
 <title>
+    {{- if not hugo.IsProduction }}[DEV] {{ end -}}
     {{- if not .IsHome }}{{ .Params.name | default .Title }} &mdash; {{ end -}}
     {{- site.Title -}}
 </title>

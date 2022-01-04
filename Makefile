@@ -3,7 +3,7 @@ APP_NAME=sensorlab.github.io
 PORT=1313
 
 HUGO_DEV_CMD=server -v --gc --disableFastRender --buildDrafts --buildFuture
-HUGO_PROD_CMD=server -v --gc --minify --disableFastRender
+HUGO_PROD_CMD=server -v --gc --minify --disableFastRender --environment production
 
 #highlight:
 #	hugo gen chromastyles --style=monokai > assets/styles/_highlight.scss
