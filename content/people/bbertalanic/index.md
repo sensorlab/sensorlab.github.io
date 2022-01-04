@@ -12,7 +12,7 @@ prefix: ""
 title: "Blaž Bertalanič"
 
 # Role/position
-role: "Young Researcher, PR, and Mediator"
+role: "Young Researcher"
 
 # Organizations/Affiliations
 organizations:
