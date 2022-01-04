@@ -4,15 +4,15 @@ New SensorLab webpage
 
 ## How to start developent and contribute?
 
-### Native
+### (Recommended) Develop inside container
+- Install Docker
+- run `make up` command
 
+### Native
 - Install Hugo "extended version" with SCSS support. [Instructions](https://gohugo.io/getting-started/installing/)
 - install NodeJS. [Instructions](https://nodejs.org/en/download/)
 - Install NodeJS dependencies using ``npm install``
 - Run development server using ``npm start``
-
-### Develop inside container
-- `docker run -it --rm -p 1313:1313 -v $(pwd):/src $(docker build -q .)`
 
 ## How to contribute content?
 
