@@ -1,10 +1,13 @@
 'use strict';
 import 'bootstrap';
 
+
+document.documentElement.className = document.documentElement.className.replace('\bno-js\b/', 'js');
+
 //import {tsParticles} from "tsparticles";
 //import { Connect } from 'tsparticles/Options/Classes/Interactivity/Modes/Connect';
 
-
+/*
 const config = {
   "particles": {
     /*"number": {
@@ -13,7 +16,7 @@ const config = {
         "enable": true,
         "value_area": 800
       }
-    },*/
+    },
     "color": {
       "value": "#1270b4"
     },
@@ -113,7 +116,7 @@ const config = {
     }
   },
   "retina_detect": true
-};
+};*/
 
 //tsParticles.load('particles-js', config);
 
