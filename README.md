@@ -22,5 +22,5 @@ New SensorLab webpage
 2. Copy `archetypes/project.md` to `content/projects/<brand-new-project>/index.md`.
 3. Edit content accordingly, provide logo, etc.
 4. Optionally add supplemental material into `content/projects/<brand-new-project>/` directory.
-5. Preview the outcome using `npm start`.
+5. Preview the outcome using `make up`.
 6. Commit the changes.
