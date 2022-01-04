@@ -6,10 +6,10 @@ languageCode = "en"
 DefaultContentLanguage = "en"
 
 
-#enableEmoji = true
-#enableGitInfo = false
-#enableRobotsTXT = true
-#canonifyURLs = true
+enableEmoji = true
+enableGitInfo = false
+enableRobotsTXT = true
+canonifyURLs = true
 
 copyright = "SensorLab"
 
