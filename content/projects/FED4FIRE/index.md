@@ -1,6 +1,6 @@
 ---
 # Project's title
-title: "FED4FIRE"
+title: "FED4FIRE+"
 
 # Featured image used for thumbnail and banner at detail page
 featured_image: "fed4fire_logo.png"
