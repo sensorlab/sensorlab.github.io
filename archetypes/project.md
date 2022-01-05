@@ -12,6 +12,9 @@ summmary: ""
 date_start: {{ .Date }}
 date_end: {{ .Date }}
 
+# Project website URL
+project_url: ""
+
 # Tags/Categories
 tags:
 - Deep Learning

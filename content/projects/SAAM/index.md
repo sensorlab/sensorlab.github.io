@@ -16,11 +16,7 @@ date_end: "2020-09-30T00:00:00Z"
 tags:
 - health monitoring
 - elders
+- horizon2020
 ---
 
-CONTENT
-
-
-Funding:
-Budget:
-Consortium:
+The project aims to develop and validate a Virtual Assistant-Coach that supports the process of healthy ageing by preserving physical, cognitive, mental, and social well-being of older citizens, and prolonging the period of life they can live safely at home. SAAM focuses on innovative, unobtrusive technology-enabled approaches, with a novel and practical emphasis on wearable and ambient sensing.
