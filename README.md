@@ -1,6 +1,6 @@
 # sensorlab.ijs.si
 
-New SensorLab webpage at [sensorlab.github.io](sensorlab.github.io)
+New SensorLab webpage at [sensorlab.github.io](https://sensorlab.github.io)
 
 ## How to start developent and contribute?
 
