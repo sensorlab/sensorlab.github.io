@@ -1,5 +1,5 @@
 ---
-title: "Meet out team"
+title: "Meet our team"
 ---
 
 Hello
