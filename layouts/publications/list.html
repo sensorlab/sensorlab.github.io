@@ -9,17 +9,21 @@
         {{ $journals := where $.Site.Data.cobiss "code" "eq" "1.01" }}
         <ul class="list-group list-group-flush">
             {{ range sort $journals "year" "desc" }}
-                {{ if ge .year ((now.AddDate -10 0 0).Format "2006") }}
-                {{- $authors := slice -}}
-                {{- range sort .authors ".order" "asc" -}}
-                    {{ $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) }}
-                {{- end -}}
+                {{ if ge .year ((now.AddDate -5 0 0).Format "2006") }}
+                    {{ $authors := slice }}
+                    {{ range sort .authors ".order" "asc" }}
+                        {{ $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) }}
+                    {{ end }}
 
-                <li class="list-group-item">
-                    <span>{{- delimit $authors ", " -}}</span><br>
-                    <strong>{{ .title | title }}</strong><br>
-                    {{ .journal | default .conf_title | title }}, {{ .year }}
-                </li>
+                    <li class="list-group-item">
+                        <span>{{- delimit $authors ", " -}}:</span>
+                        <span><strong>{{ .title | title }}</strong></span>,
+                        <span>{{ .journal | default .conf_title | title }}, {{ .year }}</span>
+                        <ul class="list-unstyled d-flex">
+                            {{- if .doi -}}<li>[DOI:<a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>{{- end -}}
+                            {{- if and .cobiss_id .cobiss_url -}}<li class="ms-2">[COBISS:<a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>{{ end }}
+                        </ul>
+                    </li>
                 {{ end }}
             {{ end }}
         </ul>
@@ -31,17 +35,25 @@
         {{ $journals := where $.Site.Data.cobiss "code" "eq" "1.08" }}
         <ul class="list-group list-group-flush">
             {{ range sort $journals "year" "desc" }}
-                {{ if ge .year ((now.AddDate -10 0 0).Format "2006") }}
-                {{- $authors := slice -}}
-                {{- range sort .authors ".order" "asc" -}}
-                    {{ $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) }}
-                {{- end -}}
+                {{ if ge .year ((now.AddDate -5 0 0).Format "2006") }}
+                    {{ $authors := slice }}
+                    {{ range sort .authors ".order" "asc" }}
+                        {{ $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) }}
+                    {{ end }}
 
-                <li class="list-group-item">
-                    <span>{{- delimit $authors ", " -}}</span><br>
-                    <strong>{{ .title | title }}</strong><br>
-                    {{ .journal | default .conf_title | title }}, {{ .year }}
-                </li>
+                    <li class="list-group-item">
+                        <span>{{- delimit $authors ", " -}}</span>
+                        <span><strong>{{ .title | title }}</strong></span>,
+                        <span>{{ .journal | default .conf_title | title }}, {{ .year }}</span>
+                        <ul class="list-unstyled d-flex">
+                            {{- if and .cobiss_id .cobiss_url -}}
+                                <li>[COBISS:<a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>
+                            {{ end }}
+                            {{- if .doi -}}
+                                <li class="ms-2">[DOI:<a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>
+                            {{- end -}}
+                        </ul>
+                    </li>
                 {{ end }}
             {{ end }}
         </ul>
