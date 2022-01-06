@@ -1,5 +1,5 @@
 'use strict';
-import 'bootstrap';
+//import 'bootstrap';
 
 
 document.documentElement.className = document.documentElement.className.replace('\bno-js\b/', 'js');

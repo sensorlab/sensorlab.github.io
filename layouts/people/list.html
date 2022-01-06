@@ -2,9 +2,9 @@
 
 <main class="flex-fill container my-4" aria-role="main">
     <section>
-        <h1>Active Members</h1>
+        <h1>Members</h1>
 
-        <div class="row d-flex align-items-baseline justify-content-center my-2">
+        <div class="row d-flex justify-content-center my-2">
         {{ range sort .Pages ".Params.position" "asc" }}
             {{ if in .Params.user_groups "leaders" }}
                 {{ .Render "member" }}
@@ -12,7 +12,7 @@
         {{ end }}
         </div>
 
-        <div class="row d-flex align-items-baseline justify-content-center my-2">
+        <div class="row d-flex align-items-stretch justify-content-center my-2">
         {{ range sort .Pages ".Params.position" "asc" }}
             {{ if (in .Params.user_groups "researchers") | and (not (intersect .Params.user_groups (slice "leaders" "alumni"))) }}
                 {{ .Render "member" }}
@@ -24,8 +24,8 @@
     <hr class="bg-primary border-2 border-top border-primary">
 
     <section>
-        <h1>Former members</h1>
-        <div class="row d-flex align-items-baseline justify-content-center">
+        <h1>Alumni</h1>
+        <div class="row d-flex align-items-stretch justify-content-center">
         {{ range sort .Pages ".Params.position" "asc" }}
             {{ if in .Params.user_groups "alumni" }}
                 {{ .Render "alumni" }}

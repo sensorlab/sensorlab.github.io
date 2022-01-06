@@ -1,5 +1,5 @@
-<a class="remove-styling" style="max-width: 250px;" href="#">
-    <div class="card">
+<a class="remove-styling align-items-stretch" style="max-width:250px;" href="#">
+    <div class="card" style="height:100%">
         {{ $resource := .Resources.GetMatch .Params.avatar }}
         {{ $img := $resource.Fill "250x250 q90" }}
         <img class="card-img-top" src="{{ $img.Permalink }}" loading="lazy">

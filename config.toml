@@ -58,11 +58,11 @@ copyright = "SensorLab"
 
 
 
-[[menu.main]]
-    name = "Research"
-    indentifier = "research"
-    url = "/research"
-    weight = 2
+#[[menu.main]]
+#    name = "Research"
+#    indentifier = "research"
+#    url = "/research"
+#    weight = 2
 
 [[menu.main]]
     name = "Projects"
@@ -82,16 +82,16 @@ copyright = "SensorLab"
     url = "/people"
     weight = 5
 
-[[menu.main]]
-    name = "Blog"
-    indentifier = "blog"
-    url = "/posts"
-    weight = 6
+#[[menu.main]]
+#    name = "Blog"
+#    indentifier = "blog"
+#    url = "/posts"
+#    weight = 6
 
 [[menu.main]]
-    name = "Contact"
-    indentifier = "contact"
-    url = "/contact"
+    name = "About"
+    indentifier = "about"
+    url = "/about"
     weight = 7
 
 
