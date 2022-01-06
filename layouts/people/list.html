@@ -4,17 +4,9 @@
     <section>
         <h1>Members</h1>
 
-        <div class="row d-flex justify-content-center my-2">
-        {{ range sort .Pages ".Params.position" "asc" }}
-            {{ if in .Params.user_groups "leaders" }}
-                {{ .Render "member" }}
-            {{ end }}
-        {{ end }}
-        </div>
-
-        <div class="row d-flex align-items-stretch justify-content-center my-2">
-        {{ range sort .Pages ".Params.position" "asc" }}
-            {{ if (in .Params.user_groups "researchers") | and (not (intersect .Params.user_groups (slice "leaders" "alumni"))) }}
+        <div class="row d-flex align-items-stretch justify-content-start my-2">
+        {{ range sort .Pages ".Params.position" "desc" }}
+            {{ if not (in .Params.user_groups "alumni") }}
                 {{ .Render "member" }}
             {{ end }}
         {{ end }}
@@ -25,7 +17,7 @@
 
     <section>
         <h1>Alumni</h1>
-        <div class="row d-flex align-items-stretch justify-content-center">
+        <div class="row d-flex align-items-stretch justify-content-start">
         {{ range sort .Pages ".Params.position" "asc" }}
             {{ if in .Params.user_groups "alumni" }}
                 {{ .Render "alumni" }}

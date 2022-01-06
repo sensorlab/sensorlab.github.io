@@ -3,7 +3,7 @@
 avatar: "cfortuna.jpg"
 
 # position index is used for sorting/positioning on the website
-position: 10
+position: 1000
 
 # Prefix (before the name), typically Dr., Mag., ...
 prefix: "Dr."
