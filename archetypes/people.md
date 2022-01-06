@@ -19,7 +19,12 @@ organizations:
 - name: Jožef Stefan Institute
   url: https://ijs.si
 
-# TODO: When collaboration duration
+# COBISS/SICRIS identifier. Leave empty to ignore from publication generator
+cobiss: ""
+
+# The date when joined / departed from the lab. Empty or remove if not used
+date_start: {{ .Date }}
+date_end: {{ .Date }}
 
 # Short bio (displayed in user profile at end of posts)
 bio: ""
@@ -64,12 +69,6 @@ social:
 # - icon: cv
 #   icon_pack: ai
 #   link: files/cv.pdf
-
-# Email
-email: ""
-
-# Highlight the author in author lists? (true/false)
-highlight_name: false
 
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.

@@ -19,6 +19,13 @@ organizations:
 - name: Jožef Stefan Institute
   url: https://ijs.si
 
+# COBISS/SICRIS identifier
+cobiss: 15087
+
+# The date when joined / departed from the lab. Empty or remove if not used
+date_start: "1994-10-01T00:00:00Z"
+date_end:
+
 # Short bio (displayed in user profile at end of posts)
 bio: ""
 
@@ -28,11 +35,6 @@ interests:
 - smart applications of wireless sensor networks
 - dynamic composition of communication services
 - wireless experimental testbeds
-
-
-
-# Enter email to display Gravatar (if Gravatar enabled in Config)
-email: "miha.mohorcic@ijs.si"
 
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.

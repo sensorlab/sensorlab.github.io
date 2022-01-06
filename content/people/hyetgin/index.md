@@ -18,6 +18,15 @@ role: "Postdoc"
 organizations:
 - name: Jožef Stefan Institute
   url: https://ijs.si
+- name: Bitlis Eren University
+  url: https://www.beu.edu.tr
+
+# COBISS/SICRIS identifier
+cobiss: 53669
+
+# The date when joined / departed from the lab. Empty if not used
+date_start: "2019-01-01T00:00:00Z"
+date_end: "2021-12-31T00:00:00Z"
 
 # Short bio (displayed in user profile at end of posts)
 bio: ""
@@ -29,17 +38,11 @@ interests:
 - dynamic composition of communication services
 - wireless experimental testbeds
 
-
-
-# Enter email to display Gravatar (if Gravatar enabled in Config)
-email: "halil.yetgin@ijs.si"
-
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
 - alumni
-
+#- researchers
 # - students
 # - leaders
 ---
