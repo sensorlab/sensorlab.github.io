@@ -34,14 +34,14 @@
 	<section class="d-flex">
 		<div class="m-2">
       {{- $ijs := (resources.Get "images/ijs_logo.jpg").Resize "250x" -}}
-      <a href="https://ijs.si/">
+      <a href="https://ijs.si/" target="_blank">
         <img src="{{ $ijs.Permalink }}">
       </a>
 		</div>
 		
 		<div class="m-2">
       {{- $e6 := (resources.Get "images/e6_logo.png").Resize "250x" -}}
-      <a href="https://e6.ijs.si">
+      <a href="https://e6.ijs.si" target="_blank">
         <img src="{{ $e6.Permalink }}">
       </a>
 		</div>
