@@ -86,7 +86,14 @@ body, html {
 
 
 
-.full {display: none;}
+
+.text-justify {
+  text-align: justify;
+}
+
+.full {
+  display: none;
+}
 
 .read-more ~ label {
   cursor: pointer;

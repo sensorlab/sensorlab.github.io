@@ -15,7 +15,7 @@
                 {{ with .Resources.GetMatch .Params.featured_image }}
                     <img src="{{ .Permalink }}" alt="{{ $project.Title }} logo" class="float-md-start me-3 mb-2" style="max-width:min(200px, 100vw);">
                 {{ end }}
-                <p class="mx-1">{{ .Params.summary | markdownify }}</p>
+                <p class="mx-1 text-justify">{{ .Params.summary | markdownify }}</p>
             </div>
             </section>
     {{ end }}

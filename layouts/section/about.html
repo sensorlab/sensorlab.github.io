@@ -31,16 +31,21 @@
       </ul>
     </section>
 	
-	<section>
-		<div class="my-2 mx-5 text-center">
-			{{- $ijs := resources.Get "images/IJS_logo.jpg" -}}
-          <img src="{{ $ijs.Permalink }}" class="img-fluid">
+	<section class="d-flex">
+		<div class="m-2">
+      {{- $ijs := (resources.Get "images/ijs_logo.jpg").Resize "250x" -}}
+      <a href="https://ijs.si/">
+        <img src="{{ $ijs.Permalink }}">
+      </a>
 		</div>
 		
-		<div class="my-2 mx-5 text-center">
-			{{- $e6 := resources.Get "images/e6_logo.png" -}}
-          <img src="{{ $e6.Permalink }}" class="img-fluid">
+		<div class="m-2">
+      {{- $e6 := (resources.Get "images/e6_logo.png").Resize "250x" -}}
+      <a href="https://e6.ijs.si">
+        <img src="{{ $e6.Permalink }}">
+      </a>
 		</div>
+
 	</section>
 </main>
 {{ end }}
