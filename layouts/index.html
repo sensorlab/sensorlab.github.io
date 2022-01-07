@@ -3,7 +3,7 @@
 {{- $logo := resources.Get "images/sensorlab-color.svg" | minify -}}
 
 <main class="flex-fill" aria-role="main">
-  <header class="d-flex flex-column justify-content-center align-items-center text-center my-4" style="min-height: 50vh;">
+  <header class="d-flex flex-column justify-content-center align-items-center text-center my-4" style="min-height: 33vh;">
       <img src="{{ $logo.Permalink }}" alt="SensorLab logo" class="d-block mx-auto my-4" style="max-width:min(100vw, 500px);">
       <h1 class="my-2">{{ .Title | title }}</h1>
       <div class="col-lg-6 mx-auto lead mb-6">
