@@ -1,7 +1,7 @@
 ---
 title: "Wireless localization"
 draft: False
-featured_image: "research-and-development.svg"
+featured_image: "localization.svg"
 position: 3
 ---
 

@@ -88,6 +88,10 @@ body, html {
 
 .full {display: none;}
 
+.read-more ~ label {
+  cursor: pointer;
+}
+
 .read-more {
   display: none;
 
