@@ -1,8 +1,13 @@
 {{ $resource := .Resources.GetMatch .Params.avatar }}
-{{ $img := $resource.Fill "250x250 q90" }}
+{{ $img := $resource.Fill "250x250 q75" }}
+
+{{/*
+{{ $lqip := $img.Resize "16x" | images.Filter (images.GaussianBlur 2) }}
+*/}}
+
 <a class="remove-styling p-2 align-items-stretch" style="max-width:250px;" href="#">
     <div class="card" style="height:100%">
-        <img class="card-img-top" src="{{ $img.Permalink }}" loading="lazy">
+        <img src="{{ $img.Permalink }}" loading="lazy" width="{{ $img.Width }}"  height="{{ $img.Height }}" class="card-img-top">
         <div class="card-body text-center">
             <h5 class="card-title">
                 {{- with .Params.prefix -}}

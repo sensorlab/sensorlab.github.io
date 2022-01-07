@@ -86,6 +86,27 @@ body, html {
 
 
 
+.full {display: none;}
+
+.read-more {
+  display: none;
+
+  & ~ label:after {
+    content: "More \00BB";
+  }
+
+  &:checked ~ label:after {
+    content: "Less \00AB";
+  }
+}
+
+.read-more:checked {
+  & ~ .full { display: inline-block;}
+  & ~ .summary { display: none;}
+}
+
+
+
 .btn-sensorlab {
     @extend .btn-outline-primary;
     //@include button-variant($color2, $color2);
@@ -241,3 +262,5 @@ a.remove-styling {
     }
 
 }
+
+

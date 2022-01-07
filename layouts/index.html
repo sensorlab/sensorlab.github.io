@@ -5,7 +5,7 @@
 <main class="flex-fill" aria-role="main">
   <header class="d-flex flex-column justify-content-center align-items-center
   text-center my-4" style="min-height: 50vh;">
-      <img class="d-block mx-auto my-4 logo-big" src="{{ $logo.Permalink }}" alt="SensorLab logo">
+      <img src="{{ $logo.Permalink }}" alt="SensorLab logo" class="d-block mx-auto my-4" style="max-width:500px;">
       <h1 class="my-2">{{ .Title | title }}</h1>
       <div class="col-lg-6 mx-auto lead mb-6">
         {{ .Content }}
@@ -25,21 +25,32 @@
 
   <!-- Fatures & Benefits, or research topics -->
   <section class="container mt-4 featured">
-    <div class="row d-flex align-items-baseline">
+    <div class="row d-flex align-items-end">
       {{ $pageScope := . }}
-      {{ range $index, $page := (where .Pages "Section" "==" "") }}
-        <div class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-3">
-          <div class="my-2 mx-5 text-center">
-            {{ $img := $pageScope.Page.Resources.GetMatch .Params.featured_image }}
-            <img src="{{ $img.Permalink }}" class="img-fluid">
-          </div>
-          <h2>{{ .Title | title }}</h2>
-          {{ $page.Content }}
-         <!-- <a href="#" class="btn btn-md btn-outline-primary">Read More</a>-->
+      {{ $sections := (where .Pages "Section" "==" "") }}
+      {{ range $index, $page := $sections.ByParam "position" }}
+      <div class="mb-3 col-12 col-md-6 col-lg-4 col-xxl-4">
+        {{ $img := $pageScope.Page.Resources.GetMatch .Params.featured_image }}
+        <input type="checkbox" id="featured-{{ $index }}" class="read-more" />
+        <div class="my-2 mx-5 text-center">
+          <img src="{{ $img.Permalink }}" class="img-fluid">
         </div>
+        <div class="text-center">
+          <h2 class="h3">{{ .Title | title }}</h2>
+        </div>
+        <div class="summary">
+          {{ $page.Content | truncate 140 }}
+        </div>
+  
+        <div class="full">
+          {{ $page.Content }}
+        </div>
+  
+        <label for="featured-{{ $index }}"></label>
+      </div>
       {{ end }}
-
-
+  
+  
     </div>
   </section>
 
