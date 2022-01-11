@@ -23,10 +23,22 @@
     "last_name": "Mohorčič",
     "member_from": 1994
   },
+  "4": {
+    "cobiss_id": 26466,
+    "first_name": "Miha",
+    "last_name": "Smolnikar",
+    "member_from": 2006
+  },
   "5": {
     "cobiss_id": 35934,
     "first_name": "Klemen",
     "last_name": "Bregar",
     "member_from": 2013
+  },
+  "6": {
+    "cobiss_id": 53669,
+    "first_name": "Denis",
+    "last_name": "Sodin",
+    "member_from": 2019
   }
 }

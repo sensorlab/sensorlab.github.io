@@ -20032,6 +20032,997 @@
     "authors": [
       {
         "cobiss_id": "",
+        "first_name": "Alemu Moges",
+        "last_name": "Belay",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Sanket",
+        "last_name": "Puranik",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Ramon",
+        "last_name": "Gallart-Fern\u00e1ndez",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Heidi",
+        "last_name": "Tuiskula",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Joaquim",
+        "last_name": "Melendez",
+        "order": 4,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Ilias",
+        "last_name": "Lamprinos",
+        "order": 5,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Francisco Enrique",
+        "last_name": "Gonz\u00e1lez-D\u00edaz",
+        "order": 6,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 7,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "91117315",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/91117315?lang=en",
+    "code": "1.01",
+    "doi": "10.3390/en15010094",
+    "employee": true,
+    "isbn": "",
+    "journal": "Energies",
+    "title": "Developing novel technologies and services for intelligent low voltage electricity grids : cost\u2013benefit analysis and policy implications",
+    "title_short": "Developing novel technologies and services for intelligent low voltage electricity grids : cost\u2013benefit analysis and policy implications",
+    "volume": "vol. 15",
+    "year": "2022"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "50930",
+        "first_name": "Denis",
+        "last_name": "Sodin",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "29557",
+        "first_name": "Urban",
+        "last_name": "Rude\u017e",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Marko",
+        "last_name": "Mihelin",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "25413",
+        "first_name": "Andrej",
+        "last_name": "\u010campa",
+        "order": 4,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "57896195",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/57896195?lang=en",
+    "code": "1.01",
+    "doi": "10.3390/app11073100",
+    "employee": true,
+    "isbn": "",
+    "journal": "Applied sciences",
+    "title": "Advanced edge-cloud computing framework for automated PMU-based fault localization in distribution networks",
+    "title_short": "Advanced edge-cloud computing framework for automated PMU-based fault localization in distribution networks",
+    "volume": "vol. 11",
+    "year": "2021"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "50930",
+        "first_name": "Denis",
+        "last_name": "Sodin",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "55631",
+        "first_name": "Rajne",
+        "last_name": "Ilievska",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "25413",
+        "first_name": "Andrej",
+        "last_name": "\u010campa",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "29557",
+        "first_name": "Urban",
+        "last_name": "Rude\u017e",
+        "order": 4,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "24709891",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/24709891?lang=en",
+    "code": "1.01",
+    "doi": "10.3390/en13143607",
+    "employee": true,
+    "isbn": "",
+    "journal": "Energies",
+    "title": "Proving a concept of flexible under-frequency load shedding with hardware-in-the-loop testing",
+    "title_short": "Proving a concept of flexible under-frequency load shedding with hardware-in-the-loop testing",
+    "volume": "no. 14",
+    "year": "2020"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Jimmy",
+        "last_name": "Nielsen",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Ljup\u010do",
+        "last_name": "Jorgu\u0161eski",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "29239",
+        "first_name": "Kemal",
+        "last_name": "Ali\u010d",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "36598",
+        "first_name": "Urban",
+        "last_name": "Kuhar",
+        "order": 4,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "17167",
+        "first_name": "Ale\u0161",
+        "last_name": "\u0160vigelj",
+        "order": 5,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "30453031",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/30453031?lang=en",
+    "code": "1.01",
+    "doi": "10.1109/MWC.2017.1600252",
+    "employee": true,
+    "isbn": "",
+    "journal": "IEEE wireless communications",
+    "title": "Secure real-time monitoring and management of smart distribution grid using shared cellular networks",
+    "title_short": "Secure real-time monitoring and management of smart distribution grid using shared cellular networks",
+    "volume": "vol. 24",
+    "year": "2017"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "05209",
+        "first_name": "Gorazd",
+        "last_name": "Kandus",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26025",
+        "first_name": "Andrej",
+        "last_name": "Hrovat",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "09856",
+        "first_name": "Igor",
+        "last_name": "Ozimek",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "13138",
+        "first_name": "Tatjana",
+        "last_name": "Ban-Zlatev",
+        "order": 4,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "20523815",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/20523815?lang=en",
+    "code": "1.01",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "journal": "WSEAS transactions on communications",
+    "title": "Telemetry services over TETRA network for disaster management",
+    "title_short": "Telemetry services over TETRA network for disaster management",
+    "volume": "vol. 6",
+    "year": "2007"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Antonio E.",
+        "last_name": "Salda\u00f1a-Gonz\u00e1lez",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Andreas",
+        "last_name": "Sumper",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "M\u00f2nica",
+        "last_name": "Aragues-Penalba",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 3,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "24711427",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/24711427?lang=en",
+    "code": "1.02",
+    "doi": "10.3390/en13143730",
+    "employee": true,
+    "isbn": "",
+    "journal": "Energies",
+    "title": "Advanced distribution measurement technologies and data applications for smart grids : a review",
+    "title_short": "Advanced distribution measurement technologies and data applications for smart grids : a review",
+    "volume": "vol. 13",
+    "year": "2020"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "50930",
+        "first_name": "Denis",
+        "last_name": "Sodin",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "55631",
+        "first_name": "Rajne",
+        "last_name": "Ilievska",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "25413",
+        "first_name": "Andrej",
+        "last_name": "\u010campa",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "29557",
+        "first_name": "Urban",
+        "last_name": "Rude\u017e",
+        "order": 4,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "83540739",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/83540739?lang=en",
+    "code": "1.08",
+    "conf_title": "Referati in predstavitve 15. konference slovenskih elektroenergetikov CIGRE-CIRED : Thermana La\u0161ko",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Koncept adaptivnega podfrekven\u010dnega razbremenjevanja v realnem elektroenergetskem sistemu = Concept of adaptive under-frequency load shedding in real electrical power systems",
+    "title_short": "Koncept adaptivnega podfrekven\u010dnega razbremenjevanja v realnem elektroenergetskem sistemu",
+    "year": "2021"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "50930",
+        "first_name": "Denis",
+        "last_name": "Sodin",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Marko",
+        "last_name": "Mihelin",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "29557",
+        "first_name": "Urban",
+        "last_name": "Rude\u017e",
+        "order": 3,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "33232167",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/33232167?lang=en",
+    "code": "1.08",
+    "conf_title": "Referati in predstavitve 14. konference slovenskih elektroenergetikov CIGRE-CIRED",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Preizku\u0161anje ustreznosti delovanja PMU naprav z RTDS simulatorjem = IEEE standards compliance testing of PMU with RTDS",
+    "title_short": "Preizku\u0161anje ustreznosti delovanja PMU naprav z RTDS simulatorjem",
+    "year": "2019"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "05209",
+        "first_name": "Gorazd",
+        "last_name": "Kandus",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26025",
+        "first_name": "Andrej",
+        "last_name": "Hrovat",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "09856",
+        "first_name": "Igor",
+        "last_name": "Ozimek",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "13138",
+        "first_name": "Tatjana",
+        "last_name": "Ban-Zlatev",
+        "order": 4,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "20523559",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/20523559?lang=en",
+    "code": "1.08",
+    "conf_title": "Proceedings of the WSEAS International Conferences, Gold Coast, Queensland, Australia, January 17-19,2007",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Telemetry over TETRA network",
+    "title_short": "Telemetry over TETRA network",
+    "year": "2007"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 0,
+        "responsibility": "primary"
+      },
+      {
+        "cobiss_id": "15803",
+        "first_name": "Janez",
+        "last_name": "Puhan",
+        "order": 1,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "20183847",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/20183847?lang=en",
+    "code": "1.08",
+    "conf_title": "Zbornik petnajste mednarodne Elektrotehni\u0161ke in ra\u010dunalni\u0161ke konference ERK 2006, 25. - 27. september 2006, Portoro\u017e, Slovenija",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Splo\u0161ni razvojni sistem za mikrokrmilnike iz dru\u017eine PIC = Common development system for PIC microcontroller family",
+    "title_short": "Splo\u0161ni razvojni sistem za mikrokrmilnike iz dru\u017eine PIC",
+    "volume": "zv. b",
+    "year": "2006"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 0,
+        "responsibility": "primary"
+      }
+    ],
+    "cobiss_id": "25827879",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/25827879?lang=en",
+    "code": "1.12",
+    "conf_title": "Trends in future internet technologies: from interconnected objects to broadband sevices : 2012 Sarajevo Technology Forum, 24-25 May 2012, Sarajevo, Bosnia and Herzegovina",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Sensor networks in smart grid applications : a photovoltaic system use",
+    "title_short": "Sensor networks in smart grid applications : a photovoltaic system use",
+    "year": "2012"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 0,
+        "responsibility": "primary"
+      },
+      {
+        "cobiss_id": "15803",
+        "first_name": "Janez",
+        "last_name": "Puhan",
+        "order": 1,
+        "responsibility": "secondary"
+      }
+    ],
+    "cobiss_id": "4854100",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/4854100?lang=en",
+    "code": "2.11",
+    "doi": "",
+    "employee": false,
+    "isbn": "",
+    "title": "Splo\u0161ni razvojni sistem za mikrokrmilnike iz dru\u017eine PIC : diplomsko delo",
+    "title_short": "Splo\u0161ni razvojni sistem za mikrokrmilnike iz dru\u017eine PIC : diplomsko delo",
+    "year": "2005"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "29557",
+        "first_name": "Urban",
+        "last_name": "Rude\u017e",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "06168",
+        "first_name": "Rafael",
+        "last_name": "Mihali\u010d",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Marjan",
+        "last_name": "Ilkovski",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "55631",
+        "first_name": "Rajne",
+        "last_name": "Ilievska",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 4,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "50930",
+        "first_name": "Denis",
+        "last_name": "Sodin",
+        "order": 5,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Marko",
+        "last_name": "Mihelin",
+        "order": 6,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "25413",
+        "first_name": "Andrej",
+        "last_name": "\u010campa",
+        "order": 7,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "49478659",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/49478659?lang=en",
+    "code": "2.12",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Novel under-frequency relay settings for securing the operation of electrical grids : OIS-AIR project",
+    "title_short": "Novel under-frequency relay settings for securing the operation of electrical grids : OIS-AIR project",
+    "year": "2020"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "25842",
+        "first_name": "Jana",
+        "last_name": "Mali",
+        "order": 0,
+        "responsibility": "primary"
+      },
+      {
+        "cobiss_id": "15365",
+        "first_name": "Andrej",
+        "last_name": "Ko\u0161ir",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Medeja",
+        "last_name": "Novljan",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Marko",
+        "last_name": "Mihelin",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 4,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "37607",
+        "first_name": "Nina",
+        "last_name": "\u017ditek",
+        "order": 5,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Mirjam ten",
+        "last_name": "Veen",
+        "order": 6,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Mihaela",
+        "last_name": "Kukolj",
+        "order": 7,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Benjamin",
+        "last_name": "Peni\u010d",
+        "order": 8,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Sonja",
+        "last_name": "Smergut",
+        "order": 9,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Katja",
+        "last_name": "Verbov\u0161ek Zabukovec",
+        "order": 10,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "50654",
+        "first_name": "Andra\u017e",
+        "last_name": "Debevc",
+        "order": 11,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "\u010crt",
+        "last_name": "Letnar",
+        "order": 12,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Damjan",
+        "last_name": "Sirnik",
+        "order": 13,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "4579941",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/4579941?lang=en",
+    "code": "2.12",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Tehnolo\u0161ka podpora pri oskrbi ljudi z demenco v skupnosti",
+    "title_short": "Tehnolo\u0161ka podpora pri oskrbi ljudi z demenco v skupnosti",
+    "year": "2015"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "92023",
+        "first_name": "Zoltan",
+        "last_name": "Padrah",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "33453",
+        "first_name": "Matev\u017e",
+        "last_name": "Vu\u010dnik",
+        "order": 2,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "26274087",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/26274087?lang=en",
+    "code": "2.12",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Methodology for performance evaluation",
+    "title_short": "Methodology for performance evaluation",
+    "year": "2012"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 0,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "26273063",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/26273063?lang=en",
+    "code": "2.12",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Second promotion and dissemination status report",
+    "title_short": "Second promotion and dissemination status report",
+    "year": "2012"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "David",
+        "last_name": "Gustin\u010di\u010d",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Bo\u017eo",
+        "last_name": "Mi\u0161ovi\u0107",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "16265",
+        "first_name": "Radovan",
+        "last_name": "Sernec",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Milovan",
+        "last_name": "Stropnik",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Sa\u0161a",
+        "last_name": "\u017dbontar",
+        "order": 4,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "32739",
+        "first_name": "Toma\u017e",
+        "last_name": "Lovren\u010di\u010d",
+        "order": 5,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "29900",
+        "first_name": "Jurij",
+        "last_name": "Jur\u0161e",
+        "order": 6,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Branko",
+        "last_name": "O\u017ebolt",
+        "order": 7,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Gregor",
+        "last_name": "Skrt",
+        "order": 8,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "20522",
+        "first_name": "\u017diga",
+        "last_name": "Hribar",
+        "order": 9,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Bojan",
+        "last_name": "Mili\u010di\u0107",
+        "order": 10,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Janez",
+        "last_name": "Zrnec",
+        "order": 11,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "29239",
+        "first_name": "Kemal",
+        "last_name": "Ali\u010d",
+        "order": 12,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "36749",
+        "first_name": "Bla\u017e",
+        "last_name": "Ka\u017ei\u010d",
+        "order": 13,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 14,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "21346",
+        "first_name": "Maja",
+        "last_name": "\u0160krjanc",
+        "order": 15,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "17167",
+        "first_name": "Ale\u0161",
+        "last_name": "\u0160vigelj",
+        "order": 16,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Ljup\u010do",
+        "last_name": "Jorgu\u0161eski",
+        "order": 17,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "29813543",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/29813543?lang=en",
+    "code": "2.13",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Requirements and architectures for DSO-telecom converged communication networks in dense DEG smart energy grid networks : delivery report D2.1.2",
+    "title_short": "Requirements and architectures for DSO-telecom converged communication networks in dense DEG smart energy grid networks : delivery report D2.1.2",
+    "year": "2016"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 0,
+        "responsibility": "primary"
+      }
+    ],
+    "cobiss_id": "25661991",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/25661991?lang=en",
+    "code": "3.14",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Implementing Eco-Policy with sensor infrastructure",
+    "title_short": "Implementing Eco-Policy with sensor infrastructure",
+    "year": "2011"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 0,
+        "responsibility": "primary"
+      }
+    ],
+    "cobiss_id": "23681575",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/23681575?lang=en",
+    "code": "3.14",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Practical aspects of wireless sensor network implementation : invited talk",
+    "title_short": "Practical aspects of wireless sensor network implementation : invited talk",
+    "year": "2010"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 0,
+        "responsibility": "primary"
+      }
+    ],
+    "cobiss_id": "20556327",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/20556327?lang=en",
+    "code": "3.15",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "DSP implementation of ACM procedures for IEEE 802.16 : York HAP week, Promoting high altitude platforms and their applications, 23-27 October 2006, University of York, York, UK",
+    "title_short": "DSP implementation of ACM procedures for IEEE 802.16 : York HAP week, Promoting high altitude platforms and their applications, 23-27 October 2006, University of York, York, UK",
+    "year": "2006"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "26466",
+        "first_name": "Miha",
+        "last_name": "Smolnikar",
+        "order": 0,
+        "responsibility": "primary"
+      }
+    ],
+    "cobiss_id": "25662247",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/25662247?lang=en",
+    "code": "3.16",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Sensor networks as infrastructure for the internet of things : presented at Living bits and things, 14. November 2011, Ljubljana",
+    "title_short": "Sensor networks as infrastructure for the internet of things : presented at Living bits and things, 14. November 2011, Ljubljana",
+    "year": "2011"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
         "first_name": "Ale\u0161",
         "last_name": "Simon\u010di\u010d",
         "order": 0,
@@ -20575,5 +21566,601 @@
     "title": "Zbornik : 1. del = Proceedings : part 1",
     "title_short": "Zbornik : 1. del",
     "year": "2016"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Jingjing",
+        "last_name": "Cui",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Dong",
+        "last_name": "Liu",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Jiankang",
+        "last_name": "Zhang",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Soon Xin",
+        "last_name": "Ng",
+        "order": 4,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Robert G.",
+        "last_name": "Maunder",
+        "order": 5,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Lajos",
+        "last_name": "Hanzo",
+        "order": 6,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "71381251",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/71381251?lang=en",
+    "code": "1.01",
+    "doi": "10.1109/OJVT.2021.3089543",
+    "employee": true,
+    "isbn": "",
+    "journal": "IEEE open journal of vehicular technology",
+    "title": "Minimum-delay routing for integrated aeronautical ad hoc networks relying on real flight data in the North-Atlantic region",
+    "title_short": "Minimum-delay routing for integrated aeronautical ad hoc networks relying on real flight data in the North-Atlantic region",
+    "volume": "vol. 2",
+    "year": "2021"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Jingjing",
+        "last_name": "Cui",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Dong",
+        "last_name": "Liu",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Jiankang",
+        "last_name": "Zhang",
+        "order": 3,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Soon Xin",
+        "last_name": "Ng",
+        "order": 4,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Lajos",
+        "last_name": "Hanzo",
+        "order": 5,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "71382531",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/71382531?lang=en",
+    "code": "1.01",
+    "doi": "10.1109/OJVT.2021.3095467",
+    "employee": true,
+    "isbn": "",
+    "journal": "IEEE open journal of vehicular technology",
+    "title": "Twin-component near-pareto routing optimization for AANETs in the North-Atlantic region relying on real flight statistics",
+    "title_short": "Twin-component near-pareto routing optimization for AANETs in the North-Atlantic region relying on real flight statistics",
+    "year": "2021"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Naim Suleyman",
+        "last_name": "Ting",
+        "order": 0,
+        "responsibility": "primary"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Yakup",
+        "last_name": "Sahin",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 2,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32868135",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32868135?lang=en",
+    "code": "1.01",
+    "doi": "10.1007/s00202-019-00800-1",
+    "employee": true,
+    "isbn": "",
+    "journal": "Electrical engineering = Archiv f\u00fcr Elektrotechnik",
+    "title": "Design and implementation of an IBC reduced voltage across output capacitor",
+    "title_short": "Design and implementation of an IBC reduced voltage across output capacitor",
+    "volume": "vol. 101",
+    "year": "2019"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Kaya",
+        "last_name": "Kuru",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Darren",
+        "last_name": "Ansell",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Wasiq",
+        "last_name": "Khan",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 3,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32867623",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32867623?lang=en",
+    "code": "1.01",
+    "doi": "10.1109/ACCESS.2019.2892716",
+    "employee": true,
+    "isbn": "",
+    "journal": "IEEE access",
+    "title": "Analysis and optimization of unmanned aerial vehicle swarms in logistics",
+    "title_short": "Analysis and optimization of unmanned aerial vehicle swarms in logistics",
+    "volume": "vol. 7",
+    "year": "2019"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Kaya",
+        "last_name": "Kuru",
+        "order": 0,
+        "responsibility": "primary"
+      },
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 1,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32867879",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32867879?lang=en",
+    "code": "1.01",
+    "doi": "10.1109/ACCESS.2019.2907809",
+    "employee": true,
+    "isbn": "",
+    "journal": "IEEE access",
+    "title": "Transformation to advanced mechatronics systems within new industrial revolution : a novel framework in automation of everything (AoE)",
+    "title_short": "Transformation to advanced mechatronics systems within new industrial revolution : a novel framework in automation of everything (AoE)",
+    "volume": "vol. 7",
+    "year": "2019"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Naim Suleyman",
+        "last_name": "Ting",
+        "order": 0,
+        "responsibility": "primary"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Yakup",
+        "last_name": "Sahin",
+        "order": 1,
+        "responsibility": "secondary"
+      },
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 2,
+        "responsibility": "secondary"
+      }
+    ],
+    "cobiss_id": "32869415",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32869415?lang=en",
+    "code": "1.01",
+    "doi": "10.24200/sci.2019.50087.1500",
+    "employee": true,
+    "isbn": "",
+    "journal": "Scientia iranica",
+    "title": "A new active snubber cell for soft switched power factor correction boost converters",
+    "title_short": "A new active snubber cell for soft switched power factor correction boost converters",
+    "year": "2019"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Kent Tsz",
+        "last_name": "Kan Cheung",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Mohammed",
+        "last_name": "El-Hajjar",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Lajos",
+        "last_name": "Hanzo",
+        "order": 3,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32869159",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32869159?lang=en",
+    "code": "1.01",
+    "doi": "10.1109/COMST.2017.2650979",
+    "employee": false,
+    "isbn": "",
+    "journal": "IEEE Communications surveys and tutorials",
+    "title": "A survey of network lifetime maximization techniques in wireless sensor networks",
+    "title_short": "A survey of network lifetime maximization techniques in wireless sensor networks",
+    "volume": "vol. 19",
+    "year": "2017"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Kent Tsz",
+        "last_name": "Kan Cheung",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Mohammed",
+        "last_name": "El-Hajjar",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Lajos",
+        "last_name": "Hanzo",
+        "order": 3,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32868391",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32868391?lang=en",
+    "code": "1.01",
+    "doi": "10.1109/ACCESS.2015.2493779",
+    "employee": false,
+    "isbn": "",
+    "journal": "IEEE access",
+    "title": "Network-lifetime maximization of wireless sensor networks",
+    "title_short": "Network-lifetime maximization of wireless sensor networks",
+    "volume": "vol. 3",
+    "year": "2015"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Kent Tsz",
+        "last_name": "Kan Cheung",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Mohammed",
+        "last_name": "El-Hajjar",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Lajos",
+        "last_name": "Hanzo",
+        "order": 3,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32868903",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32868903?lang=en",
+    "code": "1.01",
+    "doi": "10.1109/TVT.2014.2360361",
+    "employee": false,
+    "isbn": "",
+    "journal": "IEEE transactions on vehicular technology",
+    "title": "Cross-layer network lifetime maximization ininterference-limited WSNs",
+    "title_short": "Cross-layer network lifetime maximization ininterference-limited WSNs",
+    "volume": "vol. 64",
+    "year": "2015"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Kent Tsz",
+        "last_name": "Kan Cheung",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Mohammed",
+        "last_name": "El-Hajjar",
+        "order": 2,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Lajos",
+        "last_name": "Hanzo",
+        "order": 3,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32873255",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32873255?lang=en",
+    "code": "1.01",
+    "doi": "10.1049/iet-wss.2014.0049",
+    "employee": false,
+    "isbn": "",
+    "journal": "IET wireless sensor systems",
+    "title": "Halil Yetgin ... [et al.]",
+    "title_short": "Halil Yetgin ... [et al.]",
+    "volume": "vol. 4",
+    "year": "2014"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Naim Suleyman",
+        "last_name": "Ting",
+        "order": 0,
+        "responsibility": "primary"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Yakup",
+        "last_name": "Sahin",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 2,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32888615",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32888615?lang=en",
+    "code": "1.08",
+    "conf_title": "Full text book",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "An active snubber cel for soft switched PFC boost converters",
+    "title_short": "An active snubber cel for soft switched PFC boost converters",
+    "year": "2019"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 0,
+        "responsibility": "primary"
+      }
+    ],
+    "cobiss_id": "32883751",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32883751?lang=en",
+    "code": "1.08",
+    "conf_title": "Proceedind book",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "A survey of joint routing and energyoptimization techniques for underwateracoustic sensor networks",
+    "title_short": "A survey of joint routing and energyoptimization techniques for underwateracoustic sensor networks",
+    "year": "2019"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Ali",
+        "last_name": "Tilfargil",
+        "order": 0,
+        "responsibility": "primary"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "\u0130dil",
+        "last_name": "Ko\u00e7",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 2,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32883239",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32883239?lang=en",
+    "code": "1.08",
+    "conf_title": "Proceedings book",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "Eektriki\u00e7 tesislerinde 8 kanalli r\u00f6le kontrol karti iile akilli sistem tasarimi",
+    "title_short": "Eektriki\u00e7 tesislerinde 8 kanalli r\u00f6le kontrol karti iile akilli sistem tasarimi",
+    "year": "2019"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "",
+        "first_name": "Naim Suleyman",
+        "last_name": "Ting",
+        "order": 0,
+        "responsibility": "primary"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Yakup",
+        "last_name": "Sahin",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 2,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32882983",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32882983?lang=en",
+    "code": "1.08",
+    "conf_title": "Proceedings book",
+    "doi": "",
+    "employee": true,
+    "isbn": "",
+    "title": "A new interleaved boost converter reduced voltage on output filter capacitor",
+    "title_short": "A new interleaved boost converter reduced voltage on output filter capacitor",
+    "year": "2019"
+  },
+  {
+    "authors": [
+      {
+        "cobiss_id": "53669",
+        "first_name": "Halil",
+        "last_name": "Yetgin",
+        "order": 0,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Kent Tsz",
+        "last_name": "Kan Cheung",
+        "order": 1,
+        "responsibility": "alternative"
+      },
+      {
+        "cobiss_id": "",
+        "first_name": "Lajos",
+        "last_name": "Hanzo",
+        "order": 2,
+        "responsibility": "alternative"
+      }
+    ],
+    "cobiss_id": "32888871",
+    "cobiss_url": "https://plus.si.cobiss.net/opac7/bib/32888871?lang=en",
+    "code": "1.08",
+    "conf_title": "2012 IEEE Wireless Communications and Networking Conference (WCNC) : April 1-4, 2012 in Paris, France",
+    "doi": "",
+    "employee": false,
+    "isbn": "",
+    "title": "Multi-objective routing optimization using evolutionary algorithms",
+    "title_short": "Multi-objective routing optimization using evolutionary algorithms",
+    "year": "2012"
   }
 ]
