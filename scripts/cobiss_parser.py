@@ -1,32 +1,31 @@
-#!/usr/bin/env python3
-from time import time
-from typing import List, Dict, Tuple, Any
-import logging
-import sys
+from typing import List, Tuple, Dict, Union
+import logging, sys
+from pathlib import Path
+from dataclasses import dataclass
+from datetime import datetime
+import time
+import re
+from glob import glob as glob
 
+import argparse
 
 import xml.etree.ElementTree as ET
-
-from pathlib import Path
-import argparse
-import re
-import time
 
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3 import Retry
-import json
+
+try:
+    import ujson as json
+except ImportError:
+    import json
 
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('[%(levelname)-8s] %(message)s')
-console = logging.StreamHandler(sys.stdout)
-console.setFormatter(formatter)
-logger.addHandler(console)
 
 
-CWD = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+MEMBER_SRC_PATH = PROJECT_ROOT / 'content' / 'people' / '**' / 'index.md'
 
 # this template will (after ajax redirect) return xml of a bibligraphy from a researcher with desired id
 SICRIS_BIB_XML_TEMPLATE_URL = "https://bib.cobiss.net/biblioweb/direct/si/eng/cris/{0}?formatbib=ISO&format=X&code={0}&langbib=eng&formatbib=2&format=11"
@@ -35,6 +34,26 @@ DEFAULT_TIMEOUT = 12
 
 MINIMUM_YEAR_OF_PUBLICATION = 1999
 MAXIMUM_YEAR_OF_PUBLICATION = 9999
+
+@dataclass
+class Member:
+    cobiss: int
+    name: str = ''
+    date_start: datetime = datetime.min
+    date_end: datetime = datetime.max
+
+
+
+def get_logger():
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('[%(levelname)-8s] %(message)s')
+    console = logging.StreamHandler(sys.stdout)
+    console.setFormatter(formatter)
+    logger.addHandler(console)
+    return logger
+
+logger = get_logger()
 
 
 class TimeoutHTTPAdapter(HTTPAdapter):
@@ -50,7 +69,6 @@ class TimeoutHTTPAdapter(HTTPAdapter):
         if timeout is None:
             kwargs["timeout"] = self.timeout
         return super().send(request, **kwargs)
-
 
 
 def make_session():
@@ -69,67 +87,69 @@ def make_session():
     return session
 
 
-def make_argparser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        description='Parse XML from COBISS website for researcher publications'
-    )
+def get_members(path:Path=MEMBER_SRC_PATH) -> Tuple[Member]:
+    def find_cobiss_id(string: str) -> Union[int, None]:
+        for line in string.splitlines():
+            if 'cobiss:' in line.lower():
+                number = line[line.find(':')+1:]
+                number = number.strip().strip('"').strip("'").strip()
+                logger.debug(f'Found COBISS-ID "{number}"')
+                if number and number.isdigit():
+                    return int(number)
+        
+        return None
 
-    parser.add_argument(
-        '--use-sicris-group-page',
-        action='store_true',
-        help='Get research group web page and parse from there? (default: False)'
-    )
+    def find_name(string: str) -> Union[str, None]:
+        for line in string.splitlines():
+            if 'title:' in line.lower():
+                name = line[line.find(':')+1:]
+                name = name.strip().strip('"').strip("'").strip()
+                if name and len(name) > 0:
+                    return name
 
-    parser.add_argument(
-        '--extra-ids',
-        metavar='ID',
-        type=str,
-        nargs='+',
-        help='Get bib of somebody not listed in your people.json or sicris group page'
-    )
+        return None
 
-    parser.add_argument(
-        '--min-publication-year',
-        type=int,
-        default=1999,
-        help='publications before this year are ignored (default: 1999)'
-    )
+    def find_datetime(string: str, prefix:str, default=None):
+        for line in string.splitlines():
+            if prefix.lower() in line.lower():
+                timestamp = line[line.find(':')+1:]
+                timestamp = timestamp.strip().strip('"').strip("'").strip()
+                if timestamp and len(timestamp) > 0:
+                    return datetime.fromisoformat(timestamp)
 
-    parser.add_argument(
-        '-o', '--output',
-        default=str(CWD.parent / 'data' / 'cobiss.json'),
-        help='Biblio output file path (default: ./cobiss.json)'
-    )
-
-    parser.add_argument(
-        '-i', '--input',
-        required=False,
-        default=str(CWD.parent / 'data' / 'people.json'),
-        help='List of researcher IDs (default: None)'
-    )
-
-    return parser
+        return default
 
 
-def get_researcher_ids_from_page_people(people: Dict[int, Any]):
-    ids = []
 
-    for key, person in people.items():
-        if person.get('cobiss_id', None):
-            logger.info(f'({person["cobiss_id"]}) {person["last_name"]} {person["first_name"]}')
-            ids.append((
-                person.get('cobiss_id', None),
-                person.get('member_from', None),
-                person.get("member_to", None),
-            ))
-    return ids
+    filenames = glob(str(path))
+    members = []
+
+    for filename in filenames:
+        with open(filename) as f:
+            logger.debug(f"Parsing {filename.split('/')[-2]}")
+            content = f.read()
+            member = Member(
+                cobiss=find_cobiss_id(content),
+                name=find_name(content),
+                date_start=find_datetime(content, 'date_start', datetime.min),
+                date_end=find_datetime(content, 'date_end', datetime.max),
+            )
+            if member.cobiss:
+                members.append(member)
+                logger.debug(f'Added {member.name} ({member.cobiss})')
+
+    return tuple(sorted(members, key=lambda x: x.cobiss))
 
 
-def get_bib_in_xml(researcher_id):
+
+
+
+
+def get_bib_in_xml(researcher: Member):
     """Get bibliopgrahy of researcher. Using cobiss link template to get xml from them."""
-    start_url = SICRIS_BIB_XML_TEMPLATE_URL.format(researcher_id)
+    start_url = SICRIS_BIB_XML_TEMPLATE_URL.format(researcher.cobiss)
     # print(researcher_id, "\t", start_url, end=" ")
-    logger.info(f'Requesting biblio for "{researcher_id}"')
+    logger.info(f'Requesting biblio for {researcher.name} ({researcher.cobiss})')
 
     # first request only to get redirect url
     session = make_session()
@@ -173,13 +193,14 @@ def get_bib_in_xml(researcher_id):
 
 
     session.close()
-    logger.error(f'Invalid redirect "{redirect_url}" for "{researcher_id}" at "{start_url}"')
+    logger.error(f'Invalid redirect "{redirect_url}" for "{researcher.cobiss}" at "{start_url}"')
     return None
 
 
 
-def get_cobiss_data_for_researchers(researcher_ids: Tuple[int]) -> list:
-    """Combine all researchers into a single object. Do a basic test to filter out duplicates."""
+
+def get_cobiss_data_for_researchers(researchers: Tuple[Member]) -> list:
+    """Combine all researchers' publications into a single object. Do a basic test to filter out duplicates."""
 
     def elementValue(element, tag) -> str:
         if element:
@@ -190,14 +211,15 @@ def get_cobiss_data_for_researchers(researcher_ids: Tuple[int]) -> list:
 
     bib_items = {}
 
-    for (researcher_id, min_year, max_year) in researcher_ids:
+    for member in researchers:
+        researcher_id, min_year, max_year = member.cobiss, member.date_start.year, member.date_end.year
 
-        min_year = int(min_year) if (min_year and int(min_year) > MINIMUM_YEAR_OF_PUBLICATION) else MINIMUM_YEAR_OF_PUBLICATION
-        max_year = int(max_year) if (max_year and int(max_year) < MAXIMUM_YEAR_OF_PUBLICATION) else MAXIMUM_YEAR_OF_PUBLICATION
+        #min_year = int(min_year) if (min_year and int(min_year) > MINIMUM_YEAR_OF_PUBLICATION) else MINIMUM_YEAR_OF_PUBLICATION
+        #max_year = int(max_year) if (max_year and int(max_year) < MAXIMUM_YEAR_OF_PUBLICATION) else MAXIMUM_YEAR_OF_PUBLICATION
 
-        raw_xml_text = get_bib_in_xml(researcher_id)
+        raw_xml_text = get_bib_in_xml(member)
         if not raw_xml_text or len(raw_xml_text) == 0:
-            logger.warning(f'{researcher_id} got an empty XML!')
+            logger.warning(f'{member.name} ({member.cobiss}) got an empty XML!')
             continue
 
         xml = ET.fromstring(raw_xml_text)
@@ -217,7 +239,7 @@ def get_cobiss_data_for_researchers(researcher_ids: Tuple[int]) -> list:
 
                 # Check for valid typology
                 if elem.find("Typology") is None:
-                    logger.warning(f'Skipping "{cobiss_id}" due to missing typology information.')
+                    logger.warning(f'Skipping "{cobiss_id}" due to missing typology information. Title: "{elementValue(elem, "Title")}"')
                     continue
 
                 entry = {}
@@ -243,17 +265,15 @@ def get_cobiss_data_for_researchers(researcher_ids: Tuple[int]) -> list:
 
 
                 for bibSetElem in elem.findall("BiblioSet"):
-                    if ("relation" in bibSetElem.attrib) and (
-                        bibSetElem.attrib["relation"] == "journal"
-                    ):
+                    if ("relation" in bibSetElem.attrib) and (bibSetElem.attrib["relation"] == "journal"):
                         entry["journal"] = elementValue(bibSetElem, "Title")
-                    if ("typeTeX" in bibSetElem.attrib) and (
-                        bibSetElem.attrib["typeTeX"] == "inproceedings"
-                    ):
+                    
+                    if ("typeTeX" in bibSetElem.attrib) and (bibSetElem.attrib["typeTeX"] == "inproceedings"):
                         entry["conf_title"] = elementValue(bibSetElem, "TitleShort")
 
                 if (elem.find("PhysicalAttributes") and elem.find("PhysicalAttributes").find("VolumeNum") != None):
                     entry["volume"] = elem.find("PhysicalAttributes").find("VolumeNum").text
+
 
                 bib_items[cobiss_id] = entry
             except Exception as e:
@@ -262,38 +282,113 @@ def get_cobiss_data_for_researchers(researcher_ids: Tuple[int]) -> list:
         logger.info(f'Biblio now contains {len(bib_items)} entries')
 
     # Convert dict to list
-    bib_items = list([entry for key, entry in bib_items.items()])
+    key = lambda x: int(x['cobiss_id'])
+    bib_items = sorted([value for key, value in bib_items.items()], key=key, reverse=True)
 
-    return bib_items
+    return list(bib_items)
+
+
+def find_on_arxiv(publications: List[object]) -> List[object]:
+    for publication in publications:
+        if not publication['doi']:
+            continue
+
+        response = requests.get(
+            f'https://export.arxiv.org/api/query',
+            params=dict(max_results=1, search_query=publication['doi'])
+        )
+
+        if response.status_code == 200:
+            tree = ET.fromstring(response.content)
+
+            candidates = tree.findall('{http://www.w3.org/2005/Atom}entry')
+            logger.debug(f'Found {len(candidates)} candidate(s) on arXiv for ({publication["cobiss_id"]}) "{publication["title"]}"')
+            for entry in candidates:
+                doi_tags = entry.findall('{http://arxiv.org/schemas/atom}doi')
+                logger.debug(f'Found {len(doi_tags)} DOI tags: {[doi.text for doi in doi_tags]}')
+                if doi_tags:
+                    doi = doi_tags[0].text
+                    if publication['doi'].lower() == doi.lower():
+                        url_string = entry.find('{http://www.w3.org/2005/Atom}id').text
+                        if url_string and url_string.startswith('http'):
+                            publication['arxiv_url'] = url_string
+                            publication['arxiv_id'] = url_string.split('/')[-1]
+                            logger.info(f'Added arXiv link for "{publication["title"]}"')
+                        else:
+                            logger.debug(f'Invalid ArXiv URL: "{url_string}"')
+                    else:
+                        logger.debug(f'Mismatch in DOI: {publication["doi"]} not in {doi_tags}')
+                else:
+                    logger.debug('Empty DOI field or arXiv')
+        else:
+            logger.debug(f'HTTP status code {response.status_code} != 200')
+
+
+    return publications
+
+
+
+def find_on_gscholar(publications: List[object]) -> List[object]:
+    raise NotImplementedError
+
+
+def get_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description='Parse XML from COBISS website for researcher publications'
+    )
+
+    # parser.add_argument(
+    #     '--extra-ids',
+    #     metavar='ID',
+    #     type=str,
+    #     nargs='+',
+    #     help='Get bib of somebody not listed in the system.'
+    # )
+
+    # parser.add_argument(
+    #     '--ignore-ids',
+    #     metavar='ID',
+    #     type=str,
+    #     nargs='+',
+    #     help='Ignore bibliography for certain people.'
+    # )
+
+    parser.add_argument(
+        '-o', '--output',
+        default=str(PROJECT_ROOT / 'data' / 'cobiss.json'),
+        help='Biblio output file path (default: ./cobiss.json)'
+    )
+
+    parser.add_argument(
+        '-i', '--input',
+        required=False,
+        default=str(MEMBER_SRC_PATH),
+        help=f'Path to researcher IDs (default: {MEMBER_SRC_PATH})'
+    )
+
+    return parser
+
+
+
+
+def main():
+    parser = get_parser()
+    args = parser.parse_args()
+
+    members = get_members(path=args.input)
+    publications = get_cobiss_data_for_researchers(members)
+    publications = find_on_arxiv(publications)
+
+    if args.output:
+        with open(args.output, "w") as file:
+            json.dump(publications, file, indent=2)
 
 
 
 if __name__ == '__main__':
-    researcher_ids = []
+    main()
 
-    parser = make_argparser()
-    args = parser.parse_args()
 
-    if args.input is not None:
-        logger.info("Parsing people JSON file.")
-        with open(args.input) as f:
-            people = json.load(f)
-        for id in get_researcher_ids_from_page_people(people):
-            if not (id in researcher_ids):
-                researcher_ids.append(id)
-                # print("Person:", id)
 
-    if args.extra_ids:
-        ADDITIONAL_COBISS_IDs = args.extra_ids.strip().split(',')
-        print("Getting additional ids")
-        for id in ADDITIONAL_COBISS_IDs:
-            if not (id in researcher_ids):
-                researcher_ids.append(id)
-                print("Additional:", id)
 
-    # get new xml values
-    data = get_cobiss_data_for_researchers(researcher_ids)
-    #if MINIMUM_PUBLICATIONS_TO_OVERWRITE < len(data):
-    if args.output:
-        with open(args.output, "w") as file:
-            json.dump(data, file, indent=2, sort_keys=True)
+

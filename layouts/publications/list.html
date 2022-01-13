@@ -20,8 +20,9 @@
                         <span><strong>{{ .title | title }}</strong></span>,
                         <span>{{ .journal | default .conf_title | title }}, {{ .year }}</span>
                         <ul class="list-unstyled d-flex">
-                            {{- if .doi -}}<li>[DOI:<a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>{{- end -}}
-                            {{- if and .cobiss_id .cobiss_url -}}<li class="ms-2">[COBISS:<a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>{{ end }}
+                            {{- if .doi -}}<li>[DOI: <a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>{{- end -}}
+                            {{- if and .cobiss_id .cobiss_url -}}<li class="ms-2">[COBISS: <a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>{{ end }}
+                            {{- if .arxiv_id }}<li>[arXiv: <a href="https://arxiv.org/abs/{{ .arxiv_id }}">{{ .arxiv_id }}</a>]</li>{{ end }}
                         </ul>
                     </li>
                 {{ end }}
@@ -46,12 +47,9 @@
                         <span><strong>{{ .title | title }}</strong></span>,
                         <span>{{ .journal | default .conf_title | title }}, {{ .year }}</span>
                         <ul class="list-unstyled d-flex">
-                            {{- if and .cobiss_id .cobiss_url -}}
-                                <li>[COBISS:<a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>
-                            {{ end }}
-                            {{- if .doi -}}
-                                <li class="ms-2">[DOI:<a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>
-                            {{- end -}}
+                            {{- if .doi -}}<li>[DOI: <a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>{{- end -}}
+                            {{- if and .cobiss_id .cobiss_url -}}<li class="ms-2">[COBISS: <a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>{{ end }}
+                            {{- if .arxiv_id }}<li>[arXiv: <a href="https://arxiv.org/abs/{{ .arxiv_id }}">{{ .arxiv_id }}</a>]</li>{{ end }}
                         </ul>
                     </li>
                 {{ end }}
