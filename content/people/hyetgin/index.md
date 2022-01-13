@@ -25,8 +25,8 @@ organizations:
 cobiss: 53669
 
 # The date when joined / departed from the lab. Empty if not used
-date_start: "2019-01-01T00:00:00Z"
-date_end: "2021-12-31T00:00:00Z"
+date_start: "2019-01-01"
+date_end: "2021-12-31"
 
 # Short bio (displayed in user profile at end of posts)
 bio: ""

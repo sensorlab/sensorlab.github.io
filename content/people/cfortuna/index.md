@@ -23,7 +23,7 @@ organizations:
 cobiss: 29521
 
 # The date when joined / departed from the lab. Empty if not used
-date_start: "2006-01-01T00:00:00Z"
+date_start: "2006-01-01"
 date_end:
 
 # Short bio (displayed in user profile at end of posts)
