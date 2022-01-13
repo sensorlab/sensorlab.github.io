@@ -13,12 +13,7 @@ module.exports = {
   plugins: [
     require('postcss-import'),
     //require('postcss-nested'),
-    require('postcss-preset-env')({
-      autoprefixer: {grid: true},
-    }),
-    ...(process.env.HUGO_ENVIRONMENT === 'production'
-        ? [purgecss, cssnano]
-        : []
-    )
+    require('postcss-preset-env')({ autoprefixer: {grid: true} }),
+    ...(process.env.HUGO_ENVIRONMENT === 'production' ? [purgecss, cssnano] : [])
   ]
 };

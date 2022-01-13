@@ -10,11 +10,11 @@
     {{ if .Site.Params.inlineCSS }}
         <style>{{ $css.Content | safeCSS }}</style>
     {{ else }}
-        <link rel="stylesheet" href="{{ $css.Permalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous" />
+        <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" crossorigin="anonymous" />
     {{ end }}
 
     {{ $opts := dict "noComments" true }}
-    {{ $js := resources.Get "scripts/app.js" | babel $opts | js.Build | fingerprint }}
+    {{ $js := resources.Get "scripts/app.js" | babel $opts | js.Build | minify | fingerprint }}
     <script type="text/javascript" src="{{ $js.RelPermalink }}"  integrity="{{ $js.Data.Integrity }}" defer></script>
 
     {{ partial "seo.html" . }}

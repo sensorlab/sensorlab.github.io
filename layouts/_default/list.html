@@ -4,6 +4,10 @@
         <h1>{{ .Title }}</h1>
     </header>
 
+    <section>
+        {{ .Content }}
+    </section>
+
     <section class="list-group my-5">
         {{ range .Paginator.Pages }}
             <a href="{{ .Permalink }}" class="list-group-item list-group-item-action flex-column align-items-start">
@@ -18,11 +22,11 @@
     </section>
 
 
-    <nav class="">
-        <nav class="d-flex d-content justify-content-center">
-            {{ template "_internal/pagination.html" . }}
-        </nav>
+
+    <nav class="d-flex d-content justify-content-center">
+        {{ template "_internal/pagination.html" . }}
     </nav>
+
 
 </main>
 {{ end }}
