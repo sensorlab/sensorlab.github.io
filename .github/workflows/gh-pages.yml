@@ -1,6 +1,8 @@
 name: GitHub Pages
 
 on:
+  schedule:
+    - cron: '0 0 * * *' # rebuilds at Midnight everyday
   push:
     branches:
       - main  # Set a branch to deploy
