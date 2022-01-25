@@ -344,7 +344,7 @@ def get_parser() -> argparse.ArgumentParser:
         '-v', '--verbose',
         action='count',
         default=0,
-        help=f'Increase verbosity of the output. (e.g. -v, -vv, -vvv)'
+        help=f'Increase verbosity of the output. (e.g. -v, -vv)'
     )
 
     # parser.add_argument(
@@ -385,7 +385,7 @@ def main():
     parser = get_parser()
     args = parser.parse_args()
 
-    verbose_levels = (logging.WARN, logging.INFO, logging.DEBUG)
+    verbose_levels = (logging.INFO, logging.DEBUG)
     args.verbose = args.verbose if args.verbose < len(verbose_levels) else len(verbose_levels) - 1
     print(args.verbose)
     logger.setLevel(verbose_levels[args.verbose])
