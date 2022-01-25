@@ -1,3 +1,5 @@
+from email.policy import default
+from tabnanny import verbose
 from typing import List, Tuple, Dict, Union
 import logging, sys
 from pathlib import Path
@@ -21,6 +23,7 @@ except ImportError:
     import json
 
 
+LOG_LEVEL = logging.INFO
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -46,7 +49,7 @@ class Member:
 
 def get_logger():
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(LOG_LEVEL)
     formatter = logging.Formatter('[%(levelname)-8s] %(message)s')
     console = logging.StreamHandler(sys.stdout)
     console.setFormatter(formatter)
@@ -337,6 +340,13 @@ def get_parser() -> argparse.ArgumentParser:
         description='Parse XML from COBISS website for researcher publications'
     )
 
+    parser.add_argument(
+        '-v', '--verbose',
+        action='count',
+        default=0,
+        help=f'Increase verbosity of the output. (e.g. -v, -vv, -vvv)'
+    )
+
     # parser.add_argument(
     #     '--extra-ids',
     #     metavar='ID',
@@ -356,7 +366,7 @@ def get_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '-o', '--output',
         default=str(PROJECT_ROOT / 'data' / 'cobiss.json'),
-        help='Biblio output file path (default: ./cobiss.json)'
+        help=f"Biblio output file path (default: {str(PROJECT_ROOT / 'data' / 'cobiss.json')})",
     )
 
     parser.add_argument(
@@ -374,6 +384,11 @@ def get_parser() -> argparse.ArgumentParser:
 def main():
     parser = get_parser()
     args = parser.parse_args()
+
+    verbose_levels = (logging.WARN, logging.INFO, logging.DEBUG)
+    args.verbose = args.verbose if args.verbose < len(verbose_levels) else len(verbose_levels) - 1
+    print(args.verbose)
+    logger.setLevel(verbose_levels[args.verbose])
 
     members = get_members(path=args.input)
     publications = get_cobiss_data_for_researchers(members)
