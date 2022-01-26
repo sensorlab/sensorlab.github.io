@@ -1,0 +1,21 @@
+{{- $authors := slice -}}
+{{- range sort .authors ".order" "asc" -}}
+    {{- $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) -}}
+{{- end -}}
+
+<li class="list-group-item">
+    <span>{{- delimit $authors ", " -}}</span>
+    <span><strong>{{ .title | title }}</strong></span>,
+    <span>{{ .journal | default .conf_title | title }}, {{ .year }}</span>
+    <ul class="list-unstyled d-flex gap-2">
+        {{- if .doi -}}
+            <li>[DOI: <a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>
+        {{- end -}}
+        {{- if and .cobiss_id .cobiss_url -}}
+            <li>[COBISS: <a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>
+        {{ end }}
+        {{- if .arxiv_id }}
+            <li>[arXiv: <a href="https://arxiv.org/abs/{{ .arxiv_id }}">{{ .arxiv_id }}</a>]</li>
+        {{ end }}
+    </ul>
+</li>

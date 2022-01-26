@@ -65,6 +65,8 @@
 {{ $favicon := resources.Get "images/favicon.png" }}
 <link rel="icon" type="{{ $favicon.MediaType }}" href="{{ $favicon.RelPermalink }}" />
 
+{{ template "_internal/opengraph.html" . }}
+{{ template "_internal/twitter_cards.html" . }}
 
 <title>
     {{- if not hugo.IsProduction }}[DEV] {{ end -}}

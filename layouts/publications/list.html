@@ -1,59 +1,57 @@
 {{ define "main" }}
-{{ $publications := where $.Site.Data.cobiss "code" "in" (slice "1.01" "1.08") }}
+{{/*{{- $publications := where $.Site.Data.cobiss "code" "in" (slice "1.01" "1.08") -}}*/}}
+{{ $start := (now.AddDate -5 0 0).Format "2006" }}
+{{ $publications := where $.Site.Data.cobiss ".year" "ge" $start }}
+
+{{- $years := slice -}}
+{{ range $publications }}
+	{{ $years = $years | append .year }}
+{{ end }}
+{{ $years = uniq $years }}
+{{ $years = sort $years "" "desc" }}
 
 <main class="flex-fill container my-4" aria-role="main">
-    <h1>{{ .Title | title }}</h1>
+    <header>
+        <h1>{{ .Title | title }}</h1>
+    </header>
 
     <section>
-        <h2>Journals:</h2>
-        {{ $journals := where $.Site.Data.cobiss "code" "eq" "1.01" }}
-        <ul class="list-group list-group-flush">
-            {{ range sort $journals "year" "desc" }}
-                {{ if ge .year ((now.AddDate -5 0 0).Format "2006") }}
-                    {{ $authors := slice }}
-                    {{ range sort .authors ".order" "asc" }}
-                        {{ $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) }}
-                    {{ end }}
-
-                    <li class="list-group-item">
-                        <span>{{- delimit $authors ", " -}}:</span>
-                        <span><strong>{{ .title | title }}</strong></span>,
-                        <span>{{ .journal | default .conf_title | title }}, {{ .year }}</span>
-                        <ul class="list-unstyled d-flex">
-                            {{- if .doi -}}<li>[DOI: <a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>{{- end -}}
-                            {{- if and .cobiss_id .cobiss_url -}}<li class="ms-2">[COBISS: <a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>{{ end }}
-                            {{- if .arxiv_id }}<li>[arXiv: <a href="https://arxiv.org/abs/{{ .arxiv_id }}">{{ .arxiv_id }}</a>]</li>{{ end }}
-                        </ul>
-                    </li>
-                {{ end }}
-            {{ end }}
-        </ul>
+        {{ .Content }}
     </section>
 
-
     <section>
-        <h2>Conferences:</h2>
-        {{ $journals := where $.Site.Data.cobiss "code" "eq" "1.08" }}
         <ul class="list-group list-group-flush">
-            {{ range sort $journals "year" "desc" }}
-                {{ if ge .year ((now.AddDate -5 0 0).Format "2006") }}
-                    {{ $authors := slice }}
-                    {{ range sort .authors ".order" "asc" }}
-                        {{ $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) }}
-                    {{ end }}
-
+        {{ range $years }}
+            {{ $year := . }}
+            {{ with where $publications ".year" $year }}
+            {{ $bib := . }}
+            <li class="list-group-item">
+                <h3>{{ $year }}</h3>
+                <ul class="list-group list-group-flush">
+                    {{ with where $bib ".code" "1.01" -}}
                     <li class="list-group-item">
-                        <span>{{- delimit $authors ", " -}}</span>
-                        <span><strong>{{ .title | title }}</strong></span>,
-                        <span>{{ .journal | default .conf_title | title }}, {{ .year }}</span>
-                        <ul class="list-unstyled d-flex">
-                            {{- if .doi -}}<li>[DOI: <a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>{{- end -}}
-                            {{- if and .cobiss_id .cobiss_url -}}<li class="ms-2">[COBISS: <a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>{{ end }}
-                            {{- if .arxiv_id }}<li>[arXiv: <a href="https://arxiv.org/abs/{{ .arxiv_id }}">{{ .arxiv_id }}</a>]</li>{{ end }}
+                        <h4>Journals:</h4>
+                        <ul class="list-group list-group-flush">
+                        {{ range where . ".code" "1.01" }}
+                            {{ partial "publication/li.html" . }}
+                        {{ end }}
                         </ul>
                     </li>
-                {{ end }}
+                    {{ end }}
+                    {{ with where $bib ".code" "1.08" -}}
+                    <li class="list-group-item">
+                        <h4>Conferences:</h4>
+                        <ul class="list-group list-group-flush">
+                        {{ range where . ".code" "1.08" }}
+                            {{ partial "publication/li.html" . }}
+                        {{ end }}
+                        </ul>
+                    </li>
+                    {{ end }}
+                </ul>
+            </li>
             {{ end }}
+        {{ end }}
         </ul>
     </section>
 
@@ -61,10 +59,4 @@
 {{ end }}
 
 
-{{/*
 
-
-
-
-
-    */}}

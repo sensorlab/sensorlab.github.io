@@ -1,6 +1,8 @@
 ---
 title: "SensorLab at Jozef Stefan Institute"
-draft: False
+description: "We are advancing the state of the art of various aspects of Smart Infrastructures from communications and networking to data analytics."
+# Here we have absolute path only because image resides in assets directory
+images: ["/images/sensorlab-color.min.svg"]
 ---
 
-We are advancing the state of the art of various aspects of Smart Infrastructures from communications and networking to data analytics. 
+We are advancing the state of the art of various aspects of Smart Infrastructures from communications and networking to data analytics.

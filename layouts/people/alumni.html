@@ -1,8 +1,16 @@
-{{ $resource := .Resources.GetMatch .Params.avatar }}
-{{ $img := $resource.Fill "250x250 q90" | images.Filter (images.Grayscale) }}
-<a class="remove-styling p-2 align-items-stretch" style="max-width:250px;" href="#">
+{{- $resource := .Resources.GetMatch .Params.avatar -}}
+{{- $img := $resource.Fill "250x250 jpeg q70" | images.Filter (images.Grayscale) -}}
+
+
+<li class="p-2 align-items-stretch" style="max-width:250px;" href="#">
     <div class="card" style="height:100%">
-        <img class="card-img-top" src="{{ $img.Permalink }}" loading="lazy">
+        <img
+            src="{{ $img.Permalink }}"
+            width="{{ $img.Width }}"
+            height="{{ $img.Height }}"
+            class="card-img-top"
+            loading="lazy"
+        />
         <div class="card-body text-center">
             <h5 class="card-title">
                 {{- with .Params.prefix -}}
@@ -13,5 +21,4 @@
             <p class="card-text">{{ .Params.role | markdownify | title }}</p>
         </div>
     </div>
-</a>
-
+</li>

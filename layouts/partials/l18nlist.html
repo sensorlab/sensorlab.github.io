@@ -1,0 +1,11 @@
+{{ if .IsTranslated }}
+<h4>{{ i18n "translations" | humanize }}:</h4>
+<ul>
+  {{ range .Translations }}
+  <li>
+    <a href="{{ .Permalink }}">({{ .Lang | upper }}) {{ .Title }}{{ if .IsPage }} ({{ i18n "wordCount" . }}){{ end }}</a>
+  </li>
+  {{ end }}
+</ul>
+{{ end }}
+

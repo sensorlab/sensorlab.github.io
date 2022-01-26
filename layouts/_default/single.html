@@ -2,14 +2,19 @@
 
 {{ $date := .PublishDate | default .Date }}
 
-{{ if .Params.toc }}
-<aside class="my-4">
-    {{ .TableOfContents }}
-</aside>
-{{ end }}
 
 <main class="flex-fill container post my-4" aria-role="main">
-    <article>
+    <aside class="my-4">
+        {{ partial "l18nlist.html" . }}
+        {{ if and (gt .WordCount 400) (.Params.toc) }}
+        <header>
+            <h2>{{.Title}}</h2>
+            {{ .TableOfContents }}
+        </header>
+        {{ end }}
+    </aside>
+
+    <article class="mt-4">
         <header>
             <h1>{{ .Title }}</h1>
             <p>

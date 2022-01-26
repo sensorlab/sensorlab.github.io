@@ -3,7 +3,7 @@ baseURL = "/"
 title = "SensorLab"
 
 languageCode = "en"
-DefaultContentLanguage = "en"
+defaultContentLanguage = "en"
 
 
 enableEmoji = true
@@ -31,16 +31,16 @@ copyright = "SensorLab"
     ISO8061 = "2006-01-02T15:04:05Z07:00"
 
 
-#[languages]
-#    [language.en]
-#        title = "SensorLab -- Jožef Stefan Institute"
-#        languageName = "English"
-#        weight = 1
-#
-#    [languages.sl]
-#        title = 'SensorLab -- Inštitut "Jožef Stefan"'
-#        languageName = "Slovensko"
-#        weight = 2
+[languages]
+    [languages.en]
+        languageName = "English"
+        title = "SensorLab -- Jozef Stefan Institute"
+        weight = 1
+
+    [languages.sl]
+        languageName = "Slovensko"
+        title = 'SensorLab -- Inštitut "Jožef Stefan"'
+        weight = 2
 
 
 [taxonomies]
@@ -87,6 +87,12 @@ copyright = "SensorLab"
 #    indentifier = "blog"
 #    url = "/posts"
 #    weight = 6
+
+[[menu.main]]
+    name = "For students"
+    indentifier = "for-students"
+    url = "/for-students"
+    weight = 6
 
 [[menu.main]]
     name = "About"

@@ -1,49 +1,19 @@
 {{ define "main" }}
-<h1>{{ .Title }}</h1>
-
-
-<main class="flex-fill container" aria-role="main">
+<main class="flex-fill container my-4" aria-role="main"> 
     <h1>{{ .Title }}</h1>
 
     {{ range $index, $project := sort .Pages ".Params.date_end" "desc" }}
+        {{ $img := ( .Resources.GetMatch .Params.featured_image ).Resize "200x" }}
         <section class="mt-5">
             <header class="mb-2">
                 <h2>{{ .Title }}</h2>
                 <p>{{ .Params.date_start | time.Format "Jan 2006" }} &mdash; {{ .Params.date_end | time.Format "Jan 2006" }}</p>
             </header>
             <div class="clearfix">
-                {{ with .Resources.GetMatch .Params.featured_image }}
-                    <img src="{{ .Permalink }}" alt="{{ $project.Title }} logo" class="float-md-start me-3 mb-2" style="max-width:min(200px, 100vw);">
-                {{ end }}
+                <img src="{{ $img.Permalink }}" alt="{{ $project.Title }} logo" class="float-md-start me-3 mb-2" height="{{ $img.Height }}" width="{{ $img.Width }}" style="max-width:min(200px, 100vw);">
                 <p class="mx-1 text-justify">{{ .Params.summary | markdownify }}</p>
             </div>
             </section>
     {{ end }}
 </main>
-
-
-
-
-{{/*
-<main class="flex-fill container" aria-role="main">
-    <div class="list-group my-5">
-        {{ range $index, $project := sort .Pages ".Params.date_end" "desc" }}
-            <a href="{{ .Permalink }}" class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between float-start">
-                    <div class="mb-2">
-                        <h5 class="mb-1">{{ .Title }}</h5>
-                        {{ .Params.date_start | time.Format "Jan 2006" }} &mdash; {{ .Params.date_end | time.Format "Jan 2006" }}
-                    </div>
-                </div>
-                <div class="float-start">
-                    {{ with .Resources.GetMatch .Params.featured_image }}
-                        <img src="{{ .Permalink }}" alt="{{ $project.Title }} logo" style="max-width:250px;">
-                    {{ end }}
-                    <p class="mb-1">{{ .Params.summary | markdownify }}</p>
-                </div>
-            </a>
-        {{ end }}
-    </div>
-</main>
-*/}}
 {{ end }}

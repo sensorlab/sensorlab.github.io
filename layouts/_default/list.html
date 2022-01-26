@@ -1,32 +1,45 @@
 {{ define "main" }}
 <main class="flex-fill container" aria-role="main">
-    <header class="mt-4">
-        <h1>{{ .Title }}</h1>
-    </header>
+    <aside class="mt-4">
+        {{ partial "l18nlist.html" . }}
+        {{ if and (gt .WordCount 400) (.Params.toc) }}
+        <header>
+            <h2>{{.Title}}</h2>
+            {{ .TableOfContents }}
+        </header>
+        {{ end }}
+    </aside>
 
-    <section>
-        {{ .Content }}
-    </section>
-
-    <section class="list-group my-5">
+    <article>
+        <header>
+            <h1>{{ .Title }}</h1>
+        </header>
+    
+        <section>
+            {{ .Content }}
+        </section>
+    
+        <section class="list-group my-5">
         {{ range .Paginator.Pages }}
             <a href="{{ .Permalink }}" class="list-group-item list-group-item-action flex-column align-items-start">
                 <header class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{ .Title }}</h5>
-                    <small>{{ .Date }}</small>
+                    {{ $date := .PublishDate | default .Date  }}
+                    <small><time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date.Format "Monday, Jan 2, 2006" }}</time></small>
                 </header>
                 <p class="mb-1">{{ .Summary }}</p>
-                <small>{{ .Lastmod }}</small>
+                {{ $date :=  .Lastmod }}
+                <small><time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date.Format "Monday, Jan 2, 2006" }}</time></small>
             </a>
         {{ end }}
-    </section>
+        </section>
+    </article>
 
-
-
+    {{ if .Paginator }}
     <nav class="d-flex d-content justify-content-center">
         {{ template "_internal/pagination.html" . }}
     </nav>
-
+    {{ end }}
 
 </main>
 {{ end }}
