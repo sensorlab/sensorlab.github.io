@@ -4,7 +4,7 @@
 {{- end -}}
 
 <li class="list-group-item">
-    <span>{{- delimit $authors ", " -}}</span>
+    <span>{{- delimit $authors ", " ", and " -}}: </span>
     <span><strong>{{ .title | title }}</strong></span>,
     <span>{{ .journal | default .conf_title | title }}, {{ .year }}</span>
     <ul class="list-unstyled d-flex gap-2">
