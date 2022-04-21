@@ -407,9 +407,9 @@ def main():
 
     members = get_members(path=args.input)
 
-    ignore_list = [] if args.exclude is None else args.exclude
-    ignore_list.append(DEFAULT_EXCLUDE_LIST)
-
+    ignore_list = args.exclude or []
+    ignore_list.extend(DEFAULT_EXCLUDE_LIST)
+    logger.debug(f'Exclude list: {ignore_list}')
 
     # Remove members if on exclude list
     members = tuple(filter(lambda m: m.cobiss not in ignore_list, members))
