@@ -412,7 +412,7 @@ def main():
 
 
     # Remove members if on exclude list
-    members = tuple(filter(lambda m: m not in ignore_list, members))
+    members = tuple(filter(lambda m: m.cobiss not in ignore_list, members))
 
     publications = get_cobiss_data_for_researchers(members)
     publications = find_on_arxiv(publications)
