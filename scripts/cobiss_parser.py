@@ -407,8 +407,13 @@ def main():
 
     members = get_members(path=args.input)
 
+    ignore_list = [] if args.exclude is None else args.exclude
+    ignore_list.append(DEFAULT_EXCLUDE_LIST)
+    ignore_list = tuple(set(ignore_list))
+
+
     # Remove members if on exclude list
-    members = tuple(filter(lambda member: member not in args.exclude, members))
+    members = tuple(filter(lambda m: m not in ignore_list, members))
 
     publications = get_cobiss_data_for_researchers(members)
     publications = find_on_arxiv(publications)
