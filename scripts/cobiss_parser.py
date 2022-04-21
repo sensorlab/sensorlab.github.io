@@ -38,6 +38,13 @@ DEFAULT_TIMEOUT = 12
 MINIMUM_YEAR_OF_PUBLICATION = 1999
 MAXIMUM_YEAR_OF_PUBLICATION = 9999
 
+
+DEFAULT_EXCLUDE_LIST = [
+    53669, # dr. Yetgin, (reason: pulls in papers not related to JSI)
+    15087, # dr. Mohorčič (reason: pulls in papers from other labs)
+    36719, # Mihelin (reason: empty COBISS)
+]
+
 @dataclass
 class Member:
     cobiss: int
@@ -364,6 +371,14 @@ def get_parser() -> argparse.ArgumentParser:
     # )
 
     parser.add_argument(
+        '-e', '--exclude',
+        metavar='ID',
+        nargs='+',
+        type=int,
+        help='Ignore listed COBISS IDs.',
+    )
+
+    parser.add_argument(
         '-o', '--output',
         default=str(PROJECT_ROOT / 'data' / 'cobiss.json'),
         help=f"Biblio output file path (default: {str(PROJECT_ROOT / 'data' / 'cobiss.json')})",
@@ -391,6 +406,10 @@ def main():
     logger.setLevel(verbose_levels[args.verbose])
 
     members = get_members(path=args.input)
+
+    # Remove members if on exclude list
+    members = tuple(filter(lambda member: member not in args.exclude, members))
+
     publications = get_cobiss_data_for_researchers(members)
     publications = find_on_arxiv(publications)
 
