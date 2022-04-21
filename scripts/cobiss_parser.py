@@ -409,7 +409,6 @@ def main():
 
     ignore_list = [] if args.exclude is None else args.exclude
     ignore_list.append(DEFAULT_EXCLUDE_LIST)
-    ignore_list = tuple(set(ignore_list))
 
 
     # Remove members if on exclude list
