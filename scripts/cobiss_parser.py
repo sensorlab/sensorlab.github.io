@@ -1,10 +1,9 @@
-from email.policy import default
-from tabnanny import verbose
 from typing import List, Tuple, Dict, Union
-import logging, sys
 from pathlib import Path
 from dataclasses import dataclass
 from datetime import datetime
+import logging
+import sys
 import time
 import re
 from glob import glob as glob
