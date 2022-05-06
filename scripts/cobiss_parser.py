@@ -40,7 +40,6 @@ MAXIMUM_YEAR_OF_PUBLICATION = 9999
 
 DEFAULT_EXCLUDE_LIST = [
     53669, # dr. Yetgin, (reason: pulls in papers not related to JSI)
-    15087, # dr. Mohorčič (reason: pulls in papers from other labs)
     36719, # Mihelin (reason: empty COBISS)
 ]
 
