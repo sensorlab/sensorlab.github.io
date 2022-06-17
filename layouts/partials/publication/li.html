@@ -1,21 +1,28 @@
 {{- $authors := slice -}}
 {{- range sort .authors ".order" "asc" -}}
-    {{- $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) -}}
+{{- $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) -}}
 {{- end -}}
 
-<li class="list-group-item publicaton">
+<li class="list-group-item publication">
     <div class="title"><strong>{{ .title | title }}</strong></div>
     <div class="authors">{{- delimit $authors ", " ", and " -}}</div>
-    <div class="publication">{{ .journal | default .conf_title | title }}</div>
-    <ul class="list-unstyled d-flex flex-wrap gap-1 access">
-        {{- if .doi -}}
-            <li>[DOI:&nbsp;<a href="https://doi.org/{{ .doi }}">{{ .doi }}</a>]</li>
-        {{- end -}}
+    <div class="publication">{{ .journal | default .conference | title }}, {{ .year }}</div>
+
+    <ul class="list-inline">
         {{- if and .cobiss_id .cobiss_url -}}
-            <li>[COBISS:&nbsp;<a href="{{ .cobiss_url }}">{{ .cobiss_id }}</a>]</li>
+        <li class="list-inline-item">
+            <a class="badge bg-cobiss text-white link-unstyled" href="{{ .cobiss_url }}">COBISS:&nbsp;{{ .cobiss_id }}</a>
+        </li>
+        {{- end -}}
+        {{- if .doi -}}
+        <li class="list-inline-item">
+            <a class="badge bg-doi text-black link-unstyled" href="https://doi.org/{{ .doi }}">DOI:&nbsp;{{ .doi }}</a>
+        </li>
         {{- end -}}
         {{- if .arxiv_id }}
-            <li>[arXiv:&nbsp;<a href="https://arxiv.org/abs/{{ .arxiv_id }}">{{ .arxiv_id }}</a>]</li>
+        <li class="list-inline-item">
+            <a class="badge bg-arxiv text-white link-unstyled" href="https://arxiv.org/abs/{{ .arxiv_id }}">arXiv:{{ .arxiv_id }}</a>
+        </li>
         {{- end -}}
     </ul>
 </li>

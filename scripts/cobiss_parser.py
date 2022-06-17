@@ -39,8 +39,9 @@ MAXIMUM_YEAR_OF_PUBLICATION = 9999
 
 
 DEFAULT_EXCLUDE_LIST = [
-    53669, # dr. Yetgin, (reason: pulls in papers not related to JSI)
     36719, # Mihelin (reason: empty COBISS)
+    53669, # dr. Yetgin, (reason: pulls in papers not related to JSI)
+    55792, # Ljupcho (reason: empty COBISS)
 ]
 
 @dataclass
@@ -150,9 +151,6 @@ def get_members(path:Path=MEMBER_SRC_PATH) -> Tuple[Member]:
 
 
 
-
-
-
 def get_bib_in_xml(researcher: Member):
     """Get bibliopgrahy of researcher. Using cobiss link template to get xml from them."""
     start_url = SICRIS_BIB_XML_TEMPLATE_URL.format(researcher.cobiss)
@@ -207,7 +205,7 @@ def get_bib_in_xml(researcher: Member):
 
 
 
-def get_cobiss_data_for_researchers(researchers: Tuple[Member]) -> list:
+def get_cobiss_data_for_researchers(researchers: Tuple[Member]) -> List[dict]:
     """Combine all researchers' publications into a single object. Do a basic test to filter out duplicates."""
 
     def elementValue(element, tag) -> str:
@@ -217,75 +215,90 @@ def get_cobiss_data_for_researchers(researchers: Tuple[Member]) -> list:
                 return el.text
         return ""
 
+    # member_cobiss_ids = set(map(lambda author: author.cobiss, researchers))
+
     bib_items = {}
 
-    for member in researchers:
-        researcher_id, min_year, max_year = member.cobiss, member.date_start.year, member.date_end.year
 
-        #min_year = int(min_year) if (min_year and int(min_year) > MINIMUM_YEAR_OF_PUBLICATION) else MINIMUM_YEAR_OF_PUBLICATION
-        #max_year = int(max_year) if (max_year and int(max_year) < MAXIMUM_YEAR_OF_PUBLICATION) else MAXIMUM_YEAR_OF_PUBLICATION
+    ####
+    for researcher in researchers:
+        # Retrieve XML from COBISS for researcher
+        raw_xml_text = get_bib_in_xml(researcher)
 
-        raw_xml_text = get_bib_in_xml(member)
-        if not raw_xml_text or len(raw_xml_text) == 0:
-            logger.warning(f'{member.name} ({member.cobiss}) got an empty XML!')
+        # Check if raw XML is empty; Lab member might have empty COBISS.
+        if not raw_xml_text:
+            logger.warning(f'{researcher.name} ({researcher.cobiss}) got an empty XML!')
             continue
 
+        # Parse XML
         xml = ET.fromstring(raw_xml_text)
 
+        # Iterate through publication entries for researcher
         for elem in xml.iterfind(".//BiblioEntry"):
             try:
-                # Determine whether the paper was published during the employment
-                lab_employment = int(elementValue(elem, "PubYear")) >= min_year and int(elementValue(elem, "PubYear")) <= max_year
-                cobiss_id = elem.find("COBISS").attrib["id"]
+                pub_cobiss_id = elem.find("COBISS").attrib["id"]
 
-                # Check if the COBISS entry already exists
-                if cobiss_id in bib_items.keys():
-                    if lab_employment:
-                        bib_items[cobiss_id]['employee'] = lab_employment
-
+                # Skip if entry already exists
+                if pub_cobiss_id in bib_items.keys():
                     continue
 
-                # Check for valid typology
+                # COBBIS has typology codes. Check if it is valid.
                 if elem.find("Typology") is None:
-                    logger.warning(f'Skipping "{cobiss_id}" due to missing typology information. Title: "{elementValue(elem, "Title")}"')
+                    logger.warning(f'Skipping "{pub_cobiss_id}" due to missing typology information. Title: "{elementValue(elem, "Title")}"')
                     continue
 
                 entry = {}
-                entry["employee"] = lab_employment
-                entry["code"] = elem.find("Typology").attrib["code"]
+                
+                # Publication title
                 entry["title"] = elementValue(elem, "Title")
                 entry["title_short"] = elementValue(elem, "TitleShort")
+
+                # Publication year
+                entry["year"] = elementValue(elem, "PubYear")
+
+                # COBISS typology code
+                entry["code"] = elem.find("Typology").attrib["code"]
+
+                # Publication identifiers
+                entry["cobiss_id"] = pub_cobiss_id
+                entry["cobiss_url"] = elem.find("COBISS").text
                 entry["doi"] = elementValue(elem.find("Identifier"), "DOI")
                 entry["isbn"] = elementValue(elem.find("Identifier"), "ISBN")
-                entry["cobiss_id"] = cobiss_id
-                entry["cobiss_url"] = elem.find("COBISS").text
-                entry["year"] = elementValue(elem, "PubYear")
+
+                # List of authors
                 entry["authors"] = []
                 for idx, author in enumerate(elem.find("AuthorGroup").findall("Author")):
+                    author_cobiss_id = int(elementValue(author, "CodeRes") or 0) or None
+
                     person = {
                         "order": idx,
                         "first_name": elementValue(author, "FirstName"),
                         "last_name": elementValue(author, "LastName"),
-                        "cobiss_id": elementValue(author, "CodeRes"),
+                        "cobiss_id": author_cobiss_id,
                         "responsibility": author.attrib["responsibility"],
+                        # TODO: Because of the part-time employments in the group, it is difficult to determine whether publications
+                        # is actually related to the group. Better approach would be to check association or acknowledgement, but
+                        # current there is no easy way to do it (beside parsing papers).
+                        # "is_employee": author_cobiss_id in member_cobiss_ids,
                     }
                     entry["authors"].append(person)
 
-
+                # Differenciate between journal, conference, ...
                 for bibSetElem in elem.findall("BiblioSet"):
                     if ("relation" in bibSetElem.attrib) and (bibSetElem.attrib["relation"] == "journal"):
                         entry["journal"] = elementValue(bibSetElem, "Title")
                     
                     if ("typeTeX" in bibSetElem.attrib) and (bibSetElem.attrib["typeTeX"] == "inproceedings"):
-                        entry["conf_title"] = elementValue(bibSetElem, "TitleShort")
+                        entry["conference"] = elementValue(bibSetElem, "TitleShort")
 
+                # Misc
                 if (elem.find("PhysicalAttributes") and elem.find("PhysicalAttributes").find("VolumeNum") != None):
                     entry["volume"] = elem.find("PhysicalAttributes").find("VolumeNum").text
 
-
-                bib_items[cobiss_id] = entry
+                # Add 
+                bib_items[pub_cobiss_id] = entry
             except Exception as e:
-                logger.error('Error while parsing XML: {e}')
+                logger.error(f'Error while parsing XML: {e}')
 
         logger.info(f'Biblio now contains {len(bib_items)} entries')
 
@@ -295,8 +308,12 @@ def get_cobiss_data_for_researchers(researchers: Tuple[Member]) -> list:
 
     return list(bib_items)
 
+ 
 
-def find_on_arxiv(publications: List[object]) -> List[object]:
+def find_on_arxiv(publications: List[dict]) -> List[dict]:
+    """Try to find publication on ArXiv based on its DOI."""
+
+    # Currently, we match publication between COBISS and ArXiv through DOI.
     for publication in publications:
         if not publication['doi']:
             continue

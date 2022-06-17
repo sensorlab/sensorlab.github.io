@@ -118,6 +118,29 @@ body, html {
 
 
 
+$custom-colors: (
+  "doi":    #fcb426,
+  "arxiv":  #b31b1b,
+  "cobiss": #004461,
+);
+
+
+@each $color, $value in $custom-colors {
+  .btn-#{$color} {
+    @include button-variant($value, $value);
+  }
+
+  .btn-outline-#{$color} {
+    @include button-outline-variant($value);
+  }
+
+  .bg-#{$color} {
+    background-color: $value;
+  }
+
+}
+
+
 .btn-sensorlab {
     @extend .btn-outline-primary;
     //@include button-variant($color2, $color2);
@@ -132,7 +155,6 @@ body, html {
     @include gradient-x($blue, $cyan)
     //background-image: linear-gradient(to right, $blue, $cyan);
 }
-
 
 
 .banner {
@@ -247,7 +269,7 @@ hr {
 }*/
 
 
-a.remove-styling {
+a.link-unstyled, a.remove-styling {
 
     color: $body-color;
     text-decoration: none;
