@@ -1,6 +1,15 @@
+{{/*
+{{- $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) -}}    
+*/}}
+
 {{- $authors := slice -}}
 {{- range sort .authors ".order" "asc" -}}
-{{- $authors = $authors | append (printf "%s. %s" (substr .first_name 0 1) .last_name) -}}
+    {{ if .is_employee }}
+    {{- $authors = $authors | append (printf "<u>%s %s</u>" .first_name .last_name) -}}
+    {{ else }}
+    {{- $authors = $authors | append (printf "%s %s" .first_name .last_name) -}}
+    {{ end }}
+
 {{- end -}}
 
 <li class="list-group-item publication">

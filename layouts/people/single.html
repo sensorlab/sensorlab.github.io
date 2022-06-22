@@ -1,34 +1,138 @@
 {{ define "main" }}
+{{ $member := .Params }}
+
+
+{{ $employed := true }}
+{{ with .Params.date_end }}
+    {{ with (time .) }}
+        {{ $employed = .After now }}
+    {{ end }}
+{{ end }}
+
+
 <main class="flex-fill container my-4" aria-role="main">
     <article>
-        <header class="row">
-            <div class="col-12 col-md-4">
-                {{ $resource := .Resources.GetMatch .Params.avatar }}
-                {{ $img := $resource.Fill "200x200 q90" }}
-                <img class="rounded" src="{{ $img.Permalink }}">
-            </div>
-            <div class="col-12 col-md-8">
-                <h4><small class="text-muted">{{ .Params.prefix }}</small>&nbsp;{{ .Params.title }}</h4>
-                <p>{{ .Params.role }}</p>
-                <hr>
-                <p>
-                    Affiliations:
-                    <ul class="">
-                    {{ range .Params.organizations }}
-                        <li class=""><a href="{{ .url }}">{{ .name }}</a></li>
+        <header class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start">
+            {{ $resource := .Resources.GetMatch .Params.avatar }}
+            {{ $img := $resource.Fill "200x200 jpeg q90" }}
+            <img
+                src="{{ $img.Permalink }}"
+                width="{{ $img.Width }}"
+                height="{{ $img.Height }}"
+                class="rounded-3 mx-2"
+                alt="Photo of {{ $member.title }}"
+                loading="lazy"
+            >
+            <div class="px-2">
+                <h2>
+                    <small class="text-muted">{{ .Params.prefix }}</small>&nbsp;
+                    {{- .Params.name | default .Params.title -}}
+                </h2>
+                <div>
+                    <strong>Role:</strong> {{ .Params.role -}}
+                </div>
+
+                {{- with $member.date_start -}}
+                    <div><strong>Joined:</strong> {{ ( time . ).Format "January, 2006" }}</div>
+                {{- end -}}
+
+
+                {{- with $member.date_end -}}
+                    <div><strong>Departed:</strong> {{ ( time . ).Format "Jan, 2006" }}</div>
+                {{- end -}}
+                
+                {{ with $member.organizations }}
+                <div>
+                    <strong>Affiliations:</strong> 
+                    {{ $list := slice }}
+                    {{ range . }}
+                        {{ $list = $list | append (printf "<a href='%s'>%s</a>" (.url | safeURL) .name) }}
                     {{ end }}
-                    </ul>
-                </p>
+
+                    {{ delimit $list ", " }}
+                </div>
+                {{ end }}
+                {{/*<p>Main research interests: {{ delimit $member.interests ", " ", and " }}</u>.</p>*/}}
             </div>
         </header>
 
-        <div class="mt-4">
-            {{ .Content }}
-        </div>
+        {{ if $member.interests }}
+        <section class="mt-2">
+            <h3>Main research interests:</h3>
+            <p>{{ delimit $member.interests ", " ", and " }}</u>.</p>
+        </section>
+        {{ end }}
 
-        <footer>
-            <p>Main research interests are {{ delimit .Params.interests ", " ", and " }}.</p>
-        </footer>
+        {{ with .Content }}
+        <section class="mt-2">
+            <h3>Bio:</h3>
+            {{ . }}
+        </section>
+        {{ end }}
+
+
+    {{ if $member.cobiss }}
+
+        {{ $publications := slice }}
+        {{ range $publication := $.Site.Data.cobiss }}
+            {{ range $author := $publication.authors }}
+                {{ if eq (int $author.cobiss_id) (int $member.cobiss) }}
+                    {{ $publications = $publications | append $publication }}
+                {{ end }}
+            {{ end }}
+        {{ end }}
+
+        {{ if $publications }}
+            <section>
+                <h3>Publications:</h3>
+                {{ $p := slice "1.01" "1.08" }}
+                <ul class="list-group list-group-flush">
+                
+                {{ range $publication := where $publications ".code" "in" $p }}
+                    <li class="list-group-item publication">
+                        <div class="title"><strong>{{ .title | title }}</strong></div>
+                        
+                        <div class="authors">
+                            {{- $authors := slice -}}
+                            {{ range $author := $publication.authors -}}
+                                {{- if eq (int $author.cobiss_id) (int $member.cobiss) -}}
+                                    {{- $authors = $authors | append (printf "<strong><u>%s %s</u></strong>" ($author.first_name) ($author.last_name)) -}}
+                                {{- else -}}
+                                    {{- $authors = $authors | append (printf "%s %s" ($author.first_name) ($author.last_name)) -}}
+                                {{- end -}}
+                            {{- end -}}
+                            
+                            {{- delimit $authors ", " ", and " -}}
+                        
+                        </div>
+                        <div class="publication">{{ .journal | default .conference | title }}, {{ .year }}</div>
+                    
+                        <ul class="list-inline">
+                            {{- if and .cobiss_id .cobiss_url -}}
+                            <li class="list-inline-item">
+                                <a class="badge bg-cobiss text-white link-unstyled" href="{{ .cobiss_url | safeURL }}">COBISS:&nbsp;{{ .cobiss_id }}</a>
+                            </li>
+                            {{- end -}}
+                            {{- if .doi -}}
+                            <li class="list-inline-item">
+                                <a class="badge bg-doi text-black link-unstyled" href="https://doi.org/{{ .doi }}">DOI:&nbsp;{{ .doi }}</a>
+                            </li>
+                            {{- end -}}
+                            {{- if .arxiv_id }}
+                            <li class="list-inline-item">
+                                <a class="badge bg-arxiv text-white link-unstyled" href="https://arxiv.org/abs/{{ .arxiv_id }}">arXiv:{{ .arxiv_id }}</a>
+                            </li>
+                            {{- end -}}
+                        </ul>
+                    </li>
+                {{ end }}
+                </ul>
+            </section>
+
+        {{ end }}
+    {{ end }}
+
+
     </article>
 </main>
 {{ end }}

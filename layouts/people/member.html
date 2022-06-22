@@ -1,24 +1,25 @@
 {{- $resource := .Resources.GetMatch .Params.avatar -}}
-{{- $img := $resource.Fill "250x250 jpeg q70" -}}
+{{- $img := $resource.Fill "250x250 jpeg q90" -}}
 
-
-<li class="p-2 align-items-stretch" style="max-width:250px;" href="#">
-    <div class="card" style="height:100%">
-        <img
-            src="{{ $img.Permalink }}"
-            width="{{ $img.Width }}"
-            height="{{ $img.Height }}"
-            class="card-img-top"
-            loading="lazy"
-        />
-        <div class="card-body text-center">
-            <h5 class="card-title">
-                {{- with .Params.prefix -}}
-                    <small class="text-muted">{{ . }}</small>&nbsp;
-                {{- end -}}
-                {{- .Params.title -}}
-            </h5>
-            <p class="card-text">{{ .Params.role | markdownify | title }}</p>
+<li class="p-2 align-items-stretch" style="max-width:250px;">
+    <a href="{{ .Permalink }}" class="link-unstyled">
+        <div class="card" style="height:100%">
+            <img
+                src="{{ $img.Permalink }}"
+                width="{{ $img.Width }}"
+                height="{{ $img.Height }}"
+                class="card-img-top"
+                loading="lazy"
+            />
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    {{- with .Params.prefix -}}
+                        <small class="text-muted">{{ . }}</small>&nbsp;
+                    {{- end -}}
+                    {{- .Params.name | default .Params.title -}}
+                </h5>
+                <p class="card-text">{{ .Params.role | markdownify | title }}</p>
+            </div>
         </div>
-    </div>
+    </a>
 </li>

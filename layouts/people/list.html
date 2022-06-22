@@ -3,8 +3,7 @@
 <main class="flex-fill container my-4" aria-role="main">
     <section>
         <h1>Members</h1>
-
-        <ul class="list-unstyled row d-flex align-items-stretch justify-content-start my-2">
+        <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start my-2">
         {{ range sort .Pages ".Params.position" "desc" }}
             {{ if not (in .Params.user_groups "alumni") }}
                 {{ .Render "member" }}
@@ -17,7 +16,7 @@
 
     <section>
         <h1>Alumni</h1>
-        <ul class="list-unstyled row d-flex align-items-stretch justify-content-start">
+        <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start">
         {{ range sort .Pages ".Params.position" "asc" }}
             {{ if in .Params.user_groups "alumni" }}
                 {{ .Render "alumni" }}

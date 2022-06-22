@@ -1,4 +1,4 @@
-from typing import List, Tuple, Dict, Union
+from typing import Iterable, List, Tuple, Dict, Union
 from pathlib import Path
 from dataclasses import dataclass
 from datetime import datetime
@@ -34,19 +34,12 @@ SICRIS_BIB_XML_TEMPLATE_URL = "https://bib.cobiss.net/biblioweb/direct/si/eng/cr
 
 DEFAULT_TIMEOUT = 12
 
-MINIMUM_YEAR_OF_PUBLICATION = 1999
-MAXIMUM_YEAR_OF_PUBLICATION = 9999
 
-
-DEFAULT_EXCLUDE_LIST = [
-    36719, # Mihelin (reason: empty COBISS)
-    53669, # dr. Yetgin, (reason: pulls in papers not related to JSI)
-    55792, # Ljupcho (reason: empty COBISS)
-]
+DEFAULT_EXCLUDE_LIST = []
 
 @dataclass
 class Member:
-    cobiss: int
+    cobiss: Union[int, None]
     name: str = ''
     date_start: datetime = datetime.min
     date_end: datetime = datetime.max
@@ -205,7 +198,7 @@ def get_bib_in_xml(researcher: Member):
 
 
 
-def get_cobiss_data_for_researchers(researchers: Tuple[Member]) -> List[dict]:
+def get_cobiss_data_for_researchers(researchers: Tuple[Member], exclude_list:Union[Tuple[int], None]=None) -> List[dict]:
     """Combine all researchers' publications into a single object. Do a basic test to filter out duplicates."""
 
     def elementValue(element, tag) -> str:
@@ -215,13 +208,22 @@ def get_cobiss_data_for_researchers(researchers: Tuple[Member]) -> List[dict]:
                 return el.text
         return ""
 
-    # member_cobiss_ids = set(map(lambda author: author.cobiss, researchers))
+
+    member_cobiss_ids = set(filter(None, map(lambda r: r.cobiss, researchers)))
 
     bib_items = {}
 
-
-    ####
     for researcher in researchers:
+        # skip researcher in case of empty COBISS ID
+        if not researcher.cobiss:
+            logger.debug(f'Skipping {researcher.name} ({researcher.cobiss}). Empty COBISS ID.')
+            continue
+
+        # Skip researcher in case of being on ignore list
+        if exclude_list and researcher.cobiss in exclude_list:
+            logger.debug(f'Skipping {researcher.name} ({researcher.cobiss}). On exclude list.')
+            continue
+
         # Retrieve XML from COBISS for researcher
         raw_xml_text = get_bib_in_xml(researcher)
 
@@ -276,10 +278,11 @@ def get_cobiss_data_for_researchers(researchers: Tuple[Member]) -> List[dict]:
                         "last_name": elementValue(author, "LastName"),
                         "cobiss_id": author_cobiss_id,
                         "responsibility": author.attrib["responsibility"],
+
                         # TODO: Because of the part-time employments in the group, it is difficult to determine whether publications
                         # is actually related to the group. Better approach would be to check association or acknowledgement, but
-                        # current there is no easy way to do it (beside parsing papers).
-                        # "is_employee": author_cobiss_id in member_cobiss_ids,
+                        # current there is no easy way to do it (beside parsing raw papers).
+                        "is_employee": author_cobiss_id in member_cobiss_ids,
                     }
                     entry["authors"].append(person)
 
@@ -422,14 +425,11 @@ def main():
 
     members = get_members(path=args.input)
 
-    ignore_list = args.exclude or []
-    ignore_list.extend(DEFAULT_EXCLUDE_LIST)
-    logger.debug(f'Exclude list: {ignore_list}')
+    exclude_list = args.exclude or []
+    exclude_list.extend(DEFAULT_EXCLUDE_LIST)
+    logger.debug(f'Exclude list: {exclude_list}')
 
-    # Remove members if on exclude list
-    members = tuple(filter(lambda m: m.cobiss not in ignore_list, members))
-
-    publications = get_cobiss_data_for_researchers(members)
+    publications = get_cobiss_data_for_researchers(researchers=members, exclude_list=exclude_list)
     publications = find_on_arxiv(publications)
 
     if args.output:

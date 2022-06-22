@@ -16,10 +16,10 @@ role: "Postdoc"
 
 # Organizations/Affiliations
 organizations:
-- name: Jožef Stefan Institute
-  url: https://ijs.si
 - name: Bitlis Eren University
   url: https://www.beu.edu.tr
+- name: Jožef Stefan Institute
+  url: https://ijs.si
 
 # COBISS/SICRIS identifier
 cobiss: 53669

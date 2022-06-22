@@ -44,4 +44,4 @@ user_groups:
 # - leaders
 ---
 
-Gregor Cerar received his Master degree in telecommunications from the Faculty of Electrical Engineering, University of Ljubljana, in 2016. He is currently pursuing the Ph.D. degree with the Jozef Stefan International Postgraduate School. He is also research assistant with the Department of Communication Systems, Jozef Stefan Institute. His main research interests are in IoT, wireless networking of constrained devices, and machine learning applications in IoT.
+Gregor Cerar received his Master degree in telecommunications from the Faculty of Electrical Engineering, University of Ljubljana, in 2016. He is currently pursuing the Ph.D. degree with the Jozef Stefan International Postgraduate School. He is also research assistant with the Department of Communication Systems, Jozef Stefan Institute.
