@@ -25,7 +25,7 @@
             >
             <div class="px-2">
                 <h2>
-                    <small class="text-muted">{{ .Params.prefix }}</small>&nbsp;
+                    {{- with .Params.prefix -}}<small class="text-muted">{{ . }}</small>&nbsp;{{- end -}}
                     {{- .Params.name | default .Params.title -}}
                 </h2>
                 <div>
