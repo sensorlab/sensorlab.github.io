@@ -31,10 +31,9 @@ bio: ""
 
 interests:
 - Artificial Intelligence
-- Wireless networks
-- DevOps
+- Smart Infrastructure
+- Wireless Networks
 - MLOps
-- IoT
 
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
@@ -44,4 +43,4 @@ user_groups:
 # - leaders
 ---
 
-Gregor Cerar received his Master degree in telecommunications from the Faculty of Electrical Engineering, University of Ljubljana, in 2016. He is currently pursuing the Ph.D. degree with the Jozef Stefan International Postgraduate School. He is also research assistant with the Department of Communication Systems, Jozef Stefan Institute.
+Gregor Cerar received his Bachelor's (2013) and Master's (2016) degrees from the [Faculty of Electrical Engineering](https://www.fe.uni-lj.si/en/) of the University of Ljubljana, where he completed the Telecommunications study programme, and the Ph.D. degree (2021) from [International Postgraduate School of Jožef Stefan](https://www.mps.si/en/) in Information and Communication technologies with the [Department of Communication Systems](https://e6.ijs.si/), Jožef Stefan Institute. He is currently a research associate with the [Department of Communication Systems](https://e6.ijs.si/), [Jožef Stefan Institute](http://ijs.si).
