@@ -34,12 +34,12 @@ copyright = "SensorLab"
 [languages]
     [languages.en]
         languageName = "English"
-        title = "SensorLab -- Jozef Stefan Institute"
+        title = "SensorLab — Jozef Stefan Institute"
         weight = 1
 
     [languages.sl]
         languageName = "Slovensko"
-        title = 'SensorLab -- Inštitut "Jožef Stefan"'
+        title = 'SensorLab — Inštitut "Jožef Stefan"'
         weight = 2
 
 

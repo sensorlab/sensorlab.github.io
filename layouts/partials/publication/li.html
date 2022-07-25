@@ -14,7 +14,7 @@
 
 <li class="list-group-item publication">
     <div class="title"><strong>{{ .title | title }}</strong></div>
-    <div class="authors">{{- delimit $authors ", " ", and " -}}</div>
+    <div class="authors">{{- delimit $authors ", " -}}</div>
     <div class="publication">{{ .journal | default .conference | title }}, {{ .year }}</div>
 
     <ul class="list-inline">
