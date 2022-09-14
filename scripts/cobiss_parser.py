@@ -35,7 +35,11 @@ SICRIS_BIB_XML_TEMPLATE_URL = "https://bib.cobiss.net/biblioweb/direct/si/eng/cr
 DEFAULT_TIMEOUT = 12
 
 
-DEFAULT_EXCLUDE_LIST = []
+DEFAULT_EXCLUDE_LIST = [
+    55792, # L. Milosheski
+    53669, # dr. Halil Yetgin
+    36719, # M. Mihelin
+]
 
 @dataclass
 class Member:
