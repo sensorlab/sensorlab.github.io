@@ -50,9 +50,6 @@ public: clean cobiss  ## build ./public folder with static content for serving
 
 
 public.tmp: clean cobiss  ## build ./public.tmp folder with static content for serving
-	# Update COBISS entries with python script
-	python3 scripts/cobiss_parser.py
-
 	# Get NodeJS dependencies
 	npm ci 
 
