@@ -20,59 +20,11 @@ help: ## This help.
 #highlight:
 #	hugo gen chromastyles --style=monokai > assets/styles/_highlight.scss
 
-clean:
+clean:  # Clean output files and folders
 	rm -rf node_modules resources hugo_stats.json .hugo_build.lock
 
-public: clean ## build ./public folder with static content for serving
-	# Update COBISS entries with python script
-	python3 scripts/cobiss_parser.py
 
-	# Get NodeJS dependencies
-	npm ci 
-
-	# Let HUGO build static content
-	hugo $(HUGO_PROD_BUILD_ARGS)
-
-
-prepare-deploy: clean
-	# Update COBISS entries with python script
-	python3 scripts/cobiss_parser.py
-
-	# Get NodeJS dependencies
-	npm ci 
-
-	# Let HUGO build static content
-	hugo $(HUGO_PROD_BUILD_ARGS) -d ./public.tmp
-
-deploy: prepare-deploy 
-	# Cleanup previous public folder, replace content with new build
-	rsync -avh --delete ./public.tmp/ ./public/
-
-	make clean
-
-
-hugo-dev-server:
-	hugo server $(HUGO_DEV_SERVER_ARGS)
-
-hugo-demo-server:
-	hugo server $(HUGO_PROD_SERVER_ARGS)
-
-container:
-	docker build \
-		--build-arg UID=$(shell id -u) \
-		--build-arg GID=$(shell id -g) \
-		-t sensorlab/hugo \
-		.
-
-build: container ## produce public folder with content in container
-	docker run \
-		--rm \
-		-v $(shell pwd):/src \
-		--name hugo-builder \
-		sensorlab/hugo \
-		make public
-
-run: container ## Run Hugo in container with development mode
+run: container  ## Run Hugo in container with development mode
 	docker run \
 		-i -t \
 		--rm \
@@ -82,7 +34,87 @@ run: container ## Run Hugo in container with development mode
 		sensorlab/hugo \
 		hugo server $(HUGO_DEV_SERVER_ARGS) --bind 0.0.0.0
 
-dev: run ## Run Hugo in container with development mode
+
+dev: run  ## Run Hugo in container with development mode
+
+cobiss:  # Update COBISS entries with python script
+	python3 scripts/cobiss_parser.py
+
+
+public: clean cobiss  ## build ./public folder with static content for serving
+	# Get NodeJS dependencies
+	npm ci 
+
+	# Let HUGO build static content
+	hugo $(HUGO_PROD_BUILD_ARGS)
+
+
+public.tmp: clean cobiss  ## build ./public.tmp folder with static content for serving
+	# Update COBISS entries with python script
+	python3 scripts/cobiss_parser.py
+
+	# Get NodeJS dependencies
+	npm ci 
+
+	# Let HUGO build static content
+	hugo $(HUGO_PROD_BUILD_ARGS) -d ./public.tmp
+
+
+build: container  ## produce public folder with content in container
+	docker run \
+		--rm \
+		-v $(shell pwd):/src \
+		--name hugo-builder \
+		sensorlab/hugo \
+		make public
+
+	make clean
+
+
+
+deploy: container  ## produce public folder with content in container
+	docker run \
+		--rm \
+		-v $(shell pwd):/src \
+		--name hugo-builder \
+		sensorlab/hugo \
+		make public.tmp
+
+	# Cleanup previous public folder, replace content with new build
+	rsync -avh --delete ./public.tmp/ ./public/
+
+	make clean
+
+
+internal-prepare:
+
+
+
+
+--prepare-deploy: clean
+	# Update COBISS entries with python script
+	python3 scripts/cobiss_parser.py
+
+	# Get NodeJS dependencies
+	npm ci 
+
+	# Let HUGO build static content
+	hugo $(HUGO_PROD_BUILD_ARGS) -d ./public.tmp
+
+deploy: --prepare-deploy 
+	# Cleanup previous public folder, replace content with new build
+	rsync -avh --delete ./public.tmp/ ./public/
+
+	make clean
+
+
+container:
+	docker build \
+		--build-arg UID=$(shell id -u) \
+		--build-arg GID=$(shell id -g) \
+		-t sensorlab/hugo \
+		.
+
 
 shell: container ## Run shell inside container
 	docker run \
