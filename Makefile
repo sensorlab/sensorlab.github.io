@@ -86,28 +86,6 @@ deploy: container  ## produce public folder with content in container
 	make clean
 
 
-internal-prepare:
-
-
-
-
---prepare-deploy: clean
-	# Update COBISS entries with python script
-	python3 scripts/cobiss_parser.py
-
-	# Get NodeJS dependencies
-	npm ci 
-
-	# Let HUGO build static content
-	hugo $(HUGO_PROD_BUILD_ARGS) -d ./public.tmp
-
-deploy: --prepare-deploy 
-	# Cleanup previous public folder, replace content with new build
-	rsync -avh --delete ./public.tmp/ ./public/
-
-	make clean
-
-
 container:
 	docker build \
 		--build-arg UID=$(shell id -u) \
