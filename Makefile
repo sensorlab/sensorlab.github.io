@@ -63,7 +63,7 @@ run: container ## Run Hugo in container with development mode
 		-p=$(PORT):1313 \
 		--name hugo-builder \
 		sensorlab/hugo \
-		hugo server $(HUGO_DEV_SERVER_ARGS)
+		hugo server $(HUGO_DEV_SERVER_ARGS) --bind 0.0.0.0
 
 dev: run ## Run Hugo in container with development mode
 
