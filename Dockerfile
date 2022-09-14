@@ -10,7 +10,7 @@ RUN : \
     && groupadd -g $GID -o $UNAME \
     && useradd -m -u $UID -g $GID -o -s /bin/bash $UNAME \
     && apt-get update -q \
-    && apt-get install -q -y build-essential python3-requests nodejs npm wget git \
+    && apt-get install -q -y build-essential python3-requests nodejs npm wget git rsync \
     && wget -O hugo.deb https://github.com/gohugoio/hugo/releases/download/v${HUGO}/hugo_extended_${HUGO}_Linux-64bit.deb \
     && dpkg -i hugo.deb \
     && rm hugo.deb \

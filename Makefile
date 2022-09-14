@@ -1,12 +1,11 @@
 # Borrowed from: https://gist.github.com/mpneuried/0594963ad38e68917ef189b4e6a269db
 PORT ?= 1313
-BASE_URL ?= //sensorlab.ijs.si/
+BASE_URL ?= https://sensorlab.ijs.si/
 
 HUGO_DEV_SERVER_ARGS=-v --gc --disableFastRender --buildDrafts --buildFuture
 HUGO_PROD_SERVER_ARGS=-v --gc --minify --disableFastRender --environment production
 
 HUGO_PROD_BUILD_ARGS=-v --gc --minify --baseURL=$(BASE_URL)
-
 
 # HELP
 # This will output the help for each task
@@ -21,16 +20,34 @@ help: ## This help.
 #highlight:
 #	hugo gen chromastyles --style=monokai > assets/styles/_highlight.scss
 
-clean-public:
-	rm -rf public
-
 clean:
 	rm -rf node_modules resources hugo_stats.json .hugo_build.lock
 
-public: clean clean-public ## build ./public folder with static content for serving
-	python3 scripts/cobiss_parser.py 
+public: clean ## build ./public folder with static content for serving
+	# Update COBISS entries with python script
+	python3 scripts/cobiss_parser.py
+
+	# Get NodeJS dependencies
 	npm ci 
+
+	# Let HUGO build static content
 	hugo $(HUGO_PROD_BUILD_ARGS)
+
+
+prepare-deploy: clean
+	# Update COBISS entries with python script
+	python3 scripts/cobiss_parser.py
+
+	# Get NodeJS dependencies
+	npm ci 
+
+	# Let HUGO build static content
+	hugo $(HUGO_PROD_BUILD_ARGS) -d ./public.tmp
+
+deploy: prepare-deploy 
+	# Cleanup previous public folder, replace content with new build
+	rsync -avh --delete ./public.tmp/ ./public/
+
 	make clean
 
 
