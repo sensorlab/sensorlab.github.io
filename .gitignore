@@ -201,3 +201,5 @@ tmp/
 static/
 .hugo_build.lock
 hugo_stats.json
+/public/
+/public.tmp/
