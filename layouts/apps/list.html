@@ -1,0 +1,125 @@
+{{ define "main" }}
+<main class="flex-fill container my-4" aria-role="main"> 
+    <h1>{{ .Title | title }}</h1>
+
+    {{ .Content }}
+
+    <section>
+        <ul class="list-unstyled mt-4">
+        {{ range .Pages }}
+            <li class="list-group-item">
+                <h4>{{- .Title | title -}}</h4>
+
+                <ul class="list-inline h5">
+                    <li class="list-inline-item">
+                        <span class="badge bg-primary">First release:&nbsp;{{- .Date | time.Format "January 2006" -}}</span>
+                    </li>
+
+                    {{ range where .Params.extras "type" "code" }}
+                    <li class="list-inline-item">
+                        <a class="badge bg-success text-white link-unstyled" href="{{ .url }}">{{ .name | title }}</a>
+                    </li>
+                    {{ end }}
+
+                    {{ range where .Params.extras "type" "video" }}
+                    <li class="list-inline-item">
+                        <a class="badge bg-warning text-black link-unstyled" href="{{ .url }}">{{ .name | title }}</a>
+                    </li>
+                    {{ end }}
+
+                    {{ range where .Params.extras "type" "demo" }}
+                    <li class="list-inline-item">
+                        <a class="badge bg-danger text-white link-unstyled" href="{{ .url }}">{{ .name | title }}</a>
+                    </li>
+                    {{ end }}
+
+                    {{ range where .Params.extras "type" "not in" (slice "code" "video" "demo") }}
+                    <li class="list-inline-item">
+                        <a class="badge bg-secondary text-white link-unstyled" href="{{ .url }}">{{ .name | title }}</a>
+                    </li>
+                    {{ end }}
+                </ul>
+
+                {{- with .Params.summary -}}<div class="">{{- . -}}</div>{{- end -}}
+
+                <p>
+                    <ul class="list-inline">
+                        Backreference:
+                        {{ range .Params.backref }}
+                        <li class="list-inline-item h5">
+                            <a href="{{ .url }}" class="badge bg-secondary text-white link-unstyled">{{ .title }}</a>
+                        </li>
+                        {{ end }}
+                    </ul>
+                </p>
+            </li>
+        {{ end }}
+
+        </ul>
+    </section>
+
+    {{/*
+    <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start my-2">
+    {{ range $index, $app := sort .Pages ".Date" "desc" }}
+        <li class="p-2 align-items-stretch col-12">
+            {{ $refs := dict "code" $app.Params.source_code_url "video" $app.Params.video_url "Demo" $app.Params.demo_url }}
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-3">
+                            {{ with $app.Params.image }}
+                            {{ $img := ( .Resources.GetMatch . ).Resize "200x" }}
+                                <img src="{{ $img.Permalink }}" class="img-fluid rounded-start" alt="...">
+                            {{ end }}
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ $app.Title }}</h5>
+                                <p class="card-text"><small class="text-muted">{{- $app.Date | time.Format "January 2006" -}}</small></p>
+                                <div class="card-text">{{ $app.Summary }}</div>
+                                {{ with $app.Params.authors }}
+                                    <p class="card-text"><strong>Authors:</strong><small class="text-muted">{{- delimit . ", " ", and" -}}</small></p>
+                                {{ end }}
+                                <p class="card-text">
+                                    <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start my-2">
+                                        {{ range $title, $url := $refs }}
+                                            {{ with $url }}<li><a href="{{ $url }}">{{ $title }}</a></li>{{ end }}
+                                        {{ end }}
+                                    </ul>
+                                </p>
+                                <p class="card-text">
+                                    Cross:
+                                    <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start my-2">
+                                        {{ range $app.Params.cross_references }}
+                                            <li class="">
+                                                <a href="{{ .url }}">{{ .title }}</a>
+                                            </li>
+                                        {{ end }}
+                                    </ul>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </li>
+
+    {{ end }}
+    </ul>
+    */}}
+
+{{/*
+    {{ range $index, $project := sort .Pages ".Params.date_end" "desc" }}
+        {{ $img := ( .Resources.GetMatch .Params.featured_image ).Resize "200x" }}
+        <section class="mt-5">
+            <header class="mb-2">
+                <h2>{{ .Title }}</h2>
+                <p>{{ .Params.date_start | time.Format "Jan 2006" }} &mdash; {{ .Params.date_end | time.Format "Jan 2006" }}</p>
+            </header>
+            <div class="clearfix">
+                <img src="{{ $img.Permalink }}" alt="{{ $project.Title }} logo" class="float-md-start me-3 mb-2" height="{{ $img.Height }}" width="{{ $img.Width }}" style="max-width:min(200px, 100vw);">
+                <p class="mx-1 text-justify">{{ .Params.summary | markdownify }}</p>
+            </div>
+            </section>
+    {{ end }}
+*/}}
+</main>
+{{ end }}

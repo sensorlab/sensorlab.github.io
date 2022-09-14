@@ -39,7 +39,7 @@ copyright = "SensorLab"
 
     [languages.sl]
         languageName = "Slovensko"
-        title = 'SensorLab — Inštitut "Jožef Stefan"'
+        title = 'SensorLab — Institut "Jožef Stefan"'
         weight = 2
 
 
@@ -62,12 +62,18 @@ copyright = "SensorLab"
 #    name = "Research"
 #    indentifier = "research"
 #    url = "/research"
-#    weight = 2
+#    weight = 1
 
 [[menu.main]]
     name = "Projects"
     indentifier = "projects"
     url = "/projects"
+    weight = 2
+
+[[menu.main]]
+    name = "Apps"
+    indentifier = "apps"
+    url = "/apps"
     weight = 3
 
 [[menu.main]]
