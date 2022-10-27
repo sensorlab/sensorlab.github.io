@@ -5,9 +5,9 @@
 {{- $authors := slice -}}
 {{- range sort .authors ".order" "asc" -}}
     {{ if .is_employee }}
-    {{- $authors = $authors | append (printf "<u>%s %s</u>" .first_name .last_name) -}}
+        {{- $authors = $authors | append (printf "<u>%s</u>" .name) -}}
     {{ else }}
-    {{- $authors = $authors | append (printf "%s %s" .first_name .last_name) -}}
+        {{- $authors = $authors | append (printf "%s" .name) -}}
     {{ end }}
 
 {{- end -}}
@@ -15,7 +15,9 @@
 <li class="list-group-item publication">
     <div class="title"><strong>{{ .title | title }}</strong></div>
     <div class="authors">{{- delimit $authors ", " -}}</div>
-    <div class="publication">{{ .journal | default .conference | title }}, {{ .year }}</div>
+    {{ if or .journal .conference }}
+    <div class="publication">{{ .journal | default .conference }}, {{ .year }}</div>
+    {{ end }}
 
     <ul class="list-inline">
         {{- if and .cobiss_id .cobiss_url -}}

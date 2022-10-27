@@ -10,7 +10,12 @@ from glob import glob as glob
 
 import argparse
 
+from datetime import datetime as dt
+
 import xml.etree.ElementTree as ET
+
+import arxiv
+from unidecode import unidecode
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -132,7 +137,7 @@ def get_members(path:Path=MEMBER_SRC_PATH) -> Tuple[Member]:
 
     for filename in filenames:
         with open(filename) as f:
-            logger.debug(f"Parsing {filename.split('/')[-2]}")
+            logger.debug(f"Parsing '{filename}'")
             content = f.read()
             member = Member(
                 cobiss=find_cobiss_id(content),
@@ -202,14 +207,14 @@ def get_bib_in_xml(researcher: Member):
 
 
 
-def get_cobiss_data_for_researchers(researchers: Tuple[Member], exclude_list:Union[Tuple[int], None]=None) -> List[dict]:
+def get_cobiss_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], None]=None) -> List[dict]:
     """Combine all researchers' publications into a single object. Do a basic test to filter out duplicates."""
 
     def elementValue(element, tag) -> str:
         if element:
             el = element.find(tag)
             if el != None:
-                return el.text
+                return el.text.strip()
         return ""
 
 
@@ -254,10 +259,13 @@ def get_cobiss_data_for_researchers(researchers: Tuple[Member], exclude_list:Uni
                     continue
 
                 entry = {}
+
+                # Some fields may have "<Slovene version> = <English version>"
+                # Keep only English version with <string>.split('=')[-1].strip()
                 
                 # Publication title
-                entry["title"] = elementValue(elem, "Title")
-                entry["title_short"] = elementValue(elem, "TitleShort")
+                entry["title"] = elementValue(elem, "Title").split('=')[-1].strip()
+                entry["title_short"] = elementValue(elem, "TitleShort").split('=')[-1].strip()
 
                 # Publication year
                 entry["year"] = elementValue(elem, "PubYear")
@@ -278,8 +286,10 @@ def get_cobiss_data_for_researchers(researchers: Tuple[Member], exclude_list:Uni
 
                     person = {
                         "order": idx,
-                        "first_name": elementValue(author, "FirstName"),
-                        "last_name": elementValue(author, "LastName"),
+                        # TODO: Merge name
+                        "name": elementValue(author, "FirstName") + " " + elementValue(author, "LastName"),
+                        #"first_name": elementValue(author, "FirstName"),
+                        #"last_name": elementValue(author, "LastName"),
                         "cobiss_id": author_cobiss_id,
                         "responsibility": author.attrib["responsibility"],
 
@@ -293,10 +303,14 @@ def get_cobiss_data_for_researchers(researchers: Tuple[Member], exclude_list:Uni
                 # Differenciate between journal, conference, ...
                 for bibSetElem in elem.findall("BiblioSet"):
                     if ("relation" in bibSetElem.attrib) and (bibSetElem.attrib["relation"] == "journal"):
-                        entry["journal"] = elementValue(bibSetElem, "Title")
-                    
+                        entry["journal"] = elementValue(bibSetElem, "Title").split('=')[-1].strip()
+
                     if ("typeTeX" in bibSetElem.attrib) and (bibSetElem.attrib["typeTeX"] == "inproceedings"):
-                        entry["conference"] = elementValue(bibSetElem, "TitleShort")
+                        entry["conference"] = elementValue(bibSetElem, "TitleShort").split('=')[-1].strip()
+
+                        # Same as above
+                        entry["conference"] = entry["conference"].split('=')[-1].strip()
+
 
                 # Misc
                 if (elem.find("PhysicalAttributes") and elem.find("PhysicalAttributes").find("VolumeNum") != None):
@@ -315,53 +329,84 @@ def get_cobiss_data_for_researchers(researchers: Tuple[Member], exclude_list:Uni
 
     return list(bib_items)
 
- 
 
-def find_on_arxiv(publications: List[dict]) -> List[dict]:
-    """Try to find publication on ArXiv based on its DOI."""
 
-    # Currently, we match publication between COBISS and ArXiv through DOI.
-    for publication in publications:
-        if not publication['doi']:
-            continue
+def get_arxiv_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], None]=None) -> List[dict]:
+    import re
+    
+    entries = {}
 
-        response = requests.get(
-            f'https://export.arxiv.org/api/query',
-            params=dict(max_results=1, search_query=publication['doi'])
+    researcher_names = {unidecode(r.name).lower(): r.cobiss for r in researchers}
+
+    for researcher in researchers:
+        # Handle cases where name contains non-ASCII letters. Required just for query.
+        name = unidecode(researcher.name)
+
+        # Remove anything in brackets or parentheses in the name.
+        # Example: 'Mihael "Miha" Mohorčič' --> 'Mihael  Mohorčič'
+        name = re.sub("[\"\(\[].*?[\)\]\"]", "", name)
+        
+        # Remove multiple spaces
+        name = " ".join(name.split())
+
+        logger.info(f'Querying arXiv for author "{researcher.name}"')
+
+        search = arxiv.Search(
+            query=f'au:"{name}"',
+            sort_by=arxiv.SortCriterion.SubmittedDate,
+            sort_order=arxiv.SortOrder.Descending,
         )
 
-        if response.status_code == 200:
-            tree = ET.fromstring(response.content)
+        for result in search.results():
+            authors = []
 
-            candidates = tree.findall('{http://www.w3.org/2005/Atom}entry')
-            logger.debug(f'Found {len(candidates)} candidate(s) on arXiv for ({publication["cobiss_id"]}) "{publication["title"]}"')
-            for entry in candidates:
-                doi_tags = entry.findall('{http://arxiv.org/schemas/atom}doi')
-                logger.debug(f'Found {len(doi_tags)} DOI tags: {[doi.text for doi in doi_tags]}')
-                if doi_tags:
-                    doi = doi_tags[0].text
-                    if publication['doi'].lower() == doi.lower():
-                        url_string = entry.find('{http://www.w3.org/2005/Atom}id').text
-                        if url_string and url_string.startswith('http'):
-                            publication['arxiv_url'] = url_string
-                            publication['arxiv_id'] = url_string.split('/')[-1]
-                            logger.info(f'Added arXiv link for "{publication["title"]}"')
-                        else:
-                            logger.debug(f'Invalid ArXiv URL: "{url_string}"')
-                    else:
-                        logger.debug(f'Mismatch in DOI: {publication["doi"]} not in {doi_tags}')
-                else:
-                    logger.debug('Empty DOI field or arXiv')
-        else:
-            logger.debug(f'HTTP status code {response.status_code} != 200')
+            for idx, author in enumerate(result.authors):
+                is_employee = unidecode(author.name).lower() in researcher_names.keys()
+                authors.append({
+                    'order': idx,
+                    'name': author.name,
+                    'is_employee': unidecode(author.name).lower() in researcher_names.keys(),
+                    'cobiss_id': researcher_names[unidecode(author.name).lower()] if is_employee else None
+                })
+                
+            entry = dict(
+                title=result.title,
+                year=dt.strftime(result.published, '%Y'),
+                doi=result.doi,
+                arxiv_url=result.entry_id,
+                arxiv_id=result.entry_id.split('/')[-1],
+                authors=authors,
+                code='preprint',
+            )
+
+            entries[result.entry_id] = entry
+
+    entries = entries.values()
+
+    return entries
 
 
-    return publications
 
+def merge_sources(cobiss: List[dict], arxiv: List[dict]) -> List[dict]:
+    import copy
+    # Start with COBISS, join through DOI, and whatever doesn't match through DOI is a separate work
 
+    merged = copy.deepcopy(cobiss)
 
-def find_on_gscholar(publications: List[object]) -> List[object]:
-    raise NotImplementedError
+    for a in arxiv:
+        if not a['doi']:  # if it has no DOI, then it's a standalone work
+            merged.append(a)
+            continue
+
+        for c in merged:
+            if c['doi'] and c['doi'].lower() == a['doi'].lower():
+                c['arxiv_url'] = a['arxiv_url']
+                c['arxiv_id'] = a['arxiv_url'].split('/')[-1]
+
+    # Convert dict to list
+    merged = sorted(merged, key=lambda x: x['year'], reverse=True)
+
+    return merged
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -433,8 +478,10 @@ def main():
     exclude_list.extend(DEFAULT_EXCLUDE_LIST)
     logger.debug(f'Exclude list: {exclude_list}')
 
-    publications = get_cobiss_data_for_researchers(researchers=members, exclude_list=exclude_list)
-    publications = find_on_arxiv(publications)
+    cobiss_entries = get_cobiss_data(researchers=members, exclude_list=exclude_list)
+    arxiv_entries = get_arxiv_data(researchers=members, exclude_list=exclude_list)
+
+    publications = merge_sources(cobiss=cobiss_entries, arxiv=arxiv_entries)
 
     if args.output:
         with open(args.output, "w") as file:

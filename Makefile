@@ -37,8 +37,15 @@ run: container  ## Run Hugo in container with development mode
 
 dev: run  ## Run Hugo in container with development mode
 
-cobiss:  # Update COBISS entries with python script
-	python3 scripts/cobiss_parser.py
+cobiss: container  # Update COBISS entries with python script
+	docker run \
+		-i -t \
+		--rm \
+		-v $(shell pwd):/src \
+		-p=$(PORT):1313 \
+		--name hugo-builder \
+		sensorlab/hugo \
+		python3 scripts/cobiss_parser.py
 
 
 public: clean cobiss  ## build ./public folder with static content for serving

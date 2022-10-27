@@ -82,10 +82,15 @@
             {{ end }}
         {{ end }}
 
+
+        
+
+
+
         {{ if $publications }}
             <section>
                 <h3>Publications:</h3>
-                {{ $p := slice "1.01" "1.08" }}
+                {{ $p := slice "1.01" "1.08" "preprint" }}
                 <ul class="list-group list-group-flush">
                 
                 {{ range $publication := where $publications ".code" "in" $p }}
@@ -96,16 +101,19 @@
                             {{- $authors := slice -}}
                             {{ range $author := $publication.authors -}}
                                 {{- if eq (int $author.cobiss_id) (int $member.cobiss) -}}
-                                    {{- $authors = $authors | append (printf "<strong><u>%s %s</u></strong>" ($author.first_name) ($author.last_name)) -}}
+                                    {{- $authors = $authors | append (printf "<strong><u>%s</u></strong>" ($author.name)) -}}
                                 {{- else -}}
-                                    {{- $authors = $authors | append (printf "%s %s" ($author.first_name) ($author.last_name)) -}}
+                                    {{- $authors = $authors | append (printf "%s" ($author.name)) -}}
                                 {{- end -}}
                             {{- end -}}
                             
                             {{- delimit $authors ", " ", and " -}}
                         
                         </div>
-                        <div class="publication">{{ .journal | default .conference | title }}, {{ .year }}</div>
+
+                        {{ if or .journal .conference }}
+                            <div class="publication">{{ .journal | default .conference }}, {{ .year }}</div>
+                        {{ end }}
                     
                         <ul class="list-inline">
                             {{- if and .cobiss_id .cobiss_url -}}
@@ -118,9 +126,9 @@
                                 <a class="badge bg-doi text-black link-unstyled" href="https://doi.org/{{ .doi }}">DOI:&nbsp;{{ .doi }}</a>
                             </li>
                             {{- end -}}
-                            {{- if .arxiv_id }}
+                            {{- if and .arxiv_id .arxiv_url }}
                             <li class="list-inline-item">
-                                <a class="badge bg-arxiv text-white link-unstyled" href="https://arxiv.org/abs/{{ .arxiv_id }}">arXiv:{{ .arxiv_id }}</a>
+                                <a class="badge bg-arxiv text-white link-unstyled" href="{{ .arxiv_url | safeURL }}">arXiv:{{ .arxiv_id }}</a>
                             </li>
                             {{- end -}}
                         </ul>
