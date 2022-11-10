@@ -10,7 +10,7 @@ HUGO_PROD_BUILD_ARGS=-v --gc --minify --baseURL=$(BASE_URL)
 # HELP
 # This will output the help for each task
 # thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
-.PHONY: help
+.PHONY: help clean cobiss
 
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -21,10 +21,10 @@ help: ## This help.
 #	hugo gen chromastyles --style=monokai > assets/styles/_highlight.scss
 
 clean:  # Clean output files and folders
-	rm -rf node_modules resources hugo_stats.json .hugo_build.lock
+	rm -rf ./node_modules ./resources ./hugo_stats.json ./.hugo_build.lock ./public.tmp
 
 
-run: container  ## Run Hugo in container with development mode
+dev: container  ## Run Hugo in container with development mode
 	docker run \
 		-i -t \
 		--rm \
@@ -35,20 +35,21 @@ run: container  ## Run Hugo in container with development mode
 		hugo server $(HUGO_DEV_SERVER_ARGS) --bind 0.0.0.0
 
 
-dev: run  ## Run Hugo in container with development mode
-
-cobiss: container  # Update COBISS entries with python script
+shell: container ## Run shell inside container
 	docker run \
 		-i -t \
 		--rm \
 		-v $(shell pwd):/src \
 		-p=$(PORT):1313 \
 		--name hugo-builder \
-		sensorlab/hugo \
-		python3 scripts/cobiss_parser.py
+		sensorlab/hugo
 
 
-public: clean cobiss  ## build ./public folder with static content for serving
+cobiss:  ## Update COBISS entries with Python scripts
+	python3 scripts/cobiss_parser.py
+
+
+public:  ## build ./public folder with static content for serving
 	# Get NodeJS dependencies
 	npm ci 
 
@@ -56,7 +57,7 @@ public: clean cobiss  ## build ./public folder with static content for serving
 	hugo $(HUGO_PROD_BUILD_ARGS)
 
 
-public.tmp: clean cobiss  ## build ./public.tmp folder with static content for serving
+public.tmp:  ## build ./public.tmp folder with static content for serving
 	# Get NodeJS dependencies
 	npm ci 
 
@@ -70,10 +71,11 @@ build: container  ## produce public folder with content in container
 		-v $(shell pwd):/src \
 		--name hugo-builder \
 		sensorlab/hugo \
-		make public
+		bash -c "make clean cobiss public && make clean"
 
-	make clean
 
+sync: ## Cleanup previous public folder, replace content with new build
+	rsync -avh --delete ./public.tmp/ ./public/
 
 
 deploy: container  ## produce public folder with content in container
@@ -82,12 +84,7 @@ deploy: container  ## produce public folder with content in container
 		-v $(shell pwd):/src \
 		--name hugo-builder \
 		sensorlab/hugo \
-		make public.tmp
-
-	# Cleanup previous public folder, replace content with new build
-	rsync -avh --delete ./public.tmp/ ./public/
-
-	make clean
+		bash -c "make clean public.tmp sync && make clean"
 
 
 container:
@@ -96,14 +93,3 @@ container:
 		--build-arg GID=$(shell id -g) \
 		-t sensorlab/hugo \
 		.
-
-
-shell: container ## Run shell inside container
-	docker run \
-		-i -t \
-		--rm \
-		-v $(shell pwd):/src \
-		-p=$(PORT):1313 \
-		--name hugo-builder \
-		sensorlab/hugo \
-		bash

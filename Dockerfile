@@ -1,10 +1,25 @@
 FROM ubuntu:22.04
 
-ARG HUGO=0.101.0
+# Meta labels
+LABEL maintainer="Gregor Cerar <gregor.cerar@ijs.si>"
 
 ARG UNAME=builder
 ARG UID=1000
 ARG GID=1000
+
+# Suppress any manual intervention, while configuring packets
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Speedup Python
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Make RUN commands use `bash --login`:
+SHELL ["/bin/bash", "--login", "-c"]
+
+ARG HUGO=0.101.0
+
+WORKDIR /src
 
 RUN : \
     && groupadd -g $GID -o $UNAME \
@@ -15,9 +30,10 @@ RUN : \
     && dpkg -i hugo.deb \
     && rm hugo.deb \
     && rm -rf /var/lib/apt/lists/* \
-    && python3 -m pip install --no-cache-dir arxiv requests unidecode ujson \
     && :
 
-USER $UNAME
+USER ${UID}:${GID}
 
-WORKDIR /src
+ENV PATH="${PATH}:/home/${UNAME}/.local/bin"
+
+RUN python3 -m pip install --no-cache-dir arxiv requests unidecode ujson
