@@ -1,9 +1,9 @@
 ---
 title: "CCWEBAPP"
-summary: Tool helps estimate computational complexity of neural networks
+summary: This tool helps estimate the computational complexity of neural networks. It implements the computations according to the methodology explained in the IEEE ICC paper linked below.
 date: 2022-08-01
 extras:
-  - name: online demo
+  - name: Calculator link
     type: demo
     url: https://sensorlab.ijs.si/apps/ccwebapp
 
