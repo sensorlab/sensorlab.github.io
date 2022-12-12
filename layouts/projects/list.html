@@ -6,11 +6,13 @@
         {{ $img := ( .Resources.GetMatch .Params.featured_image ).Resize "200x" }}
         <section class="mt-5">
             <header class="mb-2">
-                <h2>{{ .Title }}</h2>
+                <h2><a href="{{ .Permalink }}" class="link-unstyled">{{ .Title }}</a></h2>
                 <p>{{ .Params.date_start | time.Format "Jan 2006" }} &mdash; {{ .Params.date_end | time.Format "Jan 2006" }}</p>
             </header>
             <div class="clearfix">
-                <img src="{{ $img.Permalink }}" alt="{{ $project.Title }} logo" class="float-md-start me-3 mb-2" height="{{ $img.Height }}" width="{{ $img.Width }}" style="max-width:min(200px, 100vw);">
+                <a href="{{ .Permalink }}" class="link-unstyled">
+                    <img src="{{ $img.Permalink }}" alt="{{ $project.Title }} logo" class="float-md-start me-3 mb-2" height="{{ $img.Height }}" width="{{ $img.Width }}" style="max-width:min(200px, 100vw);">
+                </a>
                 <p class="mx-1 text-justify">{{ .Params.summary | markdownify }}</p>
             </div>
             </section>

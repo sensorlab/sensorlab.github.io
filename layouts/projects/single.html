@@ -1,0 +1,39 @@
+{{ define "main" }}
+
+
+
+
+<main class="flex-fill container post my-4" aria-role="main">
+    <aside class="my-4">
+        {{ partial "l18nlist.html" . }}
+        {{ if and (gt .WordCount 400) (.Params.toc) }}
+        <header>
+            <h2>{{ .Title }}</h2>
+            {{ .TableOfContents }}
+        </header>
+        {{ end }}
+    </aside>
+
+    <article class="mt-4">
+        <header class="mb-4">
+            <div>
+                {{ $img := ( .Resources.GetMatch .Params.featured_image ).Resize "200x" }}
+                <img src="{{ $img.Permalink }}" alt="{{ .Title }} logo" class="me-3 mb-2" height="{{ $img.Height }}" width="{{ $img.Width }}" style="max-width:min(200px, 100vw);" />
+            </div>
+            <div>
+                <h1>{{ .Title }}</h1>
+                <p>
+                    <span>
+                        Duration: {{ .Params.date_start | time.Format "Jan 2006" }} &mdash; {{ .Params.date_end | time.Format "Jan 2006" }}
+                    </span>
+                </p>
+            </div>
+        </header>
+
+        <section class="my-4">
+            {{ .Content }}
+        </section>
+
+    </article>
+</main>
+{{ end }}
