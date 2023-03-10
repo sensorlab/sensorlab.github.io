@@ -1,0 +1,18 @@
+<div class='text-center{{with .Get "wrapper-class"}} {{ . }}{{ end }}'>
+
+    <figure class='figure{{ with .Get "fig-class" }} {{ . }}{{ end }}' {{ with .Get "fig-style" }}style='{{ . | safeCSS }}'{{ end }}>
+        <img
+            src='{{ .Get "src" }}'
+            {{ if or (isset .Params "alt") (isset .Params "caption") }}
+                alt='{{ if isset .Params "alt" }}{{ .Get "alt" }}{{ else }}{{ .Get "caption" }}{{ end }}'
+            {{ end }}
+            class='figure-img img-fluid{{ with .Get "img-class" }} {{ . }}{{ end }}'
+            {{ with .Get "img-style" }}style='{{ . | safeCSS }}'{{ end }}
+        />
+        <figcaption class="figure-caption">
+            {{ if or (isset .Params "alt") (isset .Params "caption") }}
+                {{ if isset .Params "caption"}}{{ index .Params "caption"}}{{else}}{{ index .Params "alt" }}{{ end }}
+            {{ end }}
+        </figcaption>
+    </figure>
+</div>
