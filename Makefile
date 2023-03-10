@@ -51,7 +51,8 @@ cobiss:  ## Update COBISS entries with Python scripts
 
 public:  ## build ./public folder with static content for serving
 	# Get NodeJS dependencies
-	npm ci 
+	npm ci
+	npx browserslist@latest --update-db
 
 	# Let HUGO build static content
 	hugo $(HUGO_PROD_BUILD_ARGS)
@@ -59,7 +60,8 @@ public:  ## build ./public folder with static content for serving
 
 public.tmp:  ## build ./public.tmp folder with static content for serving
 	# Get NodeJS dependencies
-	npm ci 
+	npm ci
+	npx browserslist@latest --update-db
 
 	# Let HUGO build static content
 	hugo $(HUGO_PROD_BUILD_ARGS) -d ./public.tmp
