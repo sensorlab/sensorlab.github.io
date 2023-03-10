@@ -1,6 +1,6 @@
 ---
 # Project's title
-title: "TimeSmart"
+title: "TimeSmart: Timeliness of Information in Smart Grids Networks"
 
 # Featured image used for thumbnail and banner at detail page
 featured_image: "TimeSmart_logo.png"
@@ -22,9 +22,7 @@ tags:
 - energy
 ---
 
-# Timeliness of Information in Smart Grids Networks 
-
-### (GA: 101063721)
+(GA: 101063721)
 
 TimeSmart project will investigate the applicability of the novel Age of Information metric in smart grid networks. While the metric has become a valuable tool for measuring the system's performance, its practical value and impact in the real-time system are left unanswered. This project seeks to remedy that by applying the metric to a system in which the timing of collected data, currently measured through jitter or latency, profoundly impacts management and control. The AoI offers a new perspective on how the system should collect and process information, as such decisions are also based on the context of processed information(their semantic nature). In turn, the new approach can offer an innovative way of improving the efficiency of renewable electrical energy supply and electrical loads by taking advantage of the available edge infrastructure. This project aims to adopt the AoI metric in smart grid networks to improve the energy transmission efficiency, achievable through more timely collected information, to save energy.
 
