@@ -3,7 +3,7 @@
 title: "NANCY: An Artificial Intelligent Aided Unified Network for Secure Beyond 5G Long Term Evolution"
 
 # Featured image used for thumbnail and banner at detail page
-featured_image: "NANACY.png"
+featured_image: "NANCY.png"
 
 # Short summary of the project
 summary: "The overall aim of NANCY is to introduce a secure and intelligent architecture for the beyond the fifth generation (B5G) wireless network. Leveraging AI and blockchain, NANCY enables secure and intelligent resource management, flexible networking, and orchestration. In this direction, novel architectures, namely point-to-point (P2P) connectivity for device-to-device connectivity, mesh networking, and relay-based communications, as well as protocols for medium access, mobility management, and resource allocation will be designed.
