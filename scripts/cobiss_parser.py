@@ -206,7 +206,6 @@ def get_bib_in_xml(researcher: Member):
 
 
 
-
 def get_cobiss_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], None]=None) -> List[dict]:
     """Combine all researchers' publications into a single object. Do a basic test to filter out duplicates."""
 
@@ -267,6 +266,11 @@ def get_cobiss_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], N
                 entry["title"] = elementValue(elem, "Title").split('=')[-1].strip()
                 entry["title_short"] = elementValue(elem, "TitleShort").split('=')[-1].strip()
 
+                ## Title quirks:
+                remove_space_before_double_colon = lambda x: re.sub(r'\s*:', ':', x)
+                entry["title"] = remove_space_before_double_colon(entry["title"])
+                entry["title_short"] = remove_space_before_double_colon(entry["title_short"])
+
                 # Publication year
                 entry["year"] = elementValue(elem, "PubYear")
 
@@ -304,12 +308,15 @@ def get_cobiss_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], N
                 for bibSetElem in elem.findall("BiblioSet"):
                     if ("relation" in bibSetElem.attrib) and (bibSetElem.attrib["relation"] == "journal"):
                         entry["journal"] = elementValue(bibSetElem, "Title").split('=')[-1].strip()
+                        entry["journal"] = remove_space_before_double_colon(entry["journal"])
 
                     if ("typeTeX" in bibSetElem.attrib) and (bibSetElem.attrib["typeTeX"] == "inproceedings"):
                         entry["conference"] = elementValue(bibSetElem, "TitleShort").split('=')[-1].strip()
 
                         # Same as above
                         entry["conference"] = entry["conference"].split('=')[-1].strip()
+
+                        entry["conference"] = remove_space_before_double_colon(entry["conference"])
 
 
                 # Misc
