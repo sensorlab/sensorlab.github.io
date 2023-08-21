@@ -342,6 +342,11 @@ def get_arxiv_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], No
         # Handle cases where name contains non-ASCII letters. Required just for query.
         name = unidecode(researcher.name)
 
+        # Skip researcher in case of being on ignore list
+        if exclude_list and researcher.cobiss in exclude_list:
+            logger.debug(f'Skipping {researcher.name} ({researcher.cobiss}). On exclude list.')
+            continue
+
         # Remove anything in brackets or parentheses in the name.
         # Example: 'Mihael "Miha" Mohorčič' --> 'Mihael  Mohorčič'
         name = re.sub("[\"\(\[].*?[\)\]\"]", "", name)
