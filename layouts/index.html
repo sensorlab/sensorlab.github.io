@@ -30,6 +30,11 @@
       {{ range $index, $page := $sections.ByParam "position" }}
       <div class="mb-3 col-12 col-md-6 col-lg-4 col-xxl-4">
         {{ $img := $pageScope.Page.Resources.GetMatch .Params.featured_image }}
+
+        {{ if ne $img.MediaType.SubType "svg" }}
+          {{ $img = $img.Fit "250x192" }}
+        {{ end }}
+        
         <input type="checkbox" id="featured-{{ $index }}" class="read-more" />
         <div class="my-2 mx-5 text-center">
           <img src="{{ $img.Permalink }}" class="img-fluid">
