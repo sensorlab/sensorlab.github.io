@@ -16,7 +16,7 @@
     <div class="title"><strong>{{ .title | title }}</strong></div>
     <div class="authors">{{- delimit $authors ", " -}}</div>
     {{ if or .journal .conference }}
-    <div class="publication">{{ .journal | default .conference }}, {{ .year }}</div>
+    <div class="publication">{{ .journal | default .conference | title }}, {{ .year }}</div>
     {{ end }}
 
     <ul class="list-inline">
@@ -30,10 +30,16 @@
             <a class="badge bg-doi text-black link-unstyled" href="https://doi.org/{{ .doi }}">DOI:&nbsp;{{ .doi }}</a>
         </li>
         {{- end -}}
+        {{- if .isbn }}
+        <li class="list-inline-item">
+            <div class="badge bg-info text-black link-unstyled">ISBN:&nbsp;{{ .isbn }}</div>
+        </li>
+        {{- end -}}
         {{- if .arxiv_id }}
         <li class="list-inline-item">
             <a class="badge bg-arxiv text-white link-unstyled" href="https://arxiv.org/abs/{{ .arxiv_id }}">arXiv:{{ .arxiv_id }}</a>
         </li>
         {{- end -}}
+
     </ul>
 </li>
