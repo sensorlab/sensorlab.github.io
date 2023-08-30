@@ -280,7 +280,11 @@ def get_cobiss_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], N
                 # Publication identifiers
                 entry["cobiss_id"] = pub_cobiss_id
                 entry["cobiss_url"] = elem.find("COBISS").text
-                entry["doi"] = elementValue(elem.find("Identifier"), "DOI")
+
+                doi = elementValue(elem.find("Identifier"), "DOI")
+                doi = doi[doi.find('10'):]  # in some rare cases, biblio contains doi.org/10...
+                entry["doi"] = doi
+
                 entry["isbn"] = elementValue(elem.find("Identifier"), "ISBN")
 
                 # List of authors
@@ -315,8 +319,9 @@ def get_cobiss_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], N
 
                         # Same as above
                         entry["conference"] = entry["conference"].split('=')[-1].strip()
-
                         entry["conference"] = remove_space_before_double_colon(entry["conference"])
+
+                    # TODO: add distinction between book and book chapter
 
 
                 # Misc
