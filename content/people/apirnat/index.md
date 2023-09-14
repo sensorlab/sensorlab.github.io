@@ -12,7 +12,7 @@ prefix: ""
 title: "Anže Pirnat"
 
 # Role/position
-role: "BSc student"
+role: "MSc student"
 
 # Organizations/Affiliations
 organizations:
@@ -38,7 +38,6 @@ interests:
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
 - students
-# - leaders
 ---
 
-Anže Pirnat is currently pursuing a bachelor's degree in electrical engineering and working as a research intern in the [Department of Communication Systems](https://e6.ijs.si/) at [Jože Stefan Institute](http://ijs.si).
+Anže Pirnat received a bachelor's degree in electrical engineering in 2023 from the Faculty of Electrical Engineering, University of Ljubljana. He is pursuing a master's degree in electrical engineering and working as a research intern at the [Department of Communication Systems](https://e6.ijs.si/), [Jože Stefan Institute](http://ijs.si). His work and interests include machine learning, smart infrastructure, and MLOps.
