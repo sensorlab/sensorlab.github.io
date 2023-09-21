@@ -89,6 +89,11 @@ deploy: container  ## produce public folder with content in container
 	docker run \
 		--rm \
 		-v $(shell pwd):/src \
+		-e HUGO_ENVIRONMENT=production \
+		-e HUGO_ENV=production \
+		-e NODE_ENV=production \
+		-e BABEL_ENV=production \
+		-e HUGO_GA_ID=G-QP8B1RRWGH \
 		--name hugo-builder \
 		sensorlab/hugo \
 		bash -c "make clean && make cobiss && make public.tmp && make sync && make clean"
