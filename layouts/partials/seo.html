@@ -43,7 +43,7 @@
 {{ end }}
 
 <!-- Keywords are ignore nowadays by search engines -->
-{{ if hugo.IsProduction }}
+{{ if not (eq hugo.Environment "development")  }}
 	<!-- robots; TODO: disable index on lists -->
 	<meta name="robots" content="index,follow" />
 {{ else }}
@@ -69,7 +69,7 @@
 {{ template "_internal/twitter_cards.html" . }}
 
 <title>
-    {{- if not hugo.IsProduction }}[DEV] {{ end -}}
+    {{- if eq hugo.Environment "development" }}[DEV] {{ end -}}
     {{- if not .IsHome }}{{ .Params.name | default .Title }} &mdash; {{ end -}}
     {{- site.Title -}}
 </title>

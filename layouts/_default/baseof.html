@@ -24,15 +24,17 @@
     {{ block "main" . }}{{ end }}
     {{ partial "footer.html" . }}
 
-{{ with site.Config.Services.GoogleAnalytics.ID }}
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+{{ if not (eq hugo.Environment "development") }}
+    {{ with site.Config.Services.GoogleAnalytics.ID }}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', '{{ . }}'); 
-</script>
+        gtag('config', '{{ . }}'); 
+    </script>
+    {{ end }}
 {{ end }}
 
 </body>
