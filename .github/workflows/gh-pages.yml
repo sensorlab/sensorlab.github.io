@@ -13,6 +13,7 @@ env:
 	HUGO_ENV: production
   NODE_ENV: production
   BABEL_ENV: production
+  HUGO_GA_ID: G-KQGSFFY1XV
 
 jobs:
   deploy:
@@ -53,7 +54,7 @@ jobs:
           python -m pip install arxiv requests unidecode ujson
           python scripts/cobiss_parser.py
       - run: npm ci
-      - run: hugo -v --gc --minify --environment github.io --baseURL=https://sensorlab.github.io/
+      - run: hugo --gc --minify --environment production --baseURL=https://sensorlab.github.io/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

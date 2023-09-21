@@ -5,7 +5,7 @@ BASE_URL ?= https://sensorlab.ijs.si/
 HUGO_DEV_SERVER_ARGS= --gc --disableFastRender --buildDrafts --buildFuture
 HUGO_PROD_SERVER_ARGS= --gc --minify --disableFastRender
 
-HUGO_PROD_BUILD_ARGS= --gc --minify --baseURL=$(BASE_URL) --environment ijs.si
+HUGO_PROD_BUILD_ARGS= --gc --minify --baseURL=$(BASE_URL) --environment production
 
 # HELP
 # This will output the help for each task
@@ -75,6 +75,7 @@ build: container  ## produce public folder with content in container
 		-e HUGO_ENV=production \
 		-e NODE_ENV=production \
 		-e BABEL_ENV=production \
+		-e HUGO_GA_ID=G-QP8B1RRWGH \
 		--name hugo-builder \
 		sensorlab/hugo \
 		bash -c "make clean && make cobiss && make public && make clean"
