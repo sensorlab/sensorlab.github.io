@@ -77,7 +77,7 @@ build: container  ## produce public folder with content in container
 		-e BABEL_ENV=production \
 		--name hugo-builder \
 		sensorlab/hugo \
-		bash -c "make clean cobiss public && make clean"
+		bash -c "make clean && make cobiss && make public && make clean"
 
 
 sync: ## Cleanup previous public folder, replace content with new build
@@ -90,7 +90,7 @@ deploy: container  ## produce public folder with content in container
 		-v $(shell pwd):/src \
 		--name hugo-builder \
 		sensorlab/hugo \
-		bash -c "make clean public.tmp sync && make clean"
+		bash -c "make clean && make cobiss && make public.tmp && make sync && make clean"
 
 
 container:
