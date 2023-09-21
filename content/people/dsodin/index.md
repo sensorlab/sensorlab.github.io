@@ -6,7 +6,7 @@ avatar: "dsodin.jpg"
 position: 20
 
 # Prefix (before the name), typically Dr., Mag., ...
-prefix: ""
+prefix: "Dr."
 
 # Display name
 title: "Denis Sodin"
