@@ -1,0 +1,142 @@
+{{ define "main" }}
+
+{{ $dtFormat := " Jan 2 2006" }}
+
+<main class="flex-fill container" aria-role="main">
+<aside class="mt-4">
+    {{ partial "l18nlist.html" . }}
+</aside>
+
+<article>
+    <header>
+        <h1>{{ .Title }}</h1>
+    </header>
+
+    {{ with .Content }}
+    <section>{{ . }}</section>
+    {{ end }}
+    
+
+    <section>
+    <ul class="row list-unstyled">
+    {{ range .Paginator.Pages }}
+    <li class="mt-4 col-12">
+        <a class="text-decoration-none" href="{{ .Permalink }}">
+            <div class="card card-hover" style="height:100%">
+                <div class="card-body">
+                    <h4 class="card-title">{{ .Title | title }}</h4>
+                    <div class="card-text">
+                        <ul class="d-flex flex-column list-unstyled">
+                            <li><strong>Position:</strong> {{ .Params.position | title }}</li>
+                            <li><strong>Employment type:</strong> {{ .Params.employmentType | title }}</li>
+                            <li><strong>Location:</strong> {{ .Params.location }}</li>
+                            <li><strong>Salary:</strong> {{ .Params.salary }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </li>
+    {{ end }}
+    </ul>
+    </section>
+
+
+
+
+
+        {{/*
+        <section class="list-group my-5">
+        {{ range .Paginator.Pages }}
+            <a href="{{ .Permalink }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <header class="w-100 justify-content-between">
+                    <h4 class="mb-1">{{ .Title }}</h4>
+                    <div>START -- END</div>
+                    <div>SALARY</div>
+                    <div>TYPE</div>
+                    <div>KEYWORDS</div>
+
+                    {{ $date := .PublishDate | default .Date }}
+                    <!--<small><time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date | time.Format "02 Jan 06 15:04" }}</time></small>-->
+                </header>
+                <p class="mb-1">{{ .Summary }}</p>
+            </a>
+        {{ end }}
+        </section>
+
+
+        <section class="my-5">
+            {{ range .Paginator.Pages }}
+            <div class="card my-4">
+                <div class="card-body">
+                    <header class="card-title">
+                        <h4 class="mb-1">{{ .Title }}</h4>
+                        <div>START -- END</div>
+                        <div>SALARY</div>
+                        <div>TYPE</div>
+                        <div>KEYWORDS</div>
+                        
+                        {{ $date := .PublishDate | default .Date }}
+                        <!--<small><time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date | time.Format "02 Jan 06 15:04" }}</time></small>-->
+                    </header>
+                    <p class="card-text mb-1">{{ .Summary }}</p>
+
+                    <a href="{{ .Permalink }}" class="card-link btn btn-primary">Apply</a>
+                </a>
+                </div>
+            </div>
+            {{ end }}
+            </section>
+
+
+
+
+
+
+
+        <section class="list-group my-5">
+            <table class="table">
+                <thead>
+
+                </thead>
+                <tbody>
+                    {{ range .Paginator.Pages }}
+                    <tr>
+                        <td>{{ .Title | title }}</td>
+                        <td>$$$</td>
+                        <td>FULL-Time</td>
+                    </tr>
+                    {{ end }}
+                  </tbody>
+                
+            </table>
+        </section>
+
+
+        <div class="row">
+
+            {{ range .Paginator.Pages }}
+            <div class="col-sm-4 mb-3 mb-sm-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ .Title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">SALARY</h6>
+                        <p class="card-text">{{ slicestr .Summary 0 200 | markdownify }}...</p>
+                        <a href="#" class="btn btn-primary card-link">Apply</a>
+                    </div>
+                </div>
+            </div>
+        {{ end }}
+        </div>
+    </article>
+
+    {{ if .Paginator }}
+    <nav class="d-flex d-content justify-content-center">
+        {{ template "_internal/pagination.html" . }}
+    </nav>
+    {{ end }}
+
+    */}}
+
+</main>
+{{ end }}

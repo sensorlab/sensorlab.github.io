@@ -18,6 +18,8 @@ role: "Research Associate"
 organizations:
 - name: Jožef Stefan Institute
   url: https://ijs.si
+- name: Comsensus
+  url: https://comsensus.eu
 
 # COBISS/SICRIS identifier
 cobiss: 39131

@@ -15,6 +15,10 @@ copyright = "SensorLab"
 
 # themes = "future-imperfect"
 
+
+
+
+
 [build]
   writeStats = true
 
@@ -95,9 +99,9 @@ copyright = "SensorLab"
 #    weight = 6
 
 [[menu.main]]
-    name = "For students"
-    indentifier = "for-students"
-    url = "/for-students"
+    name = "Join Us"
+    indentifier = "opportunities"
+    url = "/opportunities"
     weight = 6
 
 [[menu.main]]
@@ -119,3 +123,8 @@ copyright = "SensorLab"
   [security.http]
     methods = ['(?i)GET|POST']
     urls = ['.*']
+
+
+[[module.mounts]]
+source = "node_modules/bootstrap-icons/font/fonts"
+target = "static/fonts"

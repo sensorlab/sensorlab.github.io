@@ -74,10 +74,10 @@
                         <div class="col-md-9">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $app.Title }}</h5>
-                                <p class="card-text"><small class="text-muted">{{- $app.Date | time.Format "January 2006" -}}</small></p>
+                                <p class="card-text"><small class="text-body-secondary">{{- $app.Date | time.Format "January 2006" -}}</small></p>
                                 <div class="card-text">{{ $app.Summary }}</div>
                                 {{ with $app.Params.authors }}
-                                    <p class="card-text"><strong>Authors:</strong><small class="text-muted">{{- delimit . ", " ", and" -}}</small></p>
+                                    <p class="card-text"><strong>Authors:</strong><small class="text-body-secondary">{{- delimit . ", " ", and" -}}</small></p>
                                 {{ end }}
                                 <p class="card-text">
                                     <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start my-2">

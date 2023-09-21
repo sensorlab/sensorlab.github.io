@@ -3,14 +3,14 @@ PORT ?= 1313
 BASE_URL ?= https://sensorlab.ijs.si/
 
 HUGO_DEV_SERVER_ARGS=-v --gc --disableFastRender --buildDrafts --buildFuture
-HUGO_PROD_SERVER_ARGS=-v --gc --minify --disableFastRender --environment production
+HUGO_PROD_SERVER_ARGS=-v --gc --minify --disableFastRender
 
-HUGO_PROD_BUILD_ARGS=-v --gc --minify --baseURL=$(BASE_URL)
+HUGO_PROD_BUILD_ARGS=-v --gc --minify --baseURL=$(BASE_URL) --environment ijs.si
 
 # HELP
 # This will output the help for each task
 # thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
-.PHONY: help clean cobiss
+.PHONY: help clean cobiss public public.tmp
 
 help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -90,8 +90,4 @@ deploy: container  ## produce public folder with content in container
 
 
 container:
-	docker build \
-		--build-arg UID=$(shell id -u) \
-		--build-arg GID=$(shell id -g) \
-		-t sensorlab/hugo \
-		.
+	docker build -t sensorlab/hugo .

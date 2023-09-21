@@ -1,0 +1,29 @@
+{{ define "main" }}
+
+<aside class="container mt-4">
+    <a href="{{ .Parent.RelPermalink }}" class="">&larr; Back to opportunities</a>
+</aside>
+
+<main class="container flex-fill post" aria-role="main">
+
+<article class="mt-4">
+    <header>
+        <h1>{{ .Title | title }}</h1>
+    </header>
+
+    <section class="mt-4">
+        <ul class="d-flex flex-column list-unstyled">
+            <li><strong>Position:</strong> {{ .Params.position | title }}</li>
+            <li><strong>Employment type:</strong> {{ .Params.employmentType | title }}</li>
+            <li><strong>Location:</strong> {{ .Params.location }}</li>
+            <li><strong>Salary:</strong> {{ .Params.salary }}</li>
+        </ul>
+    </section>
+
+    {{ with .Content }}
+    <section class="mt-4">{{ . }}</section>
+    {{ end }}
+
+</article>
+</main>
+{{ end }}

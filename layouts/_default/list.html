@@ -25,11 +25,11 @@
                 <header class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">{{ .Title }}</h5>
                     {{ $date := .PublishDate | default .Date  }}
-                    <small><time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date.Format "Monday, Jan 2, 2006" }}</time></small>
+                    <small><time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date | time.Format ":date_full" }}</time></small>
                 </header>
                 <p class="mb-1">{{ .Summary }}</p>
                 {{ $date :=  .Lastmod }}
-                <small><time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date.Format "Monday, Jan 2, 2006" }}</time></small>
+                <small><time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date | time.Format ":date_full" }}</time></small>
             </a>
         {{ end }}
         </section>

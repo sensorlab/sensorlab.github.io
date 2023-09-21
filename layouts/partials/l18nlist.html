@@ -3,7 +3,7 @@
 <ul>
   {{ range .Translations }}
   <li>
-    <a href="{{ .Permalink }}">({{ .Lang | upper }}) {{ .Title }}{{ if .IsPage }} ({{ i18n "wordCount" . }}){{ end }}</a>
+    <a href="{{ .Permalink }}">({{ .Lang | upper }}) {{ .Title }}{{ if .IsPage }}{{ end }}</a>
   </li>
   {{ end }}
 </ul>

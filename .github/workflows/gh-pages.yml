@@ -22,12 +22,12 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9.10'
+          python-version: '3.9'
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.91.2'
+          hugo-version: '0.117.0'
           extended: true
 
       - name: Setup Node
@@ -47,7 +47,7 @@ jobs:
           python -m pip install arxiv requests unidecode ujson
           python scripts/cobiss_parser.py
       - run: npm ci
-      - run: hugo -v --gc --minify --baseURL=https://sensorlab.github.io/
+      - run: hugo -v --gc --minify --environment github.io --baseURL=https://sensorlab.github.io/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

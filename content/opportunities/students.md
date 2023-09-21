@@ -1,6 +1,11 @@
 ---
-title: Would you like to work with us?
+title: For undergraduate and master students
 publishDate: 2022-01-01
+#closingDate:
+salary: 9.1€/h gross
+employmentType: part-time
+position: research assistant
+location: Ljubljana (on-site)
 draft: false
 ---
 

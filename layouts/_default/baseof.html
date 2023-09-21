@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ .Site.LanguageCode }}" class="no-js">
 <head>
     <meta charset="utf-8" />
@@ -15,7 +15,7 @@
 
     {{ $opts := dict "noComments" true }}
     {{ $js := resources.Get "scripts/app.js" | babel $opts | js.Build | minify | fingerprint }}
-    <script type="text/javascript" src="{{ $js.RelPermalink }}"  integrity="{{ $js.Data.Integrity }}" defer></script>
+    <script defer type="text/javascript" src="{{ $js.RelPermalink }}"  integrity="{{ $js.Data.Integrity }}"></script>
 
     {{ partial "seo.html" . }}
 </head>
@@ -23,5 +23,17 @@
     {{ partial "navbar.html" . }}
     {{ block "main" . }}{{ end }}
     {{ partial "footer.html" . }}
+
+{{ with site.Config.Services.GoogleAnalytics.ID }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', '{{ . }}'); 
+</script>
+{{ end }}
+
 </body>
 </html>

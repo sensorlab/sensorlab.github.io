@@ -18,13 +18,13 @@
         <header>
             <h1>{{ .Title }}</h1>
             <p>
-                <span>Published: <time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date.Format "Monday, Jan 2, 2006" }}</time></span>
+                <span>{{ i18n "published" . | title }}: <time datetime="{{ $date.Format "2006-01-02T15:04:05Z0700" }}">{{ $date | time.Format ":date_full" }}</time></span>
             </p>
         </header>
 
-        <section class="my-4">
-            {{ .Content }}
-        </section>
+        {{ with .Content }}
+        <section class="my-4">{{ . }}</section>
+        {{ end }}
 
     </article>
 </main>
