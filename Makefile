@@ -2,10 +2,10 @@
 PORT ?= 1313
 BASE_URL ?= https://sensorlab.ijs.si/
 
-HUGO_DEV_SERVER_ARGS=-v --gc --disableFastRender --buildDrafts --buildFuture
-HUGO_PROD_SERVER_ARGS=-v --gc --minify --disableFastRender
+HUGO_DEV_SERVER_ARGS= --gc --disableFastRender --buildDrafts --buildFuture
+HUGO_PROD_SERVER_ARGS= --gc --minify --disableFastRender
 
-HUGO_PROD_BUILD_ARGS=-v --gc --minify --baseURL=$(BASE_URL) --environment ijs.si
+HUGO_PROD_BUILD_ARGS= --gc --minify --baseURL=$(BASE_URL) --environment ijs.si
 
 # HELP
 # This will output the help for each task
@@ -71,9 +71,13 @@ build: container  ## produce public folder with content in container
 	docker run \
 		--rm \
 		-v $(shell pwd):/src \
+		-e HUGO_ENVIRONMENT=production \
+		-e HUGO_ENV=production \
+		-e NODE_ENV=production \
+		-e BABEL_ENV=production \
 		--name hugo-builder \
 		sensorlab/hugo \
-		bash -c "make clean cobiss public && make clean"
+		bash -c "make clean public && make clean"
 
 
 sync: ## Cleanup previous public folder, replace content with new build

@@ -24,7 +24,7 @@
     {{ block "main" . }}{{ end }}
     {{ partial "footer.html" . }}
 
-{{ if not (eq hugo.Environment "development") }}
+{{ if hugo.IsProduction  }}
     {{ with site.Config.Services.GoogleAnalytics.ID }}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
     <script>

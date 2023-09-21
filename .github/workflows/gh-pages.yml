@@ -8,6 +8,12 @@ on:
       - main  # Set a branch to deploy
   pull_request:
 
+env:
+	HUGO_ENVIRONMENT: production
+	HUGO_ENV: production
+  NODE_ENV: production
+  BABEL_ENV: production
+
 jobs:
   deploy:
     runs-on: ubuntu-20.04
