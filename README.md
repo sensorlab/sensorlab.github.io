@@ -1,8 +1,8 @@
 # sensorlab.ijs.si
 
-New SensorLab webpage at [sensorlab.github.io](https://sensorlab.github.io)
+New SensorLab webpage at [sensorlab.github.io](https://sensorlab.github.io) and [sensorlab.ijs.si](https://sensorlab.ijs.si)
 
-## How to start developent and contribute?
+## How to start development and contribute?
 
 ### (Recommended) Develop inside container
 - Install Docker
@@ -16,11 +16,11 @@ New SensorLab webpage at [sensorlab.github.io](https://sensorlab.github.io)
 
 ## How to contribute content?
 
-### To add new funding project
+### Add a new funded project
 
-1. Under `content/projects/` add new directory (e.g. `<brand-new-project>`).
+1. Under `content/projects/`, add a new directory (e.g., `<brand-new-project>`).
 2. Copy `archetypes/project.md` to `content/projects/<brand-new-project>/index.md`.
 3. Edit content accordingly, provide logo, etc.
-4. Optionally add supplemental material into `content/projects/<brand-new-project>/` directory.
+4. Optionally add supplemental material into the `content/projects/<brand-new-project>/` directory.
 5. Preview the outcome using `make up`.
 6. Commit the changes.
