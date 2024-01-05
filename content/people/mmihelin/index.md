@@ -26,7 +26,7 @@ cobiss: 36719
 
 # The date when joined / departed from the lab. Empty or remove if not used
 date_start: "2019-10-01"
-date_end:
+date_end: "2023-03-01"
 
 # Short bio (displayed in user profile at end of posts)
 bio: ""
@@ -36,7 +36,7 @@ interests: []
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
+- alumni
 # - students
 # - leaders
 ---
