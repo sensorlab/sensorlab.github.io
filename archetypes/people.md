@@ -8,7 +8,7 @@ position: 10
 # Prefix (before the name), typically Dr., Mag., ...
 prefix: ""
 
-# Display name
+# Display name, can also put name in native language (UTF-8 supported)
 title: ""
 
 # Role/position
@@ -48,22 +48,22 @@ education:
 
 
 # Social/Academic Networking
-# For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
-#   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
-#   form "mailto:your-email@example.com" or "#contact" for contact widget.
+# Links to social accounts and ways to interract, if any
+# Examples: email, github, twitter/X, personal blog, facebook
+# Check the Bootstrap icons for icon names
 social:
-- icon: envelope
-  icon_pack: fas
-  link: 'mailto:test@example.org'
+- icon: envelope-at
+  link: mailto:test@example.org
 - icon: twitter
-  icon_pack: fab
-  link: https://twitter.com/GeorgeCushen
-- icon: google-scholar
-  icon_pack: ai
+  link: https://twitter.com/username
+- icon: book
   link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
 - icon: github
-  icon_pack: fab
-  link: https://github.com/gcushen
+  link: https://github.com/username
+- icon: file-rich-text
+  link: https://username.github.io
+
+
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 # - icon: cv

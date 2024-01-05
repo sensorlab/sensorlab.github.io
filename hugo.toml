@@ -75,9 +75,9 @@ copyright = "SensorLab"
     weight = 2
 
 [[menu.main]]
-    name = "Apps"
-    indentifier = "apps"
-    url = "/apps"
+    name = "Results"
+    indentifier = "results"
+    url = "/results"
     weight = 3
 
 [[menu.main]]

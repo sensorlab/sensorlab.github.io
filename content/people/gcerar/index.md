@@ -37,6 +37,21 @@ interests:
 - Wireless Networks
 - MLOps
 
+# Social/Academic Networking
+# Links to social accounts and ways to interract, if any
+# Examples: email, github, twitter/X, personal blog, facebook
+# Check the Bootstrap icons for icon names
+social:
+- icon: book
+  link: https://scholar.google.com/citations?user=qWOc0fYAAAAJ&hl=en
+  text: Scholar
+- icon: github
+  link: https://github.com/gcerar
+  text: GitHub
+- icon: file-richtext
+  link: https://gcerar.github.io
+  text: Blog
+
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:

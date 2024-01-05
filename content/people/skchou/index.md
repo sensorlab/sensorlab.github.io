@@ -43,4 +43,4 @@ user_groups:
 # - leaders
 ---
 
-I received my Master’s degree in communication engineering from National Chung Cheng University (CCU), Taiwan in 2014 and a Ph.D. from Queen’s University, Belfast, U.K. in 2023. My Ph.D. focused on Reconfigurable Intelligent Surface (RIS/IRS), more specifically, the real-world setup and optimization of RIS-aided wireless systems.
+I received my Master’s degree in communication engineering from [National Chung Cheng University](https://www.ccu.edu.tw/?Lang=en) (CCU), Taiwan in 2014 and a Ph.D. from [Queen’s University](https://www.qub.ac.uk/), Belfast, U.K. in 2023. My Ph.D. focused on Reconfigurable Intelligent Surface (RIS/IRS), more specifically, the real-world setup and optimization of RIS-aided wireless systems.
