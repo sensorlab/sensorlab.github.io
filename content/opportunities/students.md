@@ -1,9 +1,10 @@
 ---
 title: For undergraduate and master students
 publishDate: 2022-01-01
-#closingDate:
+# closingDate: 2030-01-01
 salary: 9.1€/h gross
-employmentType: part-time
+employmentType: student work
+contractType: part-time
 position: research assistant
 location: Ljubljana (on-site)
 draft: false

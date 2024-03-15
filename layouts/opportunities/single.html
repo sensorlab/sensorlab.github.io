@@ -13,10 +13,29 @@
 
     <section class="mt-4">
         <ul class="d-flex flex-column list-unstyled">
-            <li><strong>Position:</strong> {{ .Params.position | title }}</li>
-            <li><strong>Employment type:</strong> {{ .Params.employmentType | title }}</li>
-            <li><strong>Location:</strong> {{ .Params.location }}</li>
-            <li><strong>Salary:</strong> {{ .Params.salary }}</li>
+            {{ with .Params.position }}
+            <li><strong>Position:</strong> {{ . | title }}</li>
+            {{ end }}
+
+            {{ with .Params.employmentType }}
+            <li><strong>Contract:</strong> {{ . | title }}</li>
+            {{ end }}
+
+            {{ with .Params.contractType }}
+            <li><strong>Employment:</strong> {{ . | title }}</li>
+            {{ end }}
+
+            {{ with .Params.location }}
+            <li><strong>Location:</strong> {{ . | title }}</li>
+            {{ end }}
+
+            {{ with .Params.salary }}
+            <li><strong>Salary:</strong> {{ . }}</li>
+            {{ end }}
+
+            {{ with .Params.closingDate }}
+            <li><strong>Application deadline:</strong> {{ . | time.Format ":date_full" }}</li>
+            {{ end }}
         </ul>
     </section>
 

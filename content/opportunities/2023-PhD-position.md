@@ -3,7 +3,7 @@ title: Early-stage researcher to work on an applied project
 publishDate: 2023-09-15
 closingDate: 2023-10-31
 salary: 1800€ - 2200€ (gross)
-employmentType: full-time
+contractType: full-time
 position: PhD student / research assistant
 location: Ljubljana (on-site)
 draft: false
