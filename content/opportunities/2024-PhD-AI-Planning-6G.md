@@ -1,7 +1,7 @@
 ---
 title: PhD Student in AI Planning Techniques for 6G
 publishDate: 2024-03-08
-closingDate: 2024-03-30
+# closingDate: 2024-03-30
 salary: 21.600 – 25.920 €/year gross salary, ~2400 € net meal and travel allowances, 1200 € net vacation allowance
 employmentType: temporary position longer than 6 months
 contractType: full-time
@@ -9,6 +9,13 @@ position: PhD student / research assistant
 location: Ljubljana, Slovenia (on-site)
 draft: false
 ---
+
+{{< rawhtml >}}
+<div class="alert alert-warning" role="alert">
+  <strong>Deadline:</strong> Till the position is filled.
+</div>
+{{< /rawhtml >}}
+
 
 **Description:**  
 The position focuses on the generation of network configurations, such as Service Function Chaining (SFC), by framing it as a planning problem in the field of Artificial Intelligence (AI). This problem will be tackled using a wide range of AI methods, including Neuro-Symbolic Reasoning, Neural Algorithmic Reasoning, Reinforcement Learning, etc. The successful candidate will have the opportunity to work in an international environment and build a pan-European collaborative network by working on EU-funded collaborative projects. The applicant's tasks will be:
@@ -36,13 +43,13 @@ Jožef Stefan Institute's offices are located a 20-minutes' walk from the center
 - Additional training in the form of specialized workshops, tutorials, summers schools, technical events
 - Connections to deep tech start-ups
 - Flexible working hours
+- Eligibility for accommodation with subventions at [Dormitory for Postgraduate students](https://www.stud-dom-lj.si/en/how-to-get-the-bed/dormitory-for-postgraduate-students/)
 
 
-**Employment:**  
-The contract will cover up to 4 years full-time employment with yearly extension subject to successful progress in PhD study. Category H017001, amounting to 21.600 – 25.920 € yearly gross salary + ~2400 € net meal and travel allowances + 1200 € net vacation allowance.  
+**Employment:** The contract will cover up to 4 years full-time employment with yearly extension subject to successful progress in PhD study. Category H017001, amounting to 21.600 – 25.920 € yearly gross salary + ~2400 € net meal and travel allowances + 1200 € net vacation allowance.  
 **Place of work:** Ljubljana.  
 **Application:** The application must include CV and a statement describing your research interest.
-The application must include a cover letter describing motivation, research interests & relevant experience, a detailed CV, a digital copy of BSc/MSc certificate an possibly an access to a recent relevant project (e.g. GitHub repository) or/and any publication. Submit you application to [sensorlab@ijs.si](mailto:sensorlab@ijs.si) by March 30 2024.  
+The application must include a cover letter describing motivation, research interests & relevant experience, a detailed CV, a digital copy of BSc/MSc certificate an possibly an access to a recent relevant project (e.g. GitHub repository) or/and any publication. Submit you application to [sensorlab@ijs.si](mailto:sensorlab@ijs.si).  
 **Type of employment:** Temporary position longer than 6 months  
 **Contract type:** Full-time  
 **First day of employment:** Subject to agreement (study year starts in October)  
