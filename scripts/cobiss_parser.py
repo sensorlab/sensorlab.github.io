@@ -306,6 +306,7 @@ def get_cobiss_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], N
                         # current there is no easy way to do it (beside parsing raw papers).
                         "is_employee": author_cobiss_id in member_cobiss_ids,
                     }
+
                     entry["authors"].append(person)
 
                 # Differenciate between journal, conference, ...
@@ -342,29 +343,40 @@ def get_cobiss_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], N
     return list(bib_items)
 
 
+def get_clean_ascii_name(text: str) -> str:
+    # This pattern matches any text within double quotes
+    pattern = r'\"[^\"]*\"'
+    
+    # Replace matched text with an empty string
+    text = re.sub(pattern, '', text)
+
+    # Replace multiple whitespace characters with a single space
+    text = re.sub(r'\s+', ' ', text)
+
+    text = unidecode(text)
+
+    return text
+
 
 def get_arxiv_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], None]=None) -> List[dict]:
     import re
+    import arxiv
+
+    client = arxiv.Client()
     
     entries = {}
 
-    researcher_names = {unidecode(r.name).lower(): r.cobiss for r in researchers}
+    researcher_names = {get_clean_ascii_name(r.name).lower(): r.cobiss for r in researchers}
+    print(researcher_names)
 
     for researcher in researchers:
         # Handle cases where name contains non-ASCII letters. Required just for query.
-        name = unidecode(researcher.name)
+        name = get_clean_ascii_name(researcher.name)
 
         # Skip researcher in case of being on ignore list
         if exclude_list and researcher.cobiss in exclude_list:
             logger.debug(f'Skipping {researcher.name} ({researcher.cobiss}). On exclude list.')
             continue
-
-        # Remove anything in brackets or parentheses in the name.
-        # Example: 'Mihael "Miha" Mohorčič' --> 'Mihael  Mohorčič'
-        name = re.sub("[\"\(\[].*?[\)\]\"]", "", name)
-        
-        # Remove multiple spaces
-        name = " ".join(name.split())
 
         logger.info(f'Querying arXiv for author "{researcher.name}"')
 
@@ -374,16 +386,17 @@ def get_arxiv_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], No
             sort_order=arxiv.SortOrder.Descending,
         )
 
-        for result in search.results():
+        for result in client.results(search):
             authors = []
 
             for idx, author in enumerate(result.authors):
-                is_employee = unidecode(author.name).lower() in researcher_names.keys()
+                clean_author = get_clean_ascii_name(author.name).lower()
+                is_employee = clean_author in researcher_names
                 authors.append({
                     'order': idx,
                     'name': author.name,
-                    'is_employee': unidecode(author.name).lower() in researcher_names.keys(),
-                    'cobiss_id': researcher_names[unidecode(author.name).lower()] if is_employee else None
+                    'is_employee': is_employee,
+                    'cobiss_id': researcher_names[clean_author] if is_employee else None
                 })
                 
             entry = dict(
@@ -478,6 +491,20 @@ def get_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def valid_sensorlab_paper(paper: dict) -> bool:
+    # How many SensorLab members are involved
+    n_employees = sum(author["is_employee"] for author in paper["authors"])
+    assert isinstance(n_employees, (int, float))
+
+    # if MMsr (15087) is involved, at least one other member needs to be involved
+    targets = [15087]
+    target_involved = sum((author["cobiss_id"] in targets) for author in paper["authors"])
+    assert isinstance(target_involved, (int, float))
+
+    if (n_employees - target_involved) > 0:
+        return True
+    
+    return False
 
 
 def main():
@@ -499,6 +526,12 @@ def main():
     arxiv_entries = get_arxiv_data(researchers=members, exclude_list=exclude_list)
 
     publications = merge_sources(cobiss=cobiss_entries, arxiv=arxiv_entries)
+
+    # FIX: Remove papers, where MMsr coauthor, but no other SensorLab member is involved (colaboration)
+    for paper in publications:
+        is_valid_paper = valid_sensorlab_paper(paper)
+        paper["is_sensorlab"] = is_valid_paper
+
 
     if args.output:
         with open(args.output, "w") as file:
