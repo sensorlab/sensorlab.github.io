@@ -496,12 +496,13 @@ def valid_sensorlab_paper(paper: dict) -> bool:
     n_employees = sum(author["is_employee"] for author in paper["authors"])
     assert isinstance(n_employees, (int, float))
 
-    # if MMsr (15087) is involved, at least one other member needs to be involved
+    # if MMsr (15087) is involved, at least one other member needs to be involved, unless sole author
     targets = [15087]
     target_involved = sum((author["cobiss_id"] in targets) for author in paper["authors"])
     assert isinstance(target_involved, (int, float))
 
-    if (n_employees - target_involved) > 0:
+    # At least one other member needs to be involved, unless sole author
+    if (n_employees - target_involved) >= 0:
         return True
     
     return False
