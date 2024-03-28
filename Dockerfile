@@ -37,4 +37,4 @@ USER ${UID}:${GID}
 
 ENV PATH="${PATH}:/home/${UNAME}/.local/bin"
 
-RUN python3 -m pip install --user --no-cache-dir --break-system-packages arxiv requests unidecode ujson
+RUN python3 -m pip install --user --no-cache-dir --break-system-packages "arxiv~=2.1.0" requests unidecode ujson
