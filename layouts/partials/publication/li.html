@@ -15,9 +15,12 @@
 <li class="list-group-item publication">
     <div class="title"><strong>{{ .title | title }}</strong></div>
     <div class="authors">{{- delimit $authors ", " -}}</div>
-    {{ if or .journal .conference }}
-    <div class="publication">{{ .journal | default .conference | title }}, {{ .year }}</div>
-    {{ end }}
+    <div class="publication">
+        {{- if or .journal .conference }}
+            {{- .journal | default .conference | title }},&nbsp;
+        {{- end -}}
+        {{- .year -}}
+    </div>
 
     <ul class="list-inline">
         {{- if and .cobiss_id .cobiss_url -}}

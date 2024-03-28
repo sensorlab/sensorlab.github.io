@@ -95,163 +95,80 @@
             {{ end }}
         {{ end }}
     {{ end }}
-
-
-{{/*
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Type</th>
-                <th scope="col">Title</th>
-                <th scope="col">Authors</th>
-                <th scope="col">Cross-links</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            {{ $mypub := slice }}
-            {{ range $pub := $publications }}
-                <!-- Journals -->
-                {{ if eq $pub.code "1.01" }}
-                    {{ $mypub = $mypub | append $pub }}
-                {{ end }}
-
-                <!-- Conferences -->
-                {{ if eq $pub.code "1.08" }}
-                    {{ $mypub = $mypub | append $pub }}
-                {{ end }}
-
-                <!-- Books -->
-                {{ if and (eq $pub.code "2.01") (or (ne $pub.doi "") (ne $pub.isbn "")) }}
-                    {{ $mypub = $mypub | append $pub }}
-                {{ end }}
-
-                <!-- Chapters -->
-                {{ if and (eq $pub.code "1.06") (or (ne $pub.doi "") (ne $pub.isbn "")) }}
-                    {{ $mypub = $mypub | append $pub }}
-                {{ end }}
-
-
-            {{ end }}
-
-
-            {{ range $index, $pub := $mypub }}
-            <tr>
-                <th scope="row" class="text-end">{{ sub (len $mypub) $index }}</th>
-                <td>
-                    {{- if eq $pub.code "1.01" -}}
-                        Journal
-                    {{- else if eq $pub.code "1.08" -}}
-                        Conference
-                    {{- else if eq $pub.code "preprint" -}}
-                        Preprint
-                    {{- else if eq $pub.code "2.01" -}}
-                        Book
-                    {{- else if eq $pub.code "1.06" -}}
-                        Chapter
-                    {{- end -}}
-                </td>
-                <td>{{ .title | title }}</td>
-                <td>
-                    {{- $authors := slice -}}
-                    {{- range $author := $pub.authors -}}
-                        {{- if eq (int $author.cobiss_id) (int $member.cobiss) -}}
-                            {{- $authors = $authors | append (printf "<strong><u>%s</u></strong>" ($author.name)) -}}
-                        {{- else -}}
-                            {{- $authors = $authors | append (printf "%s" ($author.name)) -}}
-                        {{- end -}}
-                    {{- end -}}
-                    
-                    {{- delimit $authors ", " ", and " -}}
-                </td>
-
-                <td>
-                    <ul class="list-inline">
-                        {{- if and .cobiss_id .cobiss_url -}}
-                        <li class="list-inline-item">
-                            <a class="badge bg-cobiss text-white link-unstyled" href="{{ .cobiss_url }}">COBISS:&nbsp;{{ .cobiss_id }}</a>
-                        </li>
-                        {{- end -}}
-                        {{- if .doi -}}
-                        <li class="list-inline-item">
-                            <a class="badge bg-doi text-black link-unstyled" href="https://doi.org/{{ .doi }}">DOI:&nbsp;{{ .doi }}</a>
-                        </li>
-                        {{- end -}}
-                        {{- if .isbn }}
-                        <li class="list-inline-item">
-                            <div class="badge bg-info text-black link-unstyled">ISBN:&nbsp;{{ .isbn }}</div>
-                        </li>
-                        {{- end -}}
-                        {{- if .arxiv_id }}
-                        <li class="list-inline-item">
-                            <a class="badge bg-arxiv text-white link-unstyled" href="https://arxiv.org/abs/{{ .arxiv_id }}">arXiv:{{ .arxiv_id }}</a>
-                        </li>
-                        {{- end -}}
-                    </ul>
-                </td>
-
-            </tr>
-            {{ end }}
-        </tbody>
-    </table>
-
-*/}}
     
 
+    {{ $subsets := slice
+        (slice "Books" (slice "2.01"))
+        (slice "Books Chapters" (slice "1.16"))
+        (slice "Patents" (slice "2.24"))
+        (slice "Publications" (slice "1.01" "1.08" "preprint"))
+    }}
 
+    {{ range $q := $subsets }}
+        {{ $t := index $q 0 }}
+        {{ $p := index $q 1 }}
 
-    {{ if $publications }}
-        <section class="mt-4">
-            <h3>Publications:</h3>
-            {{ $p := slice "1.01" "1.08" "preprint" }}
-            <ul class="list-group list-group-flush">
-            
-            {{ range $publication := where $publications ".code" "in" $p }}
-                <li class="list-group-item publication">
-                    <div class="title"><strong>{{ .title | title }}</strong></div>
-                    
-                    <div class="authors">
-                        {{- $authors := slice -}}
-                        {{ range $author := $publication.authors -}}
-                            {{- if eq (int $author.cobiss_id) (int $member.cobiss) -}}
-                                {{- $authors = $authors | append (printf "<strong><u>%s</u></strong>" ($author.name)) -}}
-                            {{- else -}}
-                                {{- $authors = $authors | append (printf "%s" ($author.name)) -}}
-                            {{- end -}}
-                        {{- end -}}
-                        
-                        {{- delimit $authors ", " ", and " -}}
-                    
-                    </div>
+        {{ $subset := where $publications ".code" "in" $p }}
 
-                    {{ if or .journal .conference }}
-                        <div class="publication">{{ .journal | default .conference }}, {{ .year }}</div>
-                    {{ end }}
+        {{ if $subset }}
+            <section class="mt-4">
+                <h3>{{ $t | title }}:</h3>
+                <ul class="list-group list-group-flush">
+                    {{ range $subset }}
+                        <li class="list-group-item publication">
+                            <div class="title"><strong>{{ .title | title }}</strong></div>
+                            
+                            <div class="authors">
+                                {{- $authors := slice -}}
+                                {{ range $author := .authors -}}
+                                    {{- if eq (int $author.cobiss_id) (int $member.cobiss) -}}
+                                        {{- $authors = $authors | append (printf "<strong><u>%s</u></strong>" ($author.name)) -}}
+                                    {{- else -}}
+                                        {{- $authors = $authors | append (printf "%s" ($author.name)) -}}
+                                    {{- end -}}
+                                {{- end -}}
+                                
+                                {{- delimit $authors ", " -}}
+                            </div>
                 
-                    <ul class="list-inline">
-                        {{- if and .cobiss_id .cobiss_url -}}
-                        <li class="list-inline-item">
-                            <a class="badge bg-cobiss text-white link-unstyled" href="{{ .cobiss_url | safeURL }}">COBISS:&nbsp;{{ .cobiss_id }}</a>
+                            <div class="publication">
+                                {{- if or .journal .conference -}}
+                                    {{- .journal | default .conference -}},&nbsp;
+                                {{- end -}}
+                                {{- .year -}}
+                            </div>
+                        
+                            <ul class="list-inline">
+                                {{- if and .cobiss_id .cobiss_url -}}
+                                <li class="list-inline-item">
+                                    <a class="badge bg-cobiss text-white link-unstyled" href="{{ .cobiss_url | safeURL }}">COBISS:&nbsp;{{ .cobiss_id }}</a>
+                                </li>
+                                {{- end -}}
+                                {{- if .doi -}}
+                                <li class="list-inline-item">
+                                    <a class="badge bg-doi text-black link-unstyled" href="https://doi.org/{{ .doi }}">DOI:&nbsp;{{ .doi }}</a>
+                                </li>
+                                {{- end -}}
+                                {{- if .isbn }}
+                                <li class="list-inline-item">
+                                    <div class="badge bg-info text-black link-unstyled">ISBN:&nbsp;{{ .isbn }}</div>
+                                </li>
+                                {{- end -}}
+                                {{- if and .arxiv_id .arxiv_url }}
+                                <li class="list-inline-item">
+                                    <a class="badge bg-arxiv text-white link-unstyled" href="{{ .arxiv_url | safeURL }}">arXiv:{{ .arxiv_id }}</a>
+                                </li>
+                                {{- end -}}
+                            </ul>
                         </li>
-                        {{- end -}}
-                        {{- if .doi -}}
-                        <li class="list-inline-item">
-                            <a class="badge bg-doi text-black link-unstyled" href="https://doi.org/{{ .doi }}">DOI:&nbsp;{{ .doi }}</a>
-                        </li>
-                        {{- end -}}
-                        {{- if and .arxiv_id .arxiv_url }}
-                        <li class="list-inline-item">
-                            <a class="badge bg-arxiv text-white link-unstyled" href="{{ .arxiv_url | safeURL }}">arXiv:{{ .arxiv_id }}</a>
-                        </li>
-                        {{- end -}}
-                    </ul>
-                </li>
-            {{ end }}
-            </ul>
-        </section>
-
+                    {{ end }}
+                </ul>
+            </section>
+        {{ end }}
     {{ end }}
+
+
+
 {{ end }}
 
 
