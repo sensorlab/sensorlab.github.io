@@ -12,7 +12,7 @@
 
                 <ul class="list-inline h5">
                     <li class="list-inline-item">
-                        <span class="badge bg-primary">Started:&nbsp;{{- .Date | time.Format "Jan 2006" -}}</span>
+                        <span class="badge bg-primary">Public:&nbsp;{{- .Date | time.Format "Jan 2006" -}}</span>
                     </li>
 
                     {{ range where .Params.extras "type" "code" }}
