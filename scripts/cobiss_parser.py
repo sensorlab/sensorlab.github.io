@@ -492,7 +492,11 @@ def get_parser() -> argparse.ArgumentParser:
 
 
 def valid_sensorlab_paper(paper: dict) -> bool:
-    # How many SensorLab members are involved
+
+    # Figure out how many authors are there
+    n_authors = len(paper["authors"])
+
+    # Figure out how many SensorLab members are involved in the paper
     n_employees = sum(author["is_employee"] for author in paper["authors"])
     assert isinstance(n_employees, (int, float))
 
@@ -501,8 +505,13 @@ def valid_sensorlab_paper(paper: dict) -> bool:
     target_involved = sum((author["cobiss_id"] in targets) for author in paper["authors"])
     assert isinstance(target_involved, (int, float))
 
+    if paper["title"].lower().startswith("large-scale site"):
+        print(paper)
+
+        print(n_authors, n_employees, target_involved)
+
     # At least one other member needs to be involved, unless sole author
-    if (n_employees - target_involved) >= 0:
+    if (n_authors == n_employees) or (n_employees - target_involved) > 0:
         return True
     
     return False
