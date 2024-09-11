@@ -11,11 +11,11 @@ ARG GID=1000
 ARG DEBIAN_FRONTEND=noninteractive
 
 # Hugo version
-ARG HUGO=0.117.0
+ARG HUGO=0.134.2
 
 # Speedup Python
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Make RUN commands use `bash --login`:
 SHELL ["/bin/bash", "--login", "-c"]

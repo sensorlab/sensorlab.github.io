@@ -50,10 +50,10 @@
                     <strong>Affiliations:</strong>&nbsp;
                     {{- $list := slice -}}
                     {{- range . -}}
-                        {{- $list = $list | append (printf "<a href='%s'>%s</a>" (.url | safeURL) .name) -}}
+                        {{- $list = $list | append (printf "<a href='%s'>%s</a>" (.url | safeURL) .name | safeHTML) -}}
                     {{- end -}}
 
-                    {{- delimit $list ", " -}}
+                    {{- delimit $list ", " | safeHTML -}}
                 </li>
                 {{ end }}
 
@@ -67,7 +67,7 @@
                     <strong>Social:</strong>&nbsp;
                     {{- $list := slice -}}
                     {{- range . -}}
-                        {{- $list = $list | append (printf `<a href="%s"></i>%s</a>` (.link | safeURL) .text) -}}
+                        {{- $list = $list | append (printf `<a href="%s"></i>%s</a>` (.link | safeURL) .text | safeHTML) -}}
                     {{- end -}}
                     {{- delimit $list " " -}}
                 </li>
@@ -122,13 +122,13 @@
                                 {{- $authors := slice -}}
                                 {{ range $author := .authors -}}
                                     {{- if eq (int $author.cobiss_id) (int $member.cobiss) -}}
-                                        {{- $authors = $authors | append (printf "<strong><u>%s</u></strong>" ($author.name)) -}}
+                                        {{- $authors = $authors | append (printf "<strong><u>%s</u></strong>" ($author.name) | safeHTML) -}}
                                     {{- else -}}
-                                        {{- $authors = $authors | append (printf "%s" ($author.name)) -}}
+                                        {{- $authors = $authors | append (printf "%s" ($author.name) | safeHTML) -}}
                                     {{- end -}}
                                 {{- end -}}
                                 
-                                {{- delimit $authors ", " -}}
+                                {{- delimit $authors ", " | safeHTML -}}
                             </div>
                 
                             <div class="publication">

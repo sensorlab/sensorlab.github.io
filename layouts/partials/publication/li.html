@@ -5,16 +5,16 @@
 {{- $authors := slice -}}
 {{- range sort .authors ".order" "asc" -}}
     {{ if .is_employee }}
-        {{- $authors = $authors | append (printf "<u>%s</u>" .name) -}}
+        {{- $authors = $authors | append (printf "<u>%s</u>" .name | safeHTML) -}}
     {{ else }}
-        {{- $authors = $authors | append (printf "%s" .name) -}}
+        {{- $authors = $authors | append (printf "%s" .name | safeHTML) -}}
     {{ end }}
 
 {{- end -}}
 
 <li class="list-group-item publication">
     <div class="title"><strong>{{ .title | title }}</strong></div>
-    <div class="authors">{{- delimit $authors ", " -}}</div>
+    <div class="authors">{{- delimit $authors ", " | safeHTML -}}</div>
     <div class="publication">
         {{- if or .journal .conference }}
             {{- .journal | default .conference | title }},&nbsp;
