@@ -3,16 +3,16 @@
 avatar: "bbertalanic.jpg"
 
 # position index is used for sorting/positioning on the website
-position: 20
+position: 50
 
 # Prefix (before the name), typically Dr., Mag., ...
-prefix: ""
+prefix: "Dr."
 
 # Display name
 title: "Blaž Bertalanič"
 
 # Role/position
-role: "PhD student"
+role: "Research Associate"
 
 # Organizations/Affiliations
 organizations:
@@ -31,6 +31,7 @@ bio: ""
 
 interests:
 - solving classification problems with the help of machine learning and AI
+- applications of graph netural networks
 - wireless networking
 - electronics
 - signal processing
