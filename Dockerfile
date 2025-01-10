@@ -1,4 +1,4 @@
-FROM ubuntu:23.04
+FROM ubuntu:24.04
 
 # Meta labels
 LABEL maintainer="Gregor Cerar <gregor.cerar@ijs.si>"
