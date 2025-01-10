@@ -1,6 +1,6 @@
 ---
 # personal photo
-avatar: "unk.jpg"
+avatar: "unk.png"
 
 # position index is used for sorting/positioning on the website
 position: 0
@@ -23,8 +23,8 @@ organizations:
 cobiss:
 
 # The date when joined / departed from the lab. Empty if not used
-date_start: ""
-date_end: ""
+date_start:
+date_end: 
 
 # Short bio (displayed in user profile at end of posts)
 bio: ""
