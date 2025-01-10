@@ -16,10 +16,8 @@ role: "Postdoc"
 
 # Organizations/Affiliations
 organizations:
-- name: Bitlis Eren University
-  url: https://www.beu.edu.tr
-- name: Jožef Stefan Institute
-  url: https://ijs.si
+- name: Middlesex University London, UK
+  url: 
 
 # COBISS/SICRIS identifier
 cobiss: 53669

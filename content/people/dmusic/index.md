@@ -16,8 +16,8 @@ role: "MSc student"
 
 # Organizations/Affiliations
 organizations:
-- name: Jožef Stefan Institute
-  url: https://ijs.si
+- name: Canonical, Slovenia
+  url: 
 
 # COBISS/SICRIS identifier
 cobiss:
