@@ -1,8 +1,8 @@
 {{- $resource := .Resources.GetMatch .Params.avatar -}}
-{{- $img := $resource.Fill "250x250 jpeg q90" -}}
+{{- $img := $resource.Fill "150x150 jpeg q90" -}}
 
 
-<li class="p-2 align-items-stretch" style="max-width:250px;">
+<li class="p-2 align-items-stretch" style="max-width:150px;">
     <a href="{{ .Permalink }}" class="link-unstyled">
         <div class="card" style="height:100%">
             <img
@@ -19,7 +19,7 @@
                     {{- end -}}
                     {{- .Params.title -}}
                 </h5>
-                <p class="card-text">{{ .Params.role | markdownify | title }}</p>
+                <p class="card-text">{{ Params.organizations.name | markdownify | title }}</p>
             </div>
         </div>
     </a>
