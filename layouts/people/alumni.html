@@ -19,7 +19,7 @@
                     {{- end -}}
                     {{- .Params.title -}}
                 </h5>
-                <p class="card-text">{{ Params.organizations.name | markdownify | title }}</p>
+                <p class="card-text">{{ .Params.organizations.name | markdownify | title }}</p>
             </div>
         </div>
     </a>
