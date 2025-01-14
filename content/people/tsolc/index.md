@@ -20,7 +20,7 @@ organizations:
   url: https://klevio.com/
 
 # COBISS/SICRIS identifier
-cobiss:
+cobiss: 34648 
 
 # The date when joined / departed from the lab. Empty if not used
 date_start:
