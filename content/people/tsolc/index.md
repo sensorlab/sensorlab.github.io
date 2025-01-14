@@ -12,7 +12,7 @@ prefix: ""
 title: "Tomaž Šolc"
 
 # Role/position
-role: ""
+role: "PhD Student"
 
 # Organizations/Affiliations
 organizations:
