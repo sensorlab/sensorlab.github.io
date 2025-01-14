@@ -9,7 +9,7 @@ position: 0
 prefix: ""
 
 # Display name
-title: "Tomaz Solc"
+title: "Tomaž Šolc"
 
 # Role/position
 role: ""
@@ -17,7 +17,7 @@ role: ""
 # Organizations/Affiliations
 organizations:
 - name: Klevio, Slovenia
-  url:
+  url: https://klevio.com/
 
 # COBISS/SICRIS identifier
 cobiss:
