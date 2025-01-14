@@ -17,6 +17,9 @@
 <article>
     <header class="d-flex flex-column flex-md-row align-items-center align-items-md-start">
         {{ $resource := .Resources.GetMatch .Params.avatar }}
+        {{- if not $resource -}}
+            {{- $resource = resources.Get "images/unk.png" -}}
+        {{- end -}}
         {{ $img := $resource.Fill "200x200 jpeg q90" }}
         <img
             src="{{ $img.Permalink }}"

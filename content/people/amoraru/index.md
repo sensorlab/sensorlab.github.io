@@ -1,6 +1,6 @@
 ---
 # personal photo
-avatar: "unk.png"
+avatar:
 
 # position index is used for sorting/positioning on the website
 position: 0
@@ -9,7 +9,7 @@ position: 0
 prefix: ""
 
 # Display name
-title: "Moraru Alexandra"
+title: "Alexandra Moraru"
 
 # Role/position
 role: "MSc student"

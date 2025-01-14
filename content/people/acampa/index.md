@@ -16,10 +16,10 @@ role: "Senior researcher"
 
 # Organizations/Affiliations
 organizations:
-- name: Jožef Stefan Institute
-  url: https://ijs.si
 - name: Comsensus
   url: https://comsensus.eu
+- name: Jožef Stefan Institute
+  url: https://ijs.si
 
 # COBISS/SICRIS identifier
 cobiss: 25413

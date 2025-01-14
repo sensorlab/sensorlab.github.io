@@ -1,4 +1,8 @@
 {{- $resource := .Resources.GetMatch .Params.avatar -}}
+{{- if not $resource -}}
+    {{ $resource = resources.Get "images/unk.png" }}
+{{- end -}}
+
 {{- $img := $resource.Fill "250x250 jpeg q90" -}}
 
 <li class="p-2 align-items-stretch" style="max-width:250px;">
