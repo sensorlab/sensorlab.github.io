@@ -16,8 +16,8 @@
 
     <section>
         <h1>Alumni</h1>
-        <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start">
-        {{ range sort .Pages ".Params.position" "asc" }}
+        <ul class="list-unstyled">
+        {{ range sort .Pages ".Params.title" "asc" }}
             {{ if in .Params.user_groups "alumni" }}
                 {{ .Render "alumni" }}
             {{ end }}
