@@ -15,9 +15,7 @@ title: "Matevž Vučnik"
 role: "Research associate"
 
 # Organizations/Affiliations
-organizations:
-- name: Jožef Stefan Institute
-  url: https://ijs.si
+organizations: []
 
 # COBISS/SICRIS identifier
 cobiss: 33453

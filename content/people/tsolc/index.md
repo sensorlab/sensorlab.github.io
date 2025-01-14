@@ -9,18 +9,18 @@ position: 0
 prefix: ""
 
 # Display name
-title: "Tomaz Solc"
+title: "Tomaž Šolc"
 
 # Role/position
-role: ""
+role: "PhD Student"
 
 # Organizations/Affiliations
 organizations:
 - name: Klevio, Slovenia
-  url:
+  url: https://klevio.com/
 
 # COBISS/SICRIS identifier
-cobiss:
+cobiss: 34648 
 
 # The date when joined / departed from the lab. Empty if not used
 date_start:

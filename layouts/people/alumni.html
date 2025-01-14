@@ -1,8 +1,23 @@
+<li>
+    <a href="{{ .Permalink }}" class="text-decoration-none">
+        {{- with .Params.prefix -}}
+            <small class="text-body-secondary">{{ . }}</small>&nbsp;
+        {{- end -}}
+        {{- .Params.title -}}
+        {{- with index .Params.organizations 0 -}}
+            <small class="text-body-secondary">, {{ .name | markdownify | title -}}</small>
+        {{- end -}}
+    </a>
+</li>
+
+
+{{/*  
+
 {{- $resource := .Resources.GetMatch .Params.avatar -}}
-{{- $img := $resource.Fill "250x250 jpeg q90" -}}
+{{- $img := $resource.Fill "150x150 jpeg q90" -}}
 
 
-<li class="p-2 align-items-stretch" style="max-width:250px;">
+<li class="p-2 align-items-stretch" style="max-width:150px;">
     <a href="{{ .Permalink }}" class="link-unstyled">
         <div class="card" style="height:100%">
             <img
@@ -19,8 +34,14 @@
                     {{- end -}}
                     {{- .Params.title -}}
                 </h5>
-                <p class="card-text">{{ .Params.role | markdownify | title }}</p>
+                {{- with index .Params.organizations 0 -}}
+                    <p class="card-text">{{ .name | markdownify | title }}</p>
+                {{- else -}}
+                    <p class="card-text">No organization information available</p>
+                {{- end -}}
             </div>
         </div>
     </a>
 </li>
+
+*/}}

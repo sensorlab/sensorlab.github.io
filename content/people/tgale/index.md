@@ -12,12 +12,12 @@ prefix: ""
 title: "Timotej Gale"
 
 # Role/position
-role: ""
+role: "BSc Student"
 
 # Organizations/Affiliations
 organizations:
-- name: University of Ljubljana
-  url:
+- name: Faculty of Computer Science, University of Ljubljana
+  url: https://www.fri.uni-lj.si/en
 
 # COBISS/SICRIS identifier
 cobiss:
