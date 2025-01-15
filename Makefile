@@ -7,6 +7,8 @@ HUGO_PROD_SERVER_ARGS= --gc --minify --disableFastRender
 
 HUGO_PROD_BUILD_ARGS= --gc --minify --baseURL=$(BASE_URL) --environment production
 
+CONTAINER_NAME := sensorlab/hugo
+
 # HELP
 # This will output the help for each task
 # thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
@@ -31,7 +33,7 @@ dev: container  ## Run Hugo in container with development mode
 		-v $(shell pwd):/src \
 		-p=$(PORT):1313 \
 		--name hugo-builder \
-		sensorlab/hugo \
+		$(CONTAINER_NAME) \
 		hugo server $(HUGO_DEV_SERVER_ARGS) --bind 0.0.0.0
 
 
@@ -42,7 +44,7 @@ shell: container ## Run shell inside container
 		-v $(shell pwd):/src \
 		-p=$(PORT):1313 \
 		--name hugo-builder \
-		sensorlab/hugo
+		$(CONTAINER_NAME)
 
 
 cobiss:  ## Update COBISS entries with Python scripts
@@ -77,7 +79,7 @@ build: container  ## produce public folder with content in container
 		-e BABEL_ENV=production \
 		-e HUGO_GA_ID=G-QP8B1RRWGH \
 		--name hugo-builder \
-		sensorlab/hugo \
+		$(CONTAINER_NAME) \
 		bash -c "make clean && make cobiss && make public && make clean"
 
 
@@ -95,9 +97,9 @@ deploy: container  ## produce public folder with content in container
 		-e BABEL_ENV=production \
 		-e HUGO_GA_ID=G-QP8B1RRWGH \
 		--name hugo-builder \
-		sensorlab/hugo \
+		$(CONTAINER_NAME) \
 		bash -c "make clean && make cobiss && make public.tmp && make sync && make clean"
 
 
 container:
-	docker build -t sensorlab/hugo .
+	docker build -t $(CONTAINER_NAME) .
