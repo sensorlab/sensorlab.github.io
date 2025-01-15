@@ -64,18 +64,17 @@
                 <li><strong>Research Interests:</strong>&nbsp;{{ delimit . ", " ", and " }}.</li>
                 {{- end -}}
 
-                {{/*
                 {{- with $member.social -}}
                 <li>
                     <strong>Social:</strong>&nbsp;
                     {{- $list := slice -}}
                     {{- range . -}}
-                        {{- $list = $list | append (printf `<a href="%s"></i>%s</a>` (.link | safeURL) .text | safeHTML) -}}
+                        {{- $list = $list | append (printf `<a href="%s">%s</a>` (.link | safeURL) .text | safeHTML) -}}
                     {{- end -}}
-                    {{- delimit $list " " -}}
+                    {{- delimit $list ", " | safeHTML -}}
                 </li>
                 {{- end -}}
-                */}}
+                
 
             </ul>
         </div>
