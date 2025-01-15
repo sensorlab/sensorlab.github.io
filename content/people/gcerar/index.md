@@ -16,7 +16,7 @@ role: "Research Associate"
 
 # Organizations/Affiliations
 organizations:
-- name: Comsensus
+- name: ComSensus
   url: https://comsensus.eu
 - name: Jožef Stefan Institute
   url: https://ijs.si
@@ -42,15 +42,17 @@ interests:
 # Examples: email, github, twitter/X, personal blog, facebook
 # Check the Bootstrap icons for icon names
 social:
+- text: LinkedIn
+  link: https://www.linkedin.com/in/gcerar/
 - icon: book
-  link: https://scholar.google.com/citations?user=qWOc0fYAAAAJ&hl=en
   text: Scholar
-- icon: github
+  link: https://scholar.google.com/citations?user=qWOc0fYAAAAJ&hl=en
+- text: GitHub
   link: https://github.com/gcerar
-  text: GitHub
-- icon: file-richtext
+- text: Blog
   link: https://gcerar.github.io
-  text: Blog
+- text: Sicris
+  link: https://cris.cobiss.net/ecris/si/en/researcher/45151
 
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
@@ -60,4 +62,6 @@ user_groups:
 # - leaders
 ---
 
-Gregor Cerar received his Bachelor's (2013) and Master's (2016) degrees from the [Faculty of Electrical Engineering](https://www.fe.uni-lj.si/en/) of the University of Ljubljana, where he completed the Telecommunications study programme, and the Ph.D. degree (2021) from [International Postgraduate School of Jožef Stefan](https://www.mps.si/en/) in Information and Communication technologies with the [Department of Communication Systems](https://e6.ijs.si/), Jožef Stefan Institute. He is currently a research associate with the [Department of Communication Systems](https://e6.ijs.si/), [Jožef Stefan Institute](http://ijs.si).
+Gregor Cerar earned his Bachelor's degree (2013) and Master's degree (2016) from the [Faculty of Electrical Engineering](https://www.fe.uni-lj.si/en/) at the University of Ljubljana, where he completed the Telecommunications study program. He obtained his Ph.D. in Information and Communication Technologies (ICT) in 2021 from the [International Postgraduate School of Jožef Stefan](https://www.mps.si/en/), in collaboration with the [Department of Communication Systems](https://e6.ijs.si/) at the Jožef Stefan Institute.
+
+Currently, he holds a part-time postdoctoral position with the [Department of Communication Systems](https://e6.ijs.si/) at the [Jožef Stefan Institute](http://ijs.si) and works as a research engineer at [ComSensus](https://www.comsensus.eu/).
