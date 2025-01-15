@@ -44,8 +44,7 @@ interests:
 social:
 - text: LinkedIn
   link: https://www.linkedin.com/in/gcerar/
-- icon: book
-  text: Scholar
+- text: Scholar
   link: https://scholar.google.com/citations?user=qWOc0fYAAAAJ&hl=en
 - text: GitHub
   link: https://github.com/gcerar
