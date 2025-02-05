@@ -12,7 +12,7 @@ prefix: "Dr."
 title: "Blaž Bertalanič"
 
 # Role/position
-role: "Research Associate"
+role: "Postdoc"
 
 # Organizations/Affiliations
 organizations:
@@ -45,4 +45,4 @@ user_groups:
 # - leaders
 ---
 
-Blaž Bertalanič received his Master’s degree in electrical engineering from the Faculty of Electrical engineering, University of Ljubljana. He is currently pursuing his PhD at the same faculty and is working as a researcher at the Department of Communication Systems, Jožef Stefan Institute.
+Blaž Bertalanič received his Master’s degree in electrical engineering from the Faculty of Electrical Engineering, University of Ljubljana. He completed his PhD at the same faculty in 2024 and is now a postdoctoral researcher at the Department of Communication Systems, Jožef Stefan Institute.

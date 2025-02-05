@@ -12,7 +12,7 @@ prefix: "Dr."
 title: "Shih-Kai Chou"
 
 # Role/position
-role: "Research Associate"
+role: "Postdoc"
 
 # Organizations/Affiliations
 organizations:

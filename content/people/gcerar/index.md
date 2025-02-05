@@ -12,7 +12,7 @@ prefix: "Dr."
 title: "Gregor Cerar"
 
 # Role/position
-role: "Research Associate"
+role: "Postdoc"
 
 # Organizations/Affiliations
 organizations:
