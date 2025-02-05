@@ -102,4 +102,8 @@ deploy: container  ## produce public folder with content in container
 
 
 container:
-	docker build -t $(CONTAINER_NAME) .
+	docker build \
+		--build-arg UID=$(shell id -u) \
+		--build-arg GID=$(shell id -g) \
+		-t $(CONTAINER_NAME) \
+		.
