@@ -45,9 +45,7 @@ jobs:
           cache: npm
 
       - name: Pull COBISS and ArXiv metadata
-        run: |
-          python -m pip install arxiv requests unidecode ujson
-          python scripts/cobiss_parser.py
+        run: python scripts/cobiss_parser.py
 
       - name: Install NodeJS dependencies
         run: npm ci
