@@ -5,4 +5,4 @@ description: "We are advancing the state of the art of various aspects of Smart 
 images: ["/images/sensorlab-color.min.svg"]
 ---
 
-We are advancing the state of the art of various aspects of Smart Infrastructures from communications and networking to data analytics.
+We are advancing the state of the art in smart infrastructure and pushing the boundaries of AI and data-driven technologies to enable intelligent, adaptive, and sustainable systems.
