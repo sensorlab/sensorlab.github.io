@@ -9,7 +9,7 @@ position: 50
 prefix: "Dr."
 
 # Display name
-title: "Matija (Matic) Cankar"
+title: Matija "Matic" Cankar
 
 # Role/position
 role: "Research fellow"
