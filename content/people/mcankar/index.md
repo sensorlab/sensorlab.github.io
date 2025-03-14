@@ -52,6 +52,6 @@ user_groups:
 
 Dr. Matija Cankar is a Slovenian computer scientist specializing in computer structures, systems, networks, and interactive technology. He earned his Bachelor of Science degree in 2008 and his Ph.D. in 2014, both from the University of Ljubljana's [Faculty of Computer and Information Science](https://fri.uni-lj.si/en).
 
-Professionally, he has held various roles in the tech industry. Since October 2024, he has been serving as a development engineer and researcher at ComSensus d.o.o. Concurrently, he joined the Jožef Stefan Institute's Department of Communication Systems as a research fellow.
+Professionally, he has held various roles in the tech industry. Since October 2024, he has been serving as a development engineer and researcher at [ComSensus](https://comsensus.eu). Concurrently, he joined the Jožef Stefan Institute's [Department of Communication Systems](https://e6.ijs.si/) as a research fellow.
 
 His work reflects a strong commitment to advancing computer science, particularly in software development, interactive technologies, and artificial intelligence applications.
