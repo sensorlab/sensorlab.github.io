@@ -20,7 +20,7 @@
         {{- if not $resource -}}
             {{- $resource = resources.Get "images/unk.png" -}}
         {{- end -}}
-        {{ $img := $resource.Fill "200x200 jpeg q90" }}
+        {{ $img := $resource.Fill "200x200 webp photo" }}
         <img
             src="{{ $img.Permalink }}"
             width="{{ $img.Width }}"

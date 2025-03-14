@@ -3,7 +3,8 @@
     <h1>{{ .Title }}</h1>
 
     {{ range $index, $project := sort .Pages ".Params.date_end" "desc" }}
-        {{ $img := ( .Resources.GetMatch .Params.featured_image ).Resize "200x" }}
+        {{ $img := ( .Resources.GetMatch .Params.featured_image ) }}
+        {{ $img = $img.Resize "200x webp drawing" }}
         <section class="mt-5">
             <header class="mb-2">
                 <h2>

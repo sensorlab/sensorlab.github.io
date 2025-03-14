@@ -32,8 +32,10 @@
         {{ $img := $pageScope.Page.Resources.GetMatch .Params.featured_image }}
 
         {{ if ne $img.MediaType.SubType "svg" }}
-          {{ $img = $img.Fit "250x192" }}
+          {{ $img = $img.Fit "250x192 webp drawing" }}
         {{ end }}
+
+        
         
         <input type="checkbox" id="featured-{{ $index }}" class="read-more" />
         <div class="my-2 mx-5 text-center">
