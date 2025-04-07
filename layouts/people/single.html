@@ -103,7 +103,7 @@
         (slice "Books" (slice "2.01"))
         (slice "Books Chapters" (slice "1.16"))
         (slice "Patents" (slice "2.24"))
-        (slice "Publications" (slice "1.01" "1.08" "preprint"))
+        (slice "Publications" (slice "1.01" "1.02" "1.03" "1.08" "preprint"))
     }}
 
     {{ range $q := $subsets }}
@@ -117,7 +117,7 @@
                 <h3>{{ $t | title }}:</h3>
                 <ul class="list-group list-group-flush">
                     {{ range $subset }}
-                        <li class="list-group-item publication">
+                        <li class="list-group-item publication" data-cobiss-code="{{ .code }}">
                             <div class="title"><strong>{{ .title | title }}</strong></div>
                             
                             <div class="authors">

@@ -12,7 +12,7 @@
 
 {{- end -}}
 
-<li class="list-group-item publication">
+<li class="list-group-item publication" data-cobiss-code="{{ .code }}">
     <div class="title"><strong>{{ .title | title }}</strong></div>
     <div class="authors">{{- delimit $authors ", " | safeHTML -}}</div>
     <div class="publication">
