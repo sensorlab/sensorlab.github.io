@@ -506,8 +506,8 @@ def valid_sensorlab_paper(paper: dict) -> bool:
     assert isinstance(target_involved, (int, float))
 
     if paper["title"].lower().startswith("large-scale site"):
+        logger.debug((n_authors, n_employees, target_involved))
         # print(paper)
-
         # print(n_authors, n_employees, target_involved)
 
     # At least one other member needs to be involved, unless sole author
