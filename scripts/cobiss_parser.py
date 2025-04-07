@@ -367,7 +367,7 @@ def get_arxiv_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], No
     entries = {}
 
     researcher_names = {get_clean_ascii_name(r.name).lower(): r.cobiss for r in researchers}
-    print(researcher_names)
+    # print(researcher_names)
 
     for researcher in researchers:
         # Handle cases where name contains non-ASCII letters. Required just for query.
@@ -506,9 +506,9 @@ def valid_sensorlab_paper(paper: dict) -> bool:
     assert isinstance(target_involved, (int, float))
 
     if paper["title"].lower().startswith("large-scale site"):
-        print(paper)
+        # print(paper)
 
-        print(n_authors, n_employees, target_involved)
+        # print(n_authors, n_employees, target_involved)
 
     # At least one other member needs to be involved, unless sole author
     if (n_authors == n_employees) or (n_employees - target_involved) > 0:
@@ -523,7 +523,7 @@ def main():
 
     verbose_levels = (logging.INFO, logging.DEBUG)
     args.verbose = args.verbose if args.verbose < len(verbose_levels) else len(verbose_levels) - 1
-    print(args.verbose)
+    # print(args.verbose)
     logger.setLevel(verbose_levels[args.verbose])
 
     members = get_members(path=args.input)
