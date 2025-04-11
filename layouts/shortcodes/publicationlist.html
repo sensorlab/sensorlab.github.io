@@ -1,0 +1,35 @@
+{{/* Usage: {{< publicationlist ids="pub-001,pub-002" >}} */}}
+{{/* IDs can be either COBISS, arXiv or DOI id. */}}
+
+
+{{ $ids := slice }}
+{{ $items := split (.Get "ids") "," }}
+
+{{ range $items }}
+    {{ $clean := trim . " " }}
+
+    {{ if ne $clean "" }}
+        {{ $ids = $ids | append $clean }}
+    {{ end }}
+{{ end }}
+
+
+{{ $bib := slice }}
+
+{{ range $.Site.Data.cobiss }}
+    {{ $match := or (in $ids .cobiss_id) (or (in $ids .arxiv_id) (in $ids .doi)) }}
+    {{ if $match }}
+        {{ $bib = $bib | append . }}
+    {{ end }}
+{{ end }}
+
+{{ $bib = uniq $bib }}
+{{ $bib = sort $bib ".year" "desc" }}
+
+<section>
+    <ul class="list-group list-group-flush">
+        {{ range $bib }}
+            {{ partial "publication/li.html" . }}
+        {{ end }}
+    </ul>
+</section>

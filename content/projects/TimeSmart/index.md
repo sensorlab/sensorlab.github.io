@@ -55,21 +55,5 @@ Implement a fully operational AI-powered management system to demonstrate the ga
 
 ## Publications:
 
-### Journals
-
-### Conferences
-
-{{< rawhtml >}}
-    <div class="title"><strong>Deep W-Networks: Solving Multi-Objective Optimisation Problems With Deep Reinforcement Learning</strong></div>
-    <div class="authors"><u>Jernej Hribar</u>, Luke Hackett, Ivana Dusparic</div>
-    <div class="publication">15th International Conference on Agents and Artificial Intelligence, 22-24 Feb. 2023, Lisbon, Portugal</div>
-    <ul class="list-inline">
-        <li class="list-inline-item">
-            <a class="badge bg-doi text-black link-unstyled" href="https://doi.org/10.5220/0011610300003393">DOI:&nbsp;10.5220/0011610300003393</a>
-        </li>
-    </ul>
-{{< /rawhtml >}}
-
-
-## Deliverables:
+{{< publicationlist ids="224706051,225171971,222006275,215868675,215324419,207454467,203599875,202801155,199618307,199377155,192260099,172241411,166292995,159983619,158333187,145125123,127025155,126791683,126776835,97757187,98959875,97766915,97818627,97896963,97883139,97766659,97898499,2408.00540v2,2203.10472v2,1902.02850v1">}}
 
