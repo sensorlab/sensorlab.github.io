@@ -1,6 +1,9 @@
 {{ define "main" }}
 
-
+{{ $img := ( .Resources.GetMatch .Params.featured_image ) }}
+{{ if not $img }}
+    {{ $img = resources.Get .Params.featured_image }}
+{{ end }}
 
 
 <main class="flex-fill container post my-4" aria-role="main">
@@ -16,10 +19,12 @@
 
     <article class="mt-4">
         <header class="mb-4">
-            <div>
-                {{ $img := ( .Resources.GetMatch .Params.featured_image ).Resize "200x" }}
-                <img src="{{ $img.Permalink }}" alt="{{ .Title }} logo" class="me-3 mb-2" height="{{ $img.Height }}" width="{{ $img.Width }}" style="max-width:min(200px, 100vw);" />
-            </div>
+            {{ if $img }}
+                {{ $img = $img.Resize "200x webp drawing" }}
+                <div>
+                    <img src="{{ $img.Permalink }}" alt="{{ .Title }} logo" class="me-3 mb-2" height="{{ $img.Height }}" width="{{ $img.Width }}" style="max-width:min(200px, 100vw);" />
+                </div>
+            {{ end }}
             <div>
                 <h1>{{ .Title }}</h1>
                 <p>
