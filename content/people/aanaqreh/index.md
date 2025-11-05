@@ -16,15 +16,15 @@ role: "Postdoc"
 
 # Organizations/Affiliations
 organizations:
-- name: Jožef Stefan Institute
-  url: https://ijs.si
+- name: Applied Science Private University, Jordan
+  url: https://www.asu.edu.jo
 
 # COBISS/SICRIS identifier
 cobiss: 
 
 # The date when joined / departed from the lab. Empty if not used
 date_start: "2024-11-01"
-date_end:
+date_end: "2025-09-01"
 
 # Short bio (displayed in user profile at end of posts)
 bio: ""
@@ -38,8 +38,9 @@ interests:
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
+- alumni
 - researchers
 - postdocs
 ---
 
-Ahmad Anaqreh received a Master's degree in Computer Science in 2019 and a Ph.D. in Computer Science in 2024 from the University of Szeged, Hungary. His research focuses on optimizing graph theory problems, particularly NP-hard problems
+Ahmad Anaqreh received a Master's degree in Computer Science in 2019 and a Ph.D. in Computer Science in 2024 from the University of Szeged, Hungary. His research focuses on optimizing graph theory problems, particularly NP-hard problems.
