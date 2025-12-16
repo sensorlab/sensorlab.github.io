@@ -16,6 +16,8 @@ role: "MSc student"
 
 # Organizations/Affiliations
 organizations:
+- name: BE-Terna
+  url: https://www.be-terna.com/
 - name: Jožef Stefan Institute
   url: https://ijs.si
 
