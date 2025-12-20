@@ -24,6 +24,7 @@ copyright = "SensorLab"
 
 [params]
     author = "SensorLab"
+    description = "SensorLab at Jozef Stefan Institute - Research in artificial intelligence, communications and computing."
     github = "https://github.com/sensorlab"
 
     inlineCSS = false

@@ -71,6 +71,28 @@
 {{ template "_internal/opengraph.html" . }}
 {{ template "_internal/twitter_cards.html" . }}
 
+{{/* JSON-LD structured data for better SEO */}}
+{{ if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ResearchOrganization",
+  "name": "SensorLab",
+  "url": "{{ .Site.BaseURL }}",
+  "logo": "{{ "images/sensorlab-color.min.svg" | absURL }}",
+  "description": "{{ .Site.Params.description }}",
+  "parentOrganization": {
+    "@type": "ResearchOrganization",
+    "name": "Jozef Stefan Institute",
+    "url": "https://www.ijs.si"
+  },
+  "sameAs": [
+    "{{ .Site.Params.github }}"
+  ]
+}
+</script>
+{{ end }}
+
 <title>
     {{- if not hugo.IsProduction  }}[DEV] {{ end -}}
     {{- if not .IsHome }}{{ .Params.name | default .Title }} &mdash; {{ end -}}
