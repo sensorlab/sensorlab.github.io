@@ -45,13 +45,7 @@
 	<meta name="description" content="{{ plainify . }}" />
 {{ end }}
 
-<!-- Keywords are ignore nowadays by search engines -->
-{{ if not hugo.IsProduction  }}
-	<!-- robots; TODO: disable index on lists -->
-	<meta name="robots" content="noindex,nofollow" />
-{{ else }}
-	<meta name="robots" content="index,follow" />
-{{ end }}
+<meta name="robots" content="index,follow" />
 
 
 {{/* canonical links to alternative representations */}}
