@@ -58,6 +58,8 @@
     <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}" />
 {{ end }}
 
+<meta name="google-site-verification" content="zl9o8a5lMqKy_2dn2YR6swgC5REHalMWw25PBhJnJSc" />
+
 {{ range .AlternativeOutputFormats }}
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
 {{ end }}
