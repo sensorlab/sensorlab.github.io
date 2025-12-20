@@ -1,3 +1,4 @@
+<meta name="google-site-verification" content="zl9o8a5lMqKy_2dn2YR6swgC5REHalMWw25PBhJnJSc" />
 {{ with .Site.Params.themeColor }}
     <meta name="theme-color" content="{{ . }}" />
 {{ end }}
@@ -45,9 +46,9 @@
 <!-- Keywords are ignore nowadays by search engines -->
 {{ if not hugo.IsProduction  }}
 	<!-- robots; TODO: disable index on lists -->
-	<meta name="robots" content="index,follow" />
-{{ else }}
 	<meta name="robots" content="noindex,nofollow" />
+{{ else }}
+	<meta name="robots" content="index,follow" />
 {{ end }}
 
 
@@ -57,8 +58,6 @@
 {{ range .Translations }}
     <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}" />
 {{ end }}
-
-<meta name="google-site-verification" content="zl9o8a5lMqKy_2dn2YR6swgC5REHalMWw25PBhJnJSc" />
 
 {{ range .AlternativeOutputFormats }}
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
