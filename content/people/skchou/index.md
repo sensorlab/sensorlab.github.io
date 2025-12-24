@@ -3,7 +3,7 @@
 avatar: "skchou2.jpg"
 
 # position index is used for sorting/positioning on the website
-position: 50
+position: 0
 
 # Prefix (before the name), typically Dr., Mag., ...
 prefix: "Dr."
@@ -16,15 +16,15 @@ role: "Postdoc"
 
 # Organizations/Affiliations
 organizations:
-- name: Jozef Stefan Institute
-  url: https://ijs.si
+- name: Ericsson, Sweden
+  url: https://www.ericsson.com
 
 # COBISS/SICRIS identifier
 #cobiss: 
 
 # The date when joined / departed from the lab. Empty if not used
 date_start: "2023-10-17"
-#date_end:
+#date_end: "2025-12-15"
 
 # Short bio (displayed in user profile at end of posts)
 #bio: ""
@@ -39,6 +39,7 @@ interests:
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
 - researchers
+- alumni
 # - students
 # - leaders
 ---

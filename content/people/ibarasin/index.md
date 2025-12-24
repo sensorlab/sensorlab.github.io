@@ -16,7 +16,7 @@ role: "MSc student"
 
 # Organizations/Affiliations
 organizations:
-- name: NLB Group
+- name: NLB Group, Slovenia
   url: https://www.nlb.si
 
 # COBISS/SICRIS identifier
