@@ -1,6 +1,6 @@
 ---
 # personal photo
-avatar: "ibarasin.jpg"
+avatar: "mkaps.jpg"
 
 # position index is used for sorting/positioning on the website
 position: 0
@@ -9,35 +9,36 @@ position: 0
 prefix: ""
 
 # Display name
-title: "Irina Barašin"
+title: "Miha Kapš"
 
 # Role/position
-role: "MSc student"
+role: "BSc student"
 
 # Organizations/Affiliations
 organizations:
-- name: NLB Group, Slovenia
-  url: https://www.nlb.si
+- name: Jožef Stefan Institute
+  url: https://ijs.si
 
 # COBISS/SICRIS identifier
 cobiss:
 
 # The date when joined / departed from the lab. Empty if not used
-date_start: "2024-07-01"
-date_end: "2025-09-01"
+date_start: "2025-09-01"
+date_end:
 
 # Short bio (displayed in user profile at end of posts)
 bio: ""
 
 interests:
+- time series analysis
+- diffusion models
 - deep learning
-- kolmogorov-arnold networks
-
+- combinatorics and discrete mathematics
 
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
 - researchers
-- alumni
 ---
-I received my Bachelor's degree in Computer Science from the University of Ljubljana in 2024. I am currently a Master's student in Data Science at the University of Novo Mesto. My research focuses on Kolmogorov-Arnold Networks.
+
+I am a bachelor’s student of Computer Science and Mathematics. At the Jožef Stefan Institute, I am involved in research-oriented projects in machine learning, with a primary focus on applications to time series data.

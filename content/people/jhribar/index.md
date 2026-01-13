@@ -18,6 +18,8 @@ role: "MSCA Fellow"
 organizations:
 - name: Jožef Stefan Institute
   url: https://ijs.si
+- name: Arctur
+  url: https://www.arctur.si
 
 # COBISS/SICRIS identifier
 cobiss: 56214
