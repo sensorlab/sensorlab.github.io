@@ -12,7 +12,7 @@ prefix: ""
 title: "Miha Kapš"
 
 # Role/position
-role: "BCs student"
+role: "BSc student"
 
 # Organizations/Affiliations
 organizations:

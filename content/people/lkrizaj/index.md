@@ -12,7 +12,7 @@ prefix: ""
 title: "Lea Križaj"
 
 # Role/position
-role: "Bcc student"
+role: "BSc student"
 
 # Organizations/Affiliations
 organizations:
