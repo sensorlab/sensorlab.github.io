@@ -37,7 +37,7 @@
 
     {{ if .Paginator }}
     <nav class="d-flex d-content justify-content-center">
-        {{ template "_internal/pagination.html" . }}
+        {{ partial "pagination.html" . }}
     </nav>
     {{ end }}
 
