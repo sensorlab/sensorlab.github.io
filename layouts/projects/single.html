@@ -28,9 +28,21 @@
             <div>
                 <h1>{{ .Title }}</h1>
                 <p>
-                    <span>
-                        Duration: {{ .Params.date_start | time.Format "Jan 2006" }} &mdash; {{ .Params.date_end | time.Format "Jan 2006" }}
-                    </span>
+                    <ul class="list-unstyled">
+                        {{ with .Params.grant_code }}
+                        <li>
+                            <strong>Grant:</strong> {{ . }}
+                        </li>
+                        {{ end }}
+                        <li>
+                            <strong>Duration:</strong> {{ .Params.date_start | time.Format "Jan 2006" }} &mdash; {{ .Params.date_end | time.Format "Jan 2006" }}
+                        </li>
+                        {{ with .Params.budget }}
+                        <li>
+                            <strong>Budget:</strong> {{ . }}
+                        </li>
+                        {{ end }}
+                    </ul>
                 </p>
             </div>
         </header>
