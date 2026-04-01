@@ -10,6 +10,8 @@ location: Ljubljana, Slovenia (on-site)
 draft: false
 ---
 
+**We're hiring two PhD researchers as part of GENOME, a prestigious EU-funded Marie Skłodowska-Curie Actions (MSCA) project.**
+
 {{< rawhtml >}}
 <div class="alert alert-warning" role="alert">
   <strong>Deadline:</strong> Till the position is filled.
@@ -53,8 +55,7 @@ Jožef Stefan Institute's offices are located a 20-minutes' walk from the center
 
 **Employment:** The contract will cover 3 years full-time employment.  
 **Place of work:** Ljubljana.  
-**Application:** The application must include CV and a statement describing your research interest.
-The application must include a cover letter describing motivation, research interests & relevant experience, a detailed CV, a digital copy of BSc/MSc certificate an possibly an access to a recent relevant project (e.g. GitHub repository) or/and any publication. Submit you application to [sensorlab@ijs.si](mailto:sensorlab@ijs.si).  
+**Application:** We're hiring two PhD researchers as part of GENOME (https://jobs.genome-msca.eu), a prestigious EU-funded Marie Skłodowska-Curie Actions (MSCA) project. 
 **Type of employment:** Temporary position longer than 6 months  
 **Contract type:** Full-time  
 **First day of employment:** Subject to agreement (study year starts in October)  
