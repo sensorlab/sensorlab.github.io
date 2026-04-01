@@ -29,3 +29,22 @@ Do you want to build up **your career** by doing research during your undergrad 
 Are you interested? Introduce yourself to [sensorlab@ijs.si](mailto:sensorlab@ijs.si) by sending:
 - [Europass](https://europa.eu/europass/en/create-europass-cv)-style CV or better
 - Motivation letter explaining what brings you here.
+
+
+
+{{< rawhtml >}}
+<div class="text-center mt-4">
+  <h4 class="mb-3">Interested in working with us?</h4>
+  
+  <a 
+    href="mailto:sensorlab@ijs.si?subject=Student%20Work%20/%20Študentsko%20delo"
+    class="btn btn-primary btn-lg px-5 py-3 fw-semibold shadow-sm"
+  >
+    Apply Now
+  </a>
+
+  <p class="text-muted mt-3 mb-0">
+    Send your CV and a short motivation letter.
+  </p>
+</div>
+{{< /rawhtml >}}

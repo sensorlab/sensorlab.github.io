@@ -55,7 +55,7 @@ Jožef Stefan Institute's offices are located a 20-minutes' walk from the center
 
 **Employment:** The contract will cover 3 years full-time employment.  
 **Place of work:** Ljubljana.  
-**Application:** We're hiring two PhD researchers as part of GENOME (https://jobs.genome-msca.eu), a prestigious EU-funded Marie Skłodowska-Curie Actions (MSCA) project. 
+**Application:** We're hiring two PhD researchers as part of [GENOME](https://jobs.genome-msca.eu), a prestigious EU-funded Marie Skłodowska-Curie Actions (MSCA) project.  
 **Type of employment:** Temporary position longer than 6 months  
 **Contract type:** Full-time  
 **First day of employment:** Subject to agreement (study year starts in October)  
@@ -63,3 +63,22 @@ Jožef Stefan Institute's offices are located a 20-minutes' walk from the center
 **Number of positions:** 1  
 **City:** Ljubljana  
 **Country:** Slovenia  
+
+
+
+{{< rawhtml >}}
+<div class="text-center mt-4">
+  <h4 class="mb-3">Interested in this position?</h4>
+  
+  <a 
+    href="mailto:sensorlab@ijs.si?subject=PhD%20Student%20in%20Intelligent%20Orchestration%20Application"
+    class="btn btn-primary btn-lg px-5 py-3 fw-semibold shadow-sm"
+  >
+    Apply Now
+  </a>
+
+  <p class="text-muted mt-3 mb-0">
+    Send your CV and a short motivation letter.
+  </p>
+</div>
+{{< /rawhtml >}}
