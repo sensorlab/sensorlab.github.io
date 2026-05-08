@@ -10,7 +10,7 @@ summary: "The European Union is currently preparing to implement the infrastruct
 
 # When project started and ended
 date_start: "2023-01-01T00:00:00Z"
-date_end: "2025-07-01T00:00:00Z"
+date_end: "2026-07-01T00:00:00Z"
 
 # Project_url
 # project_url: ""
