@@ -2,7 +2,7 @@
 title: Anomaly detection
 draft: False
 featured_image: anomaly-detection.svg
-position: 0
+position: 3
 ---
 
-Time series anomaly detection is an important and yet unsolved challenge that is relevant for developing, maintaining and monitoring various aspects of smart infrastructures. One of our original contributions to the area consists in the definition of [four types of anomalies](https://ieeexplore.ieee.org/document/9264175) relevant for monitoring the quality of the wireless links between various smart objects. A second original contribution consists of using [time series to image transformations](https://arxiv.org/abs/2104.00972) for advancing the state of the art in detection performance.
+Time series anomaly detection remains a key challenge for developing, maintaining and monitoring smart infrastructures. Our early contributions defined [four types of wireless link anomalies](https://ieeexplore.ieee.org/document/9264175) and introduced [time-series-to-image transformations](https://arxiv.org/abs/2104.00972) to advance detection performance. More recently we have moved to graph-based methods, with a [visibility-graph approach for digital-twin edge networks](https://doi.org/10.1109/OJCOMS.2024.3393853) and an [explainable semantic characterization of anomalies for digital twins](https://doi.org/10.1016/j.comnet.2024.110660) that turns black-box detectors into interpretable monitoring tools.

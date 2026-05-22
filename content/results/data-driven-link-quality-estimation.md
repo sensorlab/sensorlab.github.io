@@ -8,7 +8,7 @@ date: 2021-06-28
 extras:
   - name: GitHub
     type: code
-    url: https://github.com/sensorlab/smart-home-energy-trading-with-DRL
+    url: https://github.com/sensorlab/link-quality-estimation
 
 backref:
   - 'G. Cerar, *et al.*, "Machine Learning for Wireless Link Quality Estimation: A Survey", 2021, ([IEEE COMST](https://doi.org/10.1109/COMST.2021.3053615))'

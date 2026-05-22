@@ -1,8 +1,8 @@
 ---
-title: "Link quality classification"
+title: "Wireless link reliability"
 draft: False
 featured_image: "anomalous-link.svg"
-position: 1
+position: 4
 ---
 
-Wireless links are crucial to cost efficiently connecting various components in smart infrastructures. Recently, machine learning techniques proved to be suitable for more accurate estimation and classification. As original contribution to this area, we provide a comprehensive [survey](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9333616) on link quality estimators developed from empirical data and then focus on the subset that use ML algorithms. We analyze ML-based Link Quality Estimation (LQE) models from two perspectives using performance data. Firstly, we focus on how they address quality requirements that are important from the perspective of the applications they serve. Secondly, we analyze how they approach the standard design steps commonly used in the ML community.
+Wireless links are crucial for cost-efficiently connecting components in smart infrastructures, and machine learning has proved well suited to estimating and classifying their quality. Our comprehensive [survey on data-driven link quality estimation](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9333616) analyzes ML-based LQE from both application-requirement and ML-design-process perspectives. Building on that foundation, recent work tackles a problem that has become central as networks evolve towards 6G: maintaining reliability when the data distribution shifts. We have proposed a [representation-learning approach to feature drift detection in wireless networks](https://doi.org/10.1109/TETC.2025.3644604) and a broader framework for [detecting concept drift in wireless networks](https://arxiv.org/abs/2508.00042).

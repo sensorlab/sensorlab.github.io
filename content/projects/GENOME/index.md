@@ -2,6 +2,9 @@
 # Project's title
 title: "GENOME: GENerative and connected intelligence for 6G Open ManagemEnt"
 
+# Featured image used for thumbnail and banner at detail page
+featured_image: "cropped-genome_logo.png"
+
 # Short summary of the project
 summary: "AI and large language models (LLMs) are increasingly used to handle complex tasks across many fields. In network management, they offer powerful tools to automate operations, improve efficiency, and optimise performance. Supported by the Marie Skłodowska-Curie Actions programme, the GENOME project aims to design, develop, and test LLM-based solutions for the autonomous management of different network domains."
 
