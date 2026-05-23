@@ -1,558 +1,725 @@
-from typing import Iterable, List, Tuple, Dict, Union
-from pathlib import Path
-from dataclasses import dataclass
-from datetime import datetime
-import logging
-import sys
-import time
-import re
-from glob import glob as glob
+"""COBISS & arXiv bibliography parser for SensorLab publications."""
 
 import argparse
-
-from datetime import datetime as dt
-
+import contextlib
+import json
+import logging
+import re
+import sys
+import time
 import xml.etree.ElementTree as ET
+from dataclasses import dataclass, field
+from datetime import datetime
+from functools import lru_cache
+from pathlib import Path
+from typing import Any, TypeAlias
 
 import arxiv
-from unidecode import unidecode
-
 import requests
 from requests.adapters import HTTPAdapter
+from unidecode import unidecode
 from urllib3 import Retry
 
-try:
-    import ujson as json
-except ImportError:
-    import json
+# ---------------------------------------------------------------------------
+# Constants
+# ---------------------------------------------------------------------------
 
-
-LOG_LEVEL = logging.INFO
-
-
+LOG_LEVEL = logging.DEBUG
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-
-MEMBER_SRC_PATH = PROJECT_ROOT / 'content' / 'people' / '**' / 'index.md'
-
-# this template will (after ajax redirect) return xml of a bibligraphy from a researcher with desired id
+MEMBER_SRC_PATH = PROJECT_ROOT / "content" / "people"
 SICRIS_BIB_XML_TEMPLATE_URL = "https://bib.cobiss.net/biblioweb/direct/si/eng/cris/{0}?formatbib=ISO&format=X&code={0}&langbib=eng&formatbib=2&format=11"
-
 DEFAULT_TIMEOUT = 12
+N_RETRIES = 10
 
-
-DEFAULT_EXCLUDE_LIST = [
-    55792, # L. Milosheski
-    53669, # dr. Halil Yetgin
-    36719, # M. Mihelin
+DEFAULT_EXCLUDE_LIST: list[str] = [
+    "55792",  # L. Milosheski
+    "53669",  # dr. Halil Yetgin
+    "36719",  # M. Mihelin
+    "31118",  # M. Cankar
 ]
 
-@dataclass
-class Member:
-    cobiss: Union[int, None]
-    name: str = ''
-    date_start: datetime = datetime.min
-    date_end: datetime = datetime.max
+# Precompiled regex patterns
+_SPACE_BEFORE_COLON: re.Pattern[str] = re.compile(r"\s+:")
+_DOUBLE_QUOTED_TEXT: re.Pattern[str] = re.compile(r'"[^"]*"')
 
 
+# ---------------------------------------------------------------------------
+# Type aliases (Python 3.12+)
+# ---------------------------------------------------------------------------
 
-def get_logger():
+AuthorDict: TypeAlias = dict
+PublicationDict: TypeAlias = dict
+MemberList: TypeAlias = tuple["Member", ...]
+ExcludeList: TypeAlias = list[int] | None
+
+
+# ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+
+
+def get_logger() -> logging.Logger:
     logger = logging.getLogger(__name__)
     logger.setLevel(LOG_LEVEL)
-    formatter = logging.Formatter('[%(levelname)-8s] %(message)s')
+    formatter = logging.Formatter("[%(levelname)-8s] %(message)s")
     console = logging.StreamHandler(sys.stdout)
     console.setFormatter(formatter)
     logger.addHandler(console)
     return logger
 
+
 logger = get_logger()
 
 
+# ---------------------------------------------------------------------------
+# Timing context manager
+# ---------------------------------------------------------------------------
+
+
+@contextlib.contextmanager
+def timer(label: str):
+    """Context manager that logs elapsed time for a block."""
+    start = time.perf_counter()
+    try:
+        yield
+    finally:
+        elapsed = time.perf_counter() - start
+        logger.info(f"{label} completed in {elapsed:.2f}s")
+
+
+# ---------------------------------------------------------------------------
+# HTTP session
+# ---------------------------------------------------------------------------
+
+
 class TimeoutHTTPAdapter(HTTPAdapter):
-    def __init__(self, *args, **kwargs):
-        self.timeout = DEFAULT_TIMEOUT
-        if "timeout" in kwargs:
-            self.timeout = kwargs["timeout"]
-            del kwargs["timeout"]
+    """HTTP adapter that applies a default timeout to requests without explicit timeout."""
+
+    def __init__(self, *args, timeout: int = DEFAULT_TIMEOUT, **kwargs):
+        self._timeout = timeout
         super().__init__(*args, **kwargs)
 
-    def send(self, request, **kwargs):
-        timeout = kwargs.get("timeout")
+    def send(
+        self,
+        request,
+        stream: bool = False,
+        timeout=None,
+        verify: bool | str = True,
+        cert: Any = None,
+        proxies=None,
+    ):
         if timeout is None:
-            kwargs["timeout"] = self.timeout
-        return super().send(request, **kwargs)
+            timeout = self._timeout
+        return super().send(
+            request,
+            stream=stream,
+            timeout=timeout,
+            verify=verify,
+            cert=cert,
+            proxies=proxies,
+        )
 
 
-def make_session():
-    """Hack together a session with exponential backoff."""
+def make_session() -> requests.Session:
+    """Create a session with exponential backoff retry strategy."""
     retry_strategy = Retry(
-        total=10,
+        total=N_RETRIES,
         backoff_factor=2,
-        respect_retry_after_header=False, # ignore retry time suggested by server
+        respect_retry_after_header=False,
     )
     adapter = TimeoutHTTPAdapter(max_retries=retry_strategy, timeout=DEFAULT_TIMEOUT)
     session = requests.Session()
-
-    # Apply exp-backoff to http(s) links
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
     return session
 
 
-def get_members(path:Path=MEMBER_SRC_PATH) -> Tuple[Member]:
-    def find_cobiss_id(string: str) -> Union[int, None]:
-        for line in string.splitlines():
-            if 'cobiss:' in line.lower():
-                number = line[line.find(':')+1:]
-                number = number.strip().strip('"').strip("'").strip()
-                logger.debug(f'Found COBISS-ID "{number}"')
-                if number and number.isdigit():
-                    return int(number)
-        
-        return None
-
-    def find_name(string: str) -> Union[str, None]:
-        for line in string.splitlines():
-            if 'title:' in line.lower():
-                name = line[line.find(':')+1:]
-                name = name.strip().strip('"').strip("'").strip()
-                if name and len(name) > 0:
-                    return name
-
-        return None
-
-    def find_datetime(string: str, prefix:str, default=None):
-        for line in string.splitlines():
-            if prefix.lower() in line.lower():
-                timestamp = line[line.find(':')+1:]
-                timestamp = timestamp.strip().strip('"').strip("'").strip()
-                if timestamp and len(timestamp) > 0:
-                    return datetime.fromisoformat(timestamp)
-
-        return default
+# ---------------------------------------------------------------------------
+# Member parsing
+# ---------------------------------------------------------------------------
 
 
+@dataclass(frozen=True, slots=True)
+class Member:
+    cobiss: str | None
+    name: str = ""
+    date_start: datetime = field(default_factory=lambda: datetime.min)
+    date_end: datetime = field(default_factory=lambda: datetime.max)
 
-    filenames = glob(str(path))
-    members = []
 
-    for filename in filenames:
-        with open(filename) as f:
-            logger.debug(f"Parsing '{filename}'")
+def _extract_field(content: str, prefix: str) -> str | None:
+    """Extract the value after the first occurrence of 'prefix:' in content."""
+    for line in content.splitlines():
+        if line.strip().lower().startswith(prefix.strip().lower()):
+            cleaned = line[line.find(":") + 1 :].strip().strip("\"'").strip()
+            return cleaned if cleaned else None
+
+    return None
+
+
+def get_members(path: Path = MEMBER_SRC_PATH) -> MemberList:
+    filenames = list(path.glob("**/index.md"))
+    members: list[Member] = []
+
+    for filepath in sorted(filenames):
+        with filepath.open() as f:
             content = f.read()
-            member = Member(
-                cobiss=find_cobiss_id(content),
-                name=find_name(content),
-                date_start=find_datetime(content, 'date_start', datetime.min),
-                date_end=find_datetime(content, 'date_end', datetime.max),
-            )
-            if member.cobiss:
+            cobiss = _extract_field(content, "cobiss")
+            if cobiss:
+                name = _extract_field(content, "title") or ""
+                date_start = _extract_datetime(content, "date_start", datetime.min)
+                date_end = _extract_datetime(content, "date_end", datetime.max)
+                member = Member(cobiss=cobiss, name=name, date_start=date_start, date_end=date_end)
                 members.append(member)
-                logger.debug(f'Added {member.name} ({member.cobiss})')
+                logger.debug(f"Added `{member.name}` ({member.cobiss})")
 
-    return tuple(sorted(members, key=lambda x: x.cobiss))
+    return tuple(sorted(members, key=lambda m: m.cobiss or ""))
 
 
+def _extract_datetime(content: str, prefix: str, default: datetime = datetime.min) -> datetime:
+    if value := _extract_field(content, prefix):
+        try:
+            return datetime.fromisoformat(value)
+        except ValueError:
+            logger.warning(f"Failed to parse datetime for '{prefix}': {value}")
+    return default
 
-def get_bib_in_xml(researcher: Member):
-    """Get bibliopgrahy of researcher. Using cobiss link template to get xml from them."""
+
+# ---------------------------------------------------------------------------
+# COBISS XML fetching
+# ---------------------------------------------------------------------------
+
+
+def get_bib_in_xml(researcher: Member) -> str | None:
+    """Get researcher's bibliography as XML from COBISS."""
     start_url = SICRIS_BIB_XML_TEMPLATE_URL.format(researcher.cobiss)
-    # print(researcher_id, "\t", start_url, end=" ")
-    logger.info(f'Requesting biblio for {researcher.name} ({researcher.cobiss})')
+    logger.info(f"Requesting biblio for `{researcher.name}` ({researcher.cobiss})")
 
-    # first request only to get redirect url
     session = make_session()
 
-    N_RETRIES = 10
-
-    # Try several times to obtain redirect URL
-    for i in range(N_RETRIES):
-        logger.debug(f'Attempt {i+1} of {N_RETRIES} to obtain redirect.')
-        response = session.get(start_url, timeout=DEFAULT_TIMEOUT)
-        logger.debug(f'Return status: {response.status_code}')
-        redirect_url = response.url # get redirect
-        logger.debug(f'Redirect: "{redirect_url}"')
-        if redirect_url is not None:
+    # Obtain redirect URL
+    redirect_url: str | None = None
+    for attempt in range(1, N_RETRIES + 1):
+        logger.debug(f"Attempt {attempt}/{N_RETRIES} to obtain redirect.")
+        response = session.get(start_url)
+        logger.debug(f"Return status: {response.status_code}, Redirect: {response.url}")
+        if response.url:
+            redirect_url = response.url
             break
 
-    logger.debug(f'Going with redirect to "{redirect_url}"')
+    if not redirect_url:
+        logger.error(f"Failed to obtain redirect for {researcher.cobiss} after {N_RETRIES} attempts")
+        return None
 
-    # Try several times to obtain XML files
-    for i in range(N_RETRIES):
+    # Obtain XML via redirect
+    for attempt in range(1, N_RETRIES + 1):
         try:
-            logger.debug(f'Attempt {i+1} of {N_RETRIES} to obtain XML file.')
-            response = session.get(redirect_url, timeout=DEFAULT_TIMEOUT)
+            logger.debug(f"Attempt {attempt}/{N_RETRIES} to obtain XML file.")
+            response = session.get(redirect_url)
 
-            # Check if returned content is XML file
-            if response.text.startswith('<?xml') and '<Bibliography' in response.text:
+            if response.text.startswith("<?xml") and "<Bibliography" in response.text:
                 return response.text
 
-            # check if returned content is AJAX refresh redirect
-            found = re.search(r'http-equiv="refresh" content="(\d+)"', response.text)
-            if found:
-                refresh_time = found.group(1)
-                logger.debug(f'Refresh in {refresh_time}s')
-                time.sleep(int(refresh_time))
+            # Check for AJAX refresh redirect
+            if match := re.search(r'http-equiv="refresh" content="(\d+)"', response.text):
+                refresh_time = int(match.group(1))
+                logger.debug(f"Refresh in {refresh_time}s")
+                time.sleep(refresh_time)
                 continue
 
             time.sleep(DEFAULT_TIMEOUT)
 
-        except Exception as e:
-            logger.error(f'Error at accessing "{redirect_url}": {e}')
-
+        except requests.ConnectionError as e:
+            logger.error(f'Connection error at "{redirect_url}": {e}')
 
     session.close()
-    logger.error(f'Invalid redirect "{redirect_url}" for "{researcher.cobiss}" at "{start_url}"')
+    logger.error(f'Invalid result for "{researcher.cobiss}"')
     return None
 
 
-
-def get_cobiss_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], None]=None) -> List[dict]:
-    """Combine all researchers' publications into a single object. Do a basic test to filter out duplicates."""
-
-    def elementValue(element, tag) -> str:
-        if element:
-            el = element.find(tag)
-            if el != None:
-                return el.text.strip()
-        return ""
+# ---------------------------------------------------------------------------
+# COBISS data extraction
+# ---------------------------------------------------------------------------
 
 
-    member_cobiss_ids = set(filter(None, map(lambda r: r.cobiss, researchers)))
+def _element_text(element: ET.Element | None, tag: str) -> str:
+    """Safely extract text from a child element."""
+    if element and (el := element.find(tag)) is not None:
+        return el.text.strip()
+    return ""
 
-    bib_items = {}
+
+def get_cobiss_data(researchers: MemberList, exclude_list: ExcludeList = None) -> list[PublicationDict]:
+    """Combine all researchers' publications into a single list. Filters duplicates by COBISS ID."""
+    member_cobiss_ids = {r.cobiss for r in researchers if r.cobiss}
+    bib_items: dict[str, PublicationDict] = {}
 
     for researcher in researchers:
-        # skip researcher in case of empty COBISS ID
+        # Skip invalid / excluded researchers
         if not researcher.cobiss:
-            logger.debug(f'Skipping {researcher.name} ({researcher.cobiss}). Empty COBISS ID.')
+            logger.debug(f"Skipping {researcher.name}: empty COBISS ID")
             continue
-
-        # Skip researcher in case of being on ignore list
         if exclude_list and researcher.cobiss in exclude_list:
-            logger.debug(f'Skipping {researcher.name} ({researcher.cobiss}). On exclude list.')
+            logger.debug(f"Skipping {researcher.name}: on exclude list")
             continue
 
-        # Retrieve XML from COBISS for researcher
-        raw_xml_text = get_bib_in_xml(researcher)
-
-        # Check if raw XML is empty; Lab member might have empty COBISS.
-        if not raw_xml_text:
-            logger.warning(f'{researcher.name} ({researcher.cobiss}) got an empty XML!')
+        raw_xml = get_bib_in_xml(researcher)
+        if not raw_xml:
+            logger.warning(f"{researcher.name} ({researcher.cobiss}) returned empty XML")
             continue
 
-        # Parse XML
-        xml = ET.fromstring(raw_xml_text)
+        xml_root = ET.fromstring(raw_xml)
 
-        # Iterate through publication entries for researcher
-        for elem in xml.iterfind(".//BiblioEntry"):
-            try:
-                pub_cobiss_id = elem.find("COBISS").attrib["id"]
+        for elem in xml_root.iterfind(".//BiblioEntry"):
+            cobiss_elem_raw = elem.find("COBISS")
+            pub_cobiss_id = cobiss_elem_raw.attrib.get("id", "") if cobiss_elem_raw is not None else ""
+            if not pub_cobiss_id:
+                continue
 
-                # Skip if entry already exists
-                if pub_cobiss_id in bib_items.keys():
-                    continue
+            if pub_cobiss_id in bib_items:
+                continue
 
-                # COBBIS has typology codes. Check if it is valid.
-                if elem.find("Typology") is None:
-                    logger.warning(f'Skipping "{pub_cobiss_id}" due to missing typology information. Title: "{elementValue(elem, "Title")}"')
-                    continue
+            # Validate typology
+            if elem.find("Typology") is None:
+                title = _element_text(elem, "Title")
+                logger.warning(f'Skipping "{pub_cobiss_id}": missing typology. Title: "{title}"')
+                continue
 
-                entry = {}
+            entry: PublicationDict = {}
 
-                # Some fields may have "<Slovene version> = <English version>"
-                # Keep only English version with <string>.split('=')[-1].strip()
-                
-                # Publication title
-                entry["title"] = elementValue(elem, "Title").split('=')[-1].strip()
-                entry["title_short"] = elementValue(elem, "TitleShort").split('=')[-1].strip()
+            # Helper for splitting on '=' (some fields have "Slovene = English")
+            def english_version(raw: str) -> str:
+                return raw.split("=")[-1].strip() if raw else ""
 
-                ## Title quirks:
-                remove_space_before_double_colon = lambda x: re.sub(r'\s*:', ':', x)
-                entry["title"] = remove_space_before_double_colon(entry["title"])
-                entry["title_short"] = remove_space_before_double_colon(entry["title_short"])
+            entry["title"] = _SPACE_BEFORE_COLON.sub(":", english_version(_element_text(elem, "Title")))
+            entry["title_short"] = _SPACE_BEFORE_COLON.sub(":", english_version(_element_text(elem, "TitleShort")))
+            entry["year"] = _element_text(elem, "PubYear")
 
-                # Publication year
-                entry["year"] = elementValue(elem, "PubYear")
+            entry["code"] = None
+            if (_typology := elem.find("Typology")) is not None:  # noqa: SIM102
+                if (_code := _typology.get("code")) is not None:
+                    entry["code"] = _code
 
-                # COBISS typology code
-                entry["code"] = elem.find("Typology").attrib["code"]
+            # Identifiers
+            cobiss_elem = elem.find("COBISS")
+            entry["cobiss_id"] = pub_cobiss_id
+            entry["cobiss_url"] = cobiss_elem.text if cobiss_elem is not None else ""
+            entry["doi"] = _parse_doi(elem)
+            identifier = elem.find("Identifier")
+            entry["isbn"] = _element_text(identifier, "ISBN") if identifier is not None else ""
 
-                # Publication identifiers
-                entry["cobiss_id"] = pub_cobiss_id
-                entry["cobiss_url"] = elem.find("COBISS").text
+            # Authors
+            entry["authors"] = []
+            author_group = elem.find("AuthorGroup")
+            if author_group is not None:
+                for idx, author in enumerate(author_group.findall("Author")):
+                    author_cobiss_id = (author.findtext("CodeRes") or "").strip()
 
-                doi = elementValue(elem.find("Identifier"), "DOI")
-                doi = doi[doi.find('10'):]  # in some rare cases, biblio contains doi.org/10...
-                entry["doi"] = doi
-
-                entry["isbn"] = elementValue(elem.find("Identifier"), "ISBN")
-
-                # List of authors
-                entry["authors"] = []
-                for idx, author in enumerate(elem.find("AuthorGroup").findall("Author")):
-                    author_cobiss_id = int(elementValue(author, "CodeRes") or 0) or None
-
-                    person = {
+                    person: AuthorDict = {
                         "order": idx,
-                        # TODO: Merge name
-                        "name": elementValue(author, "FirstName") + " " + elementValue(author, "LastName"),
-                        #"first_name": elementValue(author, "FirstName"),
-                        #"last_name": elementValue(author, "LastName"),
+                        "name": f"{_element_text(author, 'FirstName')} {_element_text(author, 'LastName')}".strip(),
                         "cobiss_id": author_cobiss_id,
-                        "responsibility": author.attrib["responsibility"],
-
-                        # TODO: Because of the part-time employments in the group, it is difficult to determine whether publications
-                        # is actually related to the group. Better approach would be to check association or acknowledgement, but
-                        # current there is no easy way to do it (beside parsing raw papers).
+                        "responsibility": author.attrib.get("responsibility", ""),
                         "is_employee": author_cobiss_id in member_cobiss_ids,
                     }
-
                     entry["authors"].append(person)
 
-                # Differenciate between journal, conference, ...
-                for bibSetElem in elem.findall("BiblioSet"):
-                    if ("relation" in bibSetElem.attrib) and (bibSetElem.attrib["relation"] == "journal"):
-                        entry["journal"] = elementValue(bibSetElem, "Title").split('=')[-1].strip()
-                        entry["journal"] = remove_space_before_double_colon(entry["journal"])
+            # Journal / Conference
+            for bib_set in elem.findall("BiblioSet"):
+                relation = bib_set.attrib.get("relation")
+                if relation == "journal":
+                    entry["journal"] = _SPACE_BEFORE_COLON.sub(":", english_version(_element_text(bib_set, "Title")))
+                if bib_set.attrib.get("typeTeX") == "inproceedings":
+                    conference = english_version(_element_text(bib_set, "TitleShort")).split("=")[-1].strip()
+                    entry["conference"] = _SPACE_BEFORE_COLON.sub(":", conference)
 
-                    if ("typeTeX" in bibSetElem.attrib) and (bibSetElem.attrib["typeTeX"] == "inproceedings"):
-                        entry["conference"] = elementValue(bibSetElem, "TitleShort").split('=')[-1].strip()
+            # Volume
+            physical = elem.find("PhysicalAttributes")
+            if physical is not None:
+                volume_elem = physical.find("VolumeNum")
+                if volume_elem is not None and volume_elem.text:
+                    entry["volume"] = volume_elem.text
 
-                        # Same as above
-                        entry["conference"] = entry["conference"].split('=')[-1].strip()
-                        entry["conference"] = remove_space_before_double_colon(entry["conference"])
+            bib_items[pub_cobiss_id] = entry
 
-                    # TODO: add distinction between book and book chapter
+        logger.info(f"Biblio now contains {len(bib_items)} entries")
 
-
-                # Misc
-                if (elem.find("PhysicalAttributes") and elem.find("PhysicalAttributes").find("VolumeNum") != None):
-                    entry["volume"] = elem.find("PhysicalAttributes").find("VolumeNum").text
-
-                # Add 
-                bib_items[pub_cobiss_id] = entry
-            except Exception as e:
-                logger.error(f'Error while parsing XML: {e}')
-
-        logger.info(f'Biblio now contains {len(bib_items)} entries')
-
-    # Convert dict to list
-    key = lambda x: int(x['cobiss_id'])
-    bib_items = sorted([value for key, value in bib_items.items()], key=key, reverse=True)
-
-    return list(bib_items)
+    return sorted(bib_items.values(), key=lambda x: int(x.get("cobiss_id", 0) or 0), reverse=True)
 
 
+# ---------------------------------------------------------------------------
+# DOI parsing
+# ---------------------------------------------------------------------------
+
+
+def _parse_doi(elem: ET.Element) -> str:
+    """Extract and clean a DOI string from an element's Identifier/DOI child."""
+    identifier = elem.find("Identifier")
+    if identifier is None:
+        return ""
+
+    doi_raw = _element_text(identifier, "DOI")
+    if not doi_raw:
+        return ""
+
+    # Extract DOI starting from '10.' (DOIs always start with 10.)
+    if match := re.search(r"(10\.\S+)", doi_raw):
+        return match.group(1)
+    return doi_raw
+
+
+# ---------------------------------------------------------------------------
+# arXiv data extraction
+# ---------------------------------------------------------------------------
+
+
+@lru_cache(maxsize=512)
 def get_clean_ascii_name(text: str) -> str:
-    # This pattern matches any text within double quotes
-    pattern = r'\"[^\"]*\"'
-    
-    # Replace matched text with an empty string
-    text = re.sub(pattern, '', text)
-
-    # Replace multiple whitespace characters with a single space
-    text = re.sub(r'\s+', ' ', text)
-
-    text = unidecode(text)
-
-    return text
+    """Normalize a name to ASCII characters, removing quoted text."""
+    text = _DOUBLE_QUOTED_TEXT.sub("", text)
+    text = re.sub(r"\s+", " ", text)
+    return unidecode(text)
 
 
-def get_arxiv_data(researchers: Tuple[Member], exclude_list:Union[Tuple[int], None]=None) -> List[dict]:
-    import re
-    import arxiv
-
+def get_arxiv_data(researchers: MemberList, exclude_list: ExcludeList = None) -> list[PublicationDict]:
+    """Fetch publications from arXiv for all researchers."""
     client = arxiv.Client()
-    
-    entries = {}
+    researcher_names: dict[str, str] = {
+        get_clean_ascii_name(r.name).lower(): r.cobiss for r in researchers if r.cobiss
+    }
 
-    researcher_names = {get_clean_ascii_name(r.name).lower(): r.cobiss for r in researchers}
-    # print(researcher_names)
+    entries: dict[str, PublicationDict] = {}
 
     for researcher in researchers:
-        # Handle cases where name contains non-ASCII letters. Required just for query.
-        name = get_clean_ascii_name(researcher.name)
-
-        # Skip researcher in case of being on ignore list
         if exclude_list and researcher.cobiss in exclude_list:
-            logger.debug(f'Skipping {researcher.name} ({researcher.cobiss}). On exclude list.')
+            logger.debug(f"Skipping {researcher.name}: on exclude list")
             continue
 
-        logger.info(f'Querying arXiv for author "{researcher.name}"')
+        name_ascii = get_clean_ascii_name(researcher.name)
+        logger.info(f"Querying arXiv for author `{researcher.name}`")
 
         search = arxiv.Search(
-            query=f'au:"{name}"',
+            query=f'au:"{name_ascii}"',
             sort_by=arxiv.SortCriterion.SubmittedDate,
             sort_order=arxiv.SortOrder.Descending,
+            max_results=250,
         )
 
         for result in client.results(search):
-            authors = []
-
+            authors: list[AuthorDict] = []
             for idx, author in enumerate(result.authors):
                 clean_author = get_clean_ascii_name(author.name).lower()
                 is_employee = clean_author in researcher_names
-                authors.append({
-                    'order': idx,
-                    'name': author.name,
-                    'is_employee': is_employee,
-                    'cobiss_id': researcher_names[clean_author] if is_employee else None
-                })
-                
-            entry = dict(
-                title=result.title,
-                year=dt.strftime(result.published, '%Y'),
-                doi=result.doi,
-                arxiv_url=result.entry_id,
-                arxiv_id=result.entry_id.split('/')[-1],
-                authors=authors,
-                code='preprint',
-            )
+                cobiss_id = researcher_names.get(clean_author)
 
-            entries[result.entry_id] = entry
+                authors.append(
+                    {
+                        "order": idx,
+                        "name": author.name,
+                        "is_employee": is_employee,
+                        "cobiss_id": cobiss_id,
+                    }
+                )
 
-    entries = entries.values()
+            entry: PublicationDict = {
+                "title": result.title,
+                "year": result.published.strftime("%Y"),
+                "doi": _parse_arxiv_doi(result),
+                "arxiv_url": str(result.entry_id),
+                "arxiv_id": result.entry_id.split("/")[-1],
+                "authors": authors,
+                "code": "preprint",
+            }
+            entries[str(result.entry_id)] = entry
 
-    return entries
+        # Respect arXiv rate limiting (library does this, but add small buffer)
+        time.sleep(0.5)
+
+    return list(entries.values())
 
 
+def _parse_arxiv_doi(result: arxiv.Result) -> str:
+    """Extract DOI from an arXiv result, handling various formats."""
+    if hasattr(result, "doi") and result.doi:
+        doi = str(result.doi)
+        if match := re.search(r"(10\.\S+)", doi):
+            return match.group(1)
+    return ""
 
-def merge_sources(cobiss: List[dict], arxiv: List[dict]) -> List[dict]:
-    import copy
-    # Start with COBISS, join through DOI, and whatever doesn't match through DOI is a separate work
 
-    merged = copy.deepcopy(cobiss)
+# ---------------------------------------------------------------------------
+# Source merging
+# ---------------------------------------------------------------------------
+
+
+def merge_sources(cobiss: list[PublicationDict], arxiv: list[PublicationDict]) -> list[PublicationDict]:
+    """Merge arXiv entries into COBISS list via DOI matching."""
+
+    merged = [dict(p) for p in cobiss]  # shallow copy
+
+    mapper = {}
+    for i in merged:
+        if doi := i["doi"]:
+            doi = doi.lower().strip()
+            if doi in mapper:
+                raise RuntimeError(f"Duplicate DOI: `{doi}`")
+
+            mapper[doi] = i
 
     for a in arxiv:
-        if not a['doi']:  # if it has no DOI, then it's a standalone work
+        doi = doi.lower().strip() if (doi := a.get("doi")) else None
+        if doi and doi in mapper:
+            mapper[doi]["arxiv_url"] = a["arxiv_url"]
+            mapper[doi]["arxiv_id"] = a["arxiv_id"]
+        else:
+            merged.append(a)
+
+    return sorted(merged, key=lambda x: x.get("year", "0000"), reverse=True)
+
+    merged = [dict(p) for p in cobiss]  # shallow copy
+
+    for a in arxiv:
+        doi_a = (a.get("doi") or "").lower()
+        if not doi_a:
             merged.append(a)
             continue
 
         for c in merged:
-            if c['doi'] and c['doi'].lower() == a['doi'].lower():
-                c['arxiv_url'] = a['arxiv_url']
-                c['arxiv_id'] = a['arxiv_url'].split('/')[-1]
+            doi_c = (c.get("doi") or "").lower()
+            if doi_c == doi_a:
+                c["arxiv_url"] = a["arxiv_url"]
+                c["arxiv_id"] = a["arxiv_id"]
+                break
 
-    # Convert dict to list
-    merged = sorted(merged, key=lambda x: x['year'], reverse=True)
+    return sorted(merged, key=lambda x: x.get("year", "0000"), reverse=True)
 
-    return merged
+
+# ---------------------------------------------------------------------------
+# SensorLab paper validation
+# ---------------------------------------------------------------------------
+
+_TARGET_COBISS_IDS: set[int] = {15087}
+
+
+def _count_target_authors(authors: list[AuthorDict]) -> int:
+    return sum(1 for a in authors if a.get("cobiss_id") in _TARGET_COBISS_IDS)
+
+
+def valid_sensorlab_paper(paper: PublicationDict) -> bool:
+    """Determine if a paper should be listed as a SensorLab publication.
+
+    Rules:
+    - At least one author is a SensorLab employee, AND
+    - Either: all authors are employees (collaboration), OR the special target
+      member (MMsr) is NOT the only involved member.
+    """
+    n_authors = len(paper.get("authors", []))
+    n_employees = sum(1 for a in paper.get("authors", []) if a.get("is_employee"))
+    n_target = _count_target_authors(paper.get("authors", []))
+
+    # Sole author with target member is valid
+    if n_authors == 1 and n_target == 1:
+        return True
+
+    # All authors are employees → always valid
+    if n_authors == n_employees:
+        return True
+
+    # Target member involved, but need at least one other non-target employee
+    if n_target > 0:
+        return (n_employees - n_target) >= 1
+
+    # General case: at least one employee involved
+    return n_employees > 0
+
+
+# ---------------------------------------------------------------------------
+# Output helpers
+# ---------------------------------------------------------------------------
+
+
+def _derive_output_paths(output_dir: Path):
+    """Derive all output file paths from the output directory."""
+    return {
+        "production": output_dir / "publications.json",
+        "cobiss_debug": output_dir / "cobiss.debug.json",
+        "arxiv_debug": output_dir / "arxiv.debug.json",
+    }
+
+
+def read_json(path: Path) -> list[PublicationDict]:
+    """Read and parse a JSON file, exiting with error if missing."""
+    if not path.exists():
+        logger.error(f"Debug file not found: {path}")
+        sys.exit(1)
+    data = json.loads(path.read_text(encoding="utf-8"))
+    logger.info(f"Loaded {len(data)} entries from {path.name}")
+    return data
+
+
+def write_json(path: Path, data: list[PublicationDict]) -> None:
+    """Write JSON data to a file, creating directories as needed."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    content = json.dumps(data, indent=2, ensure_ascii=False)
+    path.write_text(content, encoding="utf-8")
+    logger.info(f"Wrote {path} ({len(data)} entries)")
+
+
+# ---------------------------------------------------------------------------
+# CLI
+# ---------------------------------------------------------------------------
 
 
 def get_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        description='Parse XML from COBISS website for researcher publications'
-    )
+    parser = argparse.ArgumentParser(description="Parse publications from COBISS and arXiv sources")
 
     parser.add_argument(
-        '-v', '--verbose',
-        action='count',
+        "-v",
+        "--verbose",
+        action="count",
         default=0,
-        help=f'Increase verbosity of the output. (e.g. -v, -vv)'
+        help="Increase verbosity. (e.g. -v, -vv)",
     )
 
-    # parser.add_argument(
-    #     '--extra-ids',
-    #     metavar='ID',
-    #     type=str,
-    #     nargs='+',
-    #     help='Get bib of somebody not listed in the system.'
-    # )
-
-    # parser.add_argument(
-    #     '--ignore-ids',
-    #     metavar='ID',
-    #     type=str,
-    #     nargs='+',
-    #     help='Ignore bibliography for certain people.'
-    # )
-
     parser.add_argument(
-        '-e', '--exclude',
-        metavar='ID',
-        nargs='+',
+        "-e",
+        "--exclude",
+        nargs="+",
         type=int,
-        help='Ignore listed COBISS IDs.',
+        help="Ignore listed COBISS IDs.",
     )
 
     parser.add_argument(
-        '-o', '--output',
-        default=str(PROJECT_ROOT / 'data' / 'cobiss.json'),
-        help=f"Biblio output file path (default: {str(PROJECT_ROOT / 'data' / 'cobiss.json')})",
+        "-o",
+        "--output",
+        type=Path,
+        default=PROJECT_ROOT / "data",
+        help="Output directory for publications.json, cobiss.debug.json, arxiv.debug.json (default: data/)",
     )
 
     parser.add_argument(
-        '-i', '--input',
-        required=False,
+        "-i",
+        "--input",
         default=str(MEMBER_SRC_PATH),
-        help=f'Path to researcher IDs (default: {MEMBER_SRC_PATH})'
+        help=f"Path glob for researcher index files (default: {MEMBER_SRC_PATH})",
+    )
+
+    parser.add_argument(
+        "--skip-cobiss",
+        action="store_true",
+        help="Skip COBISS fetch; load data from cobiss.debug.json in output directory",
+    )
+
+    parser.add_argument(
+        "--skip-arxiv",
+        action="store_true",
+        help="Skip arXiv fetch; load data from arxiv.debug.json in output directory",
     )
 
     return parser
 
 
-def valid_sensorlab_paper(paper: dict) -> bool:
-
-    # Figure out how many authors are there
-    n_authors = len(paper["authors"])
-
-    # Figure out how many SensorLab members are involved in the paper
-    n_employees = sum(author["is_employee"] for author in paper["authors"])
-    assert isinstance(n_employees, (int, float))
-
-    # if MMsr (15087) is involved, at least one other member needs to be involved, unless sole author
-    targets = [15087]
-    target_involved = sum((author["cobiss_id"] in targets) for author in paper["authors"])
-    assert isinstance(target_involved, (int, float))
-
-    if paper["title"].lower().startswith("large-scale site"):
-        logger.debug((n_authors, n_employees, target_involved))
-        # print(paper)
-        # print(n_authors, n_employees, target_involved)
-
-    # At least one other member needs to be involved, unless sole author
-    if (n_authors == n_employees) or (n_employees - target_involved) > 0:
-        return True
-    
-    return False
+# ---------------------------------------------------------------------------
+# Summary statistics
+# ---------------------------------------------------------------------------
 
 
-def main():
+def print_summary(publications: list[PublicationDict], members: MemberList) -> None:
+    """Print summary statistics to the log."""
+    total = len(publications)
+    sensorlab_papers = sum(1 for p in publications if p.get("is_sensorlab"))
+    external_papers = total - sensorlab_papers
+
+    logger.info("=" * 60)
+    logger.info("Publication Summary")
+    logger.info("=" * 60)
+    logger.info(f"Total publications:    {total}")
+    logger.info(f"SensorLab papers:      {sensorlab_papers}")
+    logger.info(f"External papers:       {external_papers}")
+    logger.info(f"Researchers processed: {len(members)}")
+
+    # Per-researcher counts
+    member_names = {m.name for m in members}
+    name_counts: dict[str, int] = {}
+    for p in publications:
+        for a in p.get("authors", []):
+            if a.get("is_employee"):
+                # Match by cobiss_id since names may vary slightly
+                cid = a.get("cobiss_id")
+                if cid:
+                    for m in members:
+                        if m.cobiss == cid:
+                            name_counts[m.name] = name_counts.get(m.name, 0) + 1
+
+    for name, count in sorted(name_counts.items()):
+        logger.info(f"  {name}: {count} publications")
+
+    logger.info("=" * 60)
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+
+def main() -> None:
     parser = get_parser()
     args = parser.parse_args()
 
+    args.skip_cobiss = True
+    args.skip_arxiv = True
+
     verbose_levels = (logging.INFO, logging.DEBUG)
-    args.verbose = args.verbose if args.verbose < len(verbose_levels) else len(verbose_levels) - 1
-    # print(args.verbose)
-    logger.setLevel(verbose_levels[args.verbose])
+    logger.setLevel(verbose_levels[min(args.verbose, len(verbose_levels) - 1)])
 
-    members = get_members(path=args.input)
-
-    exclude_list = args.exclude or []
+    exclude_list: ExcludeList = list(args.exclude or [])
     exclude_list.extend(DEFAULT_EXCLUDE_LIST)
-    logger.debug(f'Exclude list: {exclude_list}')
+    logger.debug(f"Exclude list: {exclude_list}")
 
-    cobiss_entries = get_cobiss_data(researchers=members, exclude_list=exclude_list)
-    arxiv_entries = get_arxiv_data(researchers=members, exclude_list=exclude_list)
+    members = get_members(path=Path(args.input))
+    logger.info(f"Loaded {len(members)} members with COBISS IDs")
 
+    output_paths = _derive_output_paths(args.output)
+
+    # Determine which sources were fetched vs loaded
+    fetched_cobiss = not args.skip_cobiss
+    fetched_arxiv = not args.skip_arxiv
+
+    # COBISS: fetch or load from debug file
+    if fetched_cobiss:
+        with timer("COBISS data retrieval"):
+            cobiss_entries = get_cobiss_data(researchers=members, exclude_list=exclude_list)
+    else:
+        logger.info("Skipping COBISS fetch; loading from cobiss.debug.json")
+        cobiss_entries = read_json(output_paths["cobiss_debug"])
+
+    # arXiv: fetch or load from debug file
+    if fetched_arxiv:
+        with timer("arXiv data retrieval"):
+            arxiv_entries = get_arxiv_data(researchers=members, exclude_list=exclude_list)
+    else:
+        logger.info("Skipping arXiv fetch; loading from arxiv.debug.json")
+        arxiv_entries = read_json(output_paths["arxiv_debug"])
+
+    # Write debug files only for sources that were fetched
+    if fetched_cobiss:
+        write_json(output_paths["cobiss_debug"], cobiss_entries)
+    if fetched_arxiv:
+        write_json(output_paths["arxiv_debug"], arxiv_entries)
+
+    # Merge and filter for production output
     publications = merge_sources(cobiss=cobiss_entries, arxiv=arxiv_entries)
 
-    # FIX: Remove papers, where MMsr coauthor, but no other SensorLab member is involved (colaboration)
+    # Mark SensorLab papers
     for paper in publications:
-        is_valid_paper = valid_sensorlab_paper(paper)
-        paper["is_sensorlab"] = is_valid_paper
+        paper["is_sensorlab"] = valid_sensorlab_paper(paper)
+
+    # Write production file
+    write_json(output_paths["production"], publications)
+
+    # Print summary
+    print_summary(publications, members)
 
 
-    if args.output:
-        with open(args.output, "w") as file:
-            json.dump(publications, file, indent=2)
-
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-
-
-
-
-

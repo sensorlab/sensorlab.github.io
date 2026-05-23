@@ -90,9 +90,9 @@
 {{ if $member.cobiss }}
 
     {{ $publications := slice }}
-    {{ range $publication := $.Site.Data.cobiss }}
+    {{ range $publication := $.Site.Data.publications }}
         {{ range $author := $publication.authors }}
-            {{ if eq (int $author.cobiss_id) (int $member.cobiss) }}
+            {{ if eq (string $author.cobiss_id) (string $member.cobiss) }}
                 {{ $publications = $publications | append $publication }}
             {{ end }}
         {{ end }}
@@ -123,7 +123,7 @@
                             <div class="authors">
                                 {{- $authors := slice -}}
                                 {{ range $author := .authors -}}
-                                    {{- if eq (int $author.cobiss_id) (int $member.cobiss) -}}
+                                    {{- if eq (string $author.cobiss_id) (string $member.cobiss) -}}
                                         {{- $authors = $authors | append (printf "<strong><u>%s</u></strong>" ($author.name) | safeHTML) -}}
                                     {{- else -}}
                                         {{- $authors = $authors | append (printf "%s" ($author.name) | safeHTML) -}}

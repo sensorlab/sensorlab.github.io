@@ -1,6 +1,8 @@
 {{ define "main" }}
 {{ $start := (now.AddDate -5 0 0).Format "2006" }}
-{{ $publications := where $.Site.Data.cobiss ".year" "ge" $start }}
+
+{{ $publications := $.Site.Data.publications }}
+{{ $publications := where $publications ".year" "ge" $start }}
 {{ $publications := where $publications ".is_sensorlab" "eq" true }}
 
 {{- $years := slice -}}

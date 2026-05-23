@@ -54,7 +54,7 @@ RUN python3 -m pip install \
     --user \
     --no-cache-dir \
     --break-system-packages \
-    "arxiv~=2.1.0" \
+    arxiv \
     requests \
     unidecode \
     ujson

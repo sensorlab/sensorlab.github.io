@@ -16,7 +16,7 @@
 
 {{ $bib := slice }}
 
-{{ range $.Site.Data.cobiss }}
+{{ range $.Site.Data.publications }}
     {{ $match := or (in $ids .cobiss_id) (or (in $ids .arxiv_id) (in $ids .doi)) }}
     {{ if $match }}
         {{ $bib = $bib | append . }}
