@@ -21,11 +21,11 @@
     "bootstrap": "^5.3.8",
     "bootstrap-icons": "^1.13.1",
     "core-js": "^3.49.0",
-    "cssnano": "^8.0.0",
-    "postcss": "^8.5.14",
+    "cssnano": "^8.0.1",
+    "postcss": "^8.5.15",
     "postcss-cli": "^11.0.1",
     "postcss-import": "^16.1.1",
-    "postcss-preset-env": "^11.2.1"
+    "postcss-preset-env": "^11.3.0"
   },
   "devDependencies": {
     "npm-check-updates": "latest"
