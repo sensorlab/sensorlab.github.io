@@ -1,0 +1,50 @@
+# Make Python code consistent through all projects.
+# Defaults: https://docs.astral.sh/ruff/configuration/
+
+# Allow longer lines
+line-length = 119
+
+# Assume python version
+target-version = "py312"
+
+# In addition to the standard set of exclusions, omit all tests, plus a specific file.
+extend-exclude = ["deprecated", "todo"]
+
+
+[lint]
+# Which rules to enable
+select = [
+    "A",   # avoid shadowing builtins
+    "B",  # flake8-bugbear
+    "BLE", # blind-except
+    "C4",  # flake8-comprehensions
+    # "C90", # complexity (configure below)
+    # "CPY", # flake8-copyright
+    #"D", # pydocstyle
+    "E",  # pycodestyle errors
+    "F",  # pyflakes
+    "I",  # isort
+    # "N",   # naming
+    "SIM", # flake8-simplify
+    "UP",  # pyupgrade
+    "W",  # pycodestyle warnings
+    # "TRY", # tryceratops
+    "SIM", # flake8-simplify
+    "YTT", # flake8-2020
+]
+
+ignore = [
+    "E501", # LineTooLong
+    "E731", # DoNotAssignLambda
+    # "S101", # use of assert detected
+    "F401", # remove unused imports
+]
+
+[lint.per-file-ignores]
+"*.ipynb" = [
+  "F401", # remove unused imports
+]
+
+unfixable = [
+    "B",
+]
