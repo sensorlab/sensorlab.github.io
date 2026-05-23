@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, TypeAlias
+from typing import Any, Final, TypeAlias
 
 import arxiv
 import requests
@@ -24,14 +24,14 @@ from urllib3 import Retry
 # Constants
 # ---------------------------------------------------------------------------
 
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MEMBER_SRC_PATH = PROJECT_ROOT / "content" / "people"
 SICRIS_BIB_XML_TEMPLATE_URL = "https://bib.cobiss.net/biblioweb/direct/si/eng/cris/{0}?formatbib=ISO&format=X&code={0}&langbib=eng&formatbib=2&format=11"
-DEFAULT_TIMEOUT = 12
-N_RETRIES = 10
+DEFAULT_TIMEOUT: Final[int] = 12
+N_RETRIES: Final[int] = 10
 
-DEFAULT_EXCLUDE_LIST: list[str] = [
+DEFAULT_EXCLUDE_LIST: Final[list[str]] = [
     "55792",  # L. Milosheski
     "53669",  # dr. Halil Yetgin
     "36719",  # M. Mihelin
@@ -50,7 +50,7 @@ _DOUBLE_QUOTED_TEXT: re.Pattern[str] = re.compile(r'"[^"]*"')
 AuthorDict: TypeAlias = dict
 PublicationDict: TypeAlias = dict
 MemberList: TypeAlias = tuple["Member", ...]
-ExcludeList: TypeAlias = list[int] | None
+ExcludeList: TypeAlias = list[str] | None
 
 
 # ---------------------------------------------------------------------------
@@ -476,23 +476,6 @@ def merge_sources(cobiss: list[PublicationDict], arxiv: list[PublicationDict]) -
 
     return sorted(merged, key=lambda x: x.get("year", "0000"), reverse=True)
 
-    merged = [dict(p) for p in cobiss]  # shallow copy
-
-    for a in arxiv:
-        doi_a = (a.get("doi") or "").lower()
-        if not doi_a:
-            merged.append(a)
-            continue
-
-        for c in merged:
-            doi_c = (c.get("doi") or "").lower()
-            if doi_c == doi_a:
-                c["arxiv_url"] = a["arxiv_url"]
-                c["arxiv_id"] = a["arxiv_id"]
-                break
-
-    return sorted(merged, key=lambda x: x.get("year", "0000"), reverse=True)
-
 
 # ---------------------------------------------------------------------------
 # SensorLab paper validation
@@ -639,7 +622,6 @@ def print_summary(publications: list[PublicationDict], members: MemberList) -> N
     logger.info(f"Researchers processed: {len(members)}")
 
     # Per-researcher counts
-    member_names = {m.name for m in members}
     name_counts: dict[str, int] = {}
     for p in publications:
         for a in p.get("authors", []):
@@ -665,9 +647,6 @@ def print_summary(publications: list[PublicationDict], members: MemberList) -> N
 def main() -> None:
     parser = get_parser()
     args = parser.parse_args()
-
-    args.skip_cobiss = True
-    args.skip_arxiv = True
 
     verbose_levels = (logging.INFO, logging.DEBUG)
     logger.setLevel(verbose_levels[min(args.verbose, len(verbose_levels) - 1)])
