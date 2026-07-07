@@ -12,7 +12,7 @@ prefix: "Dr."
 title: "Blaž Bertalanič"
 
 # Role/position
-role: "Postdoc"
+role: "Researcher"
 
 # Organizations/Affiliations
 organizations:
