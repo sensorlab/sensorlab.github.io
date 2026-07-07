@@ -61,4 +61,4 @@ user_groups:
 # - leaders
 ---
 
-Blaž Bertalanič received his Master’s degree in electrical engineering from the Faculty of Electrical Engineering, University of Ljubljana. He completed his PhD at the same faculty in 2024 and is now a postdoctoral researcher at the Department of Communication Systems, Jožef Stefan Institute.
+Blaž Bertalanič is a Researcher at the Department of Communication Systems at the Jožef Stefan Institute. He received his PhD Summa Cum Laude in Electrical Engineering from the University of Ljubljana in 2024. His research focuses on developing next-generation AI algorithms, including graph neural networks and LLM-based AI agents. Ranked among the top 10 telecommunications researchers in Slovenia, he actively leads international research initiatives. He also served as a Work Package Leader for the Horizon Europe NANCY project, the Departmental PI for the HE AcceptRemote project, and Secretary of the IEEE Slovenia Section.
