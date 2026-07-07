@@ -12,7 +12,7 @@ prefix: "Dr."
 title: "Jernej Hribar"
 
 # Role/position
-role: "MSCA Fellow"
+role: "Senior Researcher"
 
 # Organizations/Affiliations
 organizations:

@@ -16,10 +16,8 @@ role: "PhD student"
 
 # Organizations/Affiliations
 organizations:
-- name: Jožef Stefan Institute
-  url: https://ijs.si
-- name: Comsensus
-  url: https://comsensus.eu
+- name: RAROG
+  url: https://raroggroup.com/en/rescue
 
 # COBISS/SICRIS identifier
 cobiss: 54012
@@ -36,7 +34,5 @@ interests: []
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
-# - students
-# - leaders
+- alumni
 ---

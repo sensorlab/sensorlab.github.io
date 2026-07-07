@@ -6,13 +6,13 @@ avatar: "lmilosheski.jpg"
 position: 20
 
 # Prefix (before the name), typically Dr., Mag., ...
-prefix: ""
+prefix: "Dr."
 
 # Display name
 title: "Ljupcho Milosheski"
 
 # Role/position
-role: "PhD student"
+role: "Postdoc"
 
 # Organizations/Affiliations
 organizations:
@@ -38,5 +38,6 @@ interests:
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
 - researchers
+- postdocs
 
 ---
