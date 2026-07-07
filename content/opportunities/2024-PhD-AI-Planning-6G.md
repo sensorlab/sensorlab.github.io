@@ -1,7 +1,7 @@
 ---
 title: PhD Student in Intelligent Orchestration
 publishDate: 2024-03-08
-# closingDate: 2024-03-30
+closingDate: 2024-03-30
 salary: ~39.600 €/year gross salary, ~3.300 €/month gross
 employmentType: temporary position longer than 6 months
 contractType: full-time
