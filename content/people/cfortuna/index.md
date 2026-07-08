@@ -12,7 +12,7 @@ prefix: "Dr."
 title: "Carolina Fortuna"
 
 # Role/position
-role: "Head of the Lab"
+role: "Group Lead"
 
 # Organizations/Affiliations
 organizations:
