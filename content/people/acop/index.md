@@ -24,7 +24,7 @@ cobiss:
 
 # The date when joined / departed from the lab. Empty if not used
 date_start: "2023-10-01"
-date_end:
+date_end: "2024-07-01"
 
 # Short bio (displayed in user profile at end of posts)
 bio: ""
