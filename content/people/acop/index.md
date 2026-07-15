@@ -38,7 +38,7 @@ interests:
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
+- alumni
 ---
 
 Andrej Čop received his bachelor degree in computer and information science at University of Ljubljana and is currently pursuing his master's degree in computational engineering at Friedrich-Alexander University Erlangen-Nürnberg, focusing on HPC and ML. He works as a student research assistant contributing to network systems and MLOps research. He is involved in the EU project NANCY. Previously, he participated as an intern in the CERN Openlab summer student program.
