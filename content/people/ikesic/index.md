@@ -12,7 +12,7 @@ prefix: ""
 title: "Ivana Kesić"
 
 # Role/position
-role: "MSc student"
+role: "PhD student"
 
 # Organizations/Affiliations
 organizations:
