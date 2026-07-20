@@ -12,7 +12,7 @@ prefix: "Dr."
 title: Klemen Bregar
 
 # Role/position
-role: "Postdoc"
+role: "Research Fellow"
 
 # Organizations/Affiliations
 organizations:
