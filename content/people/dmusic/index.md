@@ -5,9 +5,6 @@ avatar: "dmusic.jpg"
 # position index is used for sorting/positioning on the website
 position: 10
 
-# Prefix (before the name), typically Dr., Mag., ...
-prefix: ""
-
 # Display name
 title: "Din Mušić"
 

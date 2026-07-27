@@ -5,9 +5,6 @@ avatar: "mvucnik.png"
 # position index is used for sorting/positioning on the website
 position: 20
 
-# Prefix (before the name), typically Dr., Mag., ...
-prefix: "Dr."
-
 # Display name
 title: "Matevž Vučnik"
 

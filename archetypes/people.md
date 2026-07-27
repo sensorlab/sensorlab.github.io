@@ -5,9 +5,6 @@ avatar: "person.jpg"
 # position index is used for sorting/positioning on the website
 position: 10
 
-# Prefix (before the name), typically Dr., Mag., ...
-prefix: ""
-
 # Display name, can also put name in native language (UTF-8 supported)
 title: ""
 

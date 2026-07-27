@@ -5,9 +5,6 @@ avatar:
 # position index is used for sorting/positioning on the website
 position: 0
 
-# Prefix (before the name), typically Dr., Mag., ...
-prefix: ""
-
 # Display name
 title: "Alexandra Moraru"
 

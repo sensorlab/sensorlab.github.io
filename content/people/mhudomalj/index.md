@@ -5,9 +5,6 @@ avatar: "mhudomalj.jpg"
 # position index is used for sorting/positioning on the website
 position: 20
 
-# Prefix (before the name), typically Dr., Mag., ...
-prefix: ""
-
 # Display name
 title: Marko Hudomalj
 

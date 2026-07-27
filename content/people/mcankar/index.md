@@ -5,9 +5,6 @@ avatar: "mcankar.jpg"
 # position index is used for sorting/positioning on the website
 position: 50
 
-# Prefix (before the name), typically Dr., Mag., ...
-prefix: "Dr."
-
 # Display name
 title: Matija "Matic" Cankar
 

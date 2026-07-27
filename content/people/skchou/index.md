@@ -5,9 +5,6 @@ avatar: "skchou2.jpg"
 # position index is used for sorting/positioning on the website
 position: 0
 
-# Prefix (before the name), typically Dr., Mag., ...
-prefix: "Dr."
-
 # Display name
 title: "Shih-Kai Chou"
 
