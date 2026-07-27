@@ -16,4 +16,4 @@ import 'bootstrap/js/dist/dropdown';
 
 //import './theme';
 
-document.documentElement.className = document.documentElement.className.replace('\bno-js\b/', 'js');
+document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/, 'js');
