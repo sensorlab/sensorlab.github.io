@@ -47,24 +47,22 @@ education:
 # Social/Academic Networking
 # Links to social accounts and ways to interract, if any
 # Examples: email, github, twitter/X, personal blog, facebook
-# Check the Bootstrap icons for icon names
 social:
-- icon: envelope-at
+- text: Email
   link: mailto:test@example.org
-- icon: twitter
+- text: Twitter
   link: https://twitter.com/username
-- icon: book
+- text: Scholar
   link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
-- icon: github
+- text: GitHub
   link: https://github.com/username
-- icon: file-rich-text
+- text: Blog
   link: https://username.github.io
 
 
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
-# - icon: cv
-#   icon_pack: ai
+# - text: CV
 #   link: files/cv.pdf
 
 # Organizational groups that you belong to (for People widget)
