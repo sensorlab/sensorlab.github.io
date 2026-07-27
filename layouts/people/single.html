@@ -15,7 +15,7 @@
 
 <main class="flex-fill container my-4" aria-role="main">
 <article>
-    <header class="d-flex flex-column flex-md-row align-items-center align-items-md-start">
+    <header class="d-flex flex-column flex-md-row align-items-center gap-4">
         {{ $resource := .Resources.GetMatch .Params.avatar }}
         {{- if not $resource -}}
             {{- $resource = resources.Get "images/unk.png" -}}
@@ -25,31 +25,31 @@
             src="{{ $img.Permalink }}"
             width="{{ $img.Width }}"
             height="{{ $img.Height }}"
-            class="rounded-3 mx-2"
+            class="rounded-3 shadow-sm"
             alt="Photo of {{ $member.title }}"
             loading="lazy"
         >
-        <div class="px-2">
-            <h2>
+        <div>
+            <h2 class="text-center text-md-start">
                 {{- with .Params.prefix -}}<small class="text-body-secondary">{{ . }}</small>&nbsp;{{- end -}}
                 {{- .Params.name | default .Params.title -}}
             </h2>
 
             <ul class="list-unstyled">
                 {{- with .Params.role -}}
-                <li><strong>Role:</strong>&nbsp;{{ . | title }}</li>
+                <li class="mb-2"><strong>Role:</strong>&nbsp;{{ . | title }}</li>
                 {{- end -}}
 
                 {{- with $member.date_start -}}
-                <li><strong>Joined:</strong>&nbsp;{{ ( time . ).Format "January, 2006" }}</li>
+                <li class="mb-2"><strong>Joined:</strong>&nbsp;{{ ( time . ).Format "January, 2006" }}</li>
                 {{- end -}}
 
                 {{- with $member.date_end -}}
-                <li><strong>Departed:</strong>&nbsp;{{ ( time . ).Format "January, 2006" }}</li>
+                <li class="mb-2"><strong>Departed:</strong>&nbsp;{{ ( time . ).Format "January, 2006" }}</li>
                 {{- end -}}
 
                 {{ with $member.organizations }}
-                <li>
+                <li class="mb-2">
                     <strong>Affiliations:</strong>&nbsp;
                     {{- $list := slice -}}
                     {{- range . -}}
@@ -61,11 +61,11 @@
                 {{ end }}
 
                 {{- with $member.interests -}}
-                <li><strong>Research Interests:</strong>&nbsp;{{ delimit . ", " ", and " }}.</li>
+                <li class="mb-2"><strong>Research Interests:</strong>&nbsp;{{ delimit . ", " ", and " }}.</li>
                 {{- end -}}
 
                 {{- with $member.social -}}
-                <li>
+                <li class="mb-2">
                     <strong>Social:</strong>&nbsp;
                     {{- $list := slice -}}
                     {{- range . -}}
@@ -74,7 +74,7 @@
                     {{- delimit $list ", " | safeHTML -}}
                 </li>
                 {{- end -}}
-                
+
 
             </ul>
         </div>
