@@ -29,6 +29,11 @@
                 <h1>{{ .Title }}</h1>
                 <p>
                     <ul class="list-unstyled">
+                        {{ with .Params.project_url }}
+                        <li>
+                            <strong>Website:</strong> <a href="{{ . | safeURL }}" target="_blank" rel="noopener">{{ . }}</a>
+                        </li>
+                        {{ end }}
                         {{ with .Params.grant_code }}
                         <li>
                             <strong>Grant:</strong> {{ . }}
