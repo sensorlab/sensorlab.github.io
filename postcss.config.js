@@ -6,7 +6,10 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
       const els = JSON.parse(content).htmlElements;
       return els.tags.concat(els.classes, els.ids);
   },
-  safelist: [],
+  // Bootstrap's collapse.js/dropdown.js add these classes purely at runtime (e.g. opening
+  // the mobile navbar toggle), so they never appear in hugo_stats.json's static HTML scan
+  // and would otherwise get purged, silently breaking the interaction.
+  safelist: ['show', 'collapsing'],
 });
 
 
