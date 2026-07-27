@@ -17,7 +17,7 @@ organizations:
   url: https://ijs.si
 
 # COBISS/SICRIS identifier
-cobiss:
+cobiss: 59664
 
 # The date when joined / departed from the lab. Empty if not used
 date_start: "2026-01-01"
