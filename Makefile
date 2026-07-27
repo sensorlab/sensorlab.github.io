@@ -3,7 +3,7 @@ PORT ?= 1313
 BASE_URL ?= https://sensorlab.ijs.si/
 
 HUGO_DEV_SERVER_ARGS= --gc --disableFastRender --buildDrafts --buildFuture
-HUGO_PROD_SERVER_ARGS= --gc --minify --disableFastRender
+HUGO_PROD_SERVER_ARGS= --gc --minify --disableFastRender --environment production
 
 HUGO_PROD_BUILD_ARGS= --gc --minify --baseURL=$(BASE_URL) --environment production
 
@@ -35,6 +35,17 @@ dev: container  ## Run Hugo in container with development mode
 		--name hugo-builder \
 		$(CONTAINER_NAME) \
 		hugo server $(HUGO_DEV_SERVER_ARGS) --bind 0.0.0.0
+
+
+preview: container  ## Run Hugo in container with production settings (PurgeCSS/minify active) to test before deploying
+	docker run \
+		-i -t \
+		--rm \
+		-v $(shell pwd):/src \
+		-p=$(PORT):1313 \
+		--name hugo-builder \
+		$(CONTAINER_NAME) \
+		bash -c "npm ci && hugo server $(HUGO_PROD_SERVER_ARGS) --bind 0.0.0.0"
 
 
 shell: container ## Run shell inside container
