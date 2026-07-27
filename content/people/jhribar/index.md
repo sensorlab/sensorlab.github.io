@@ -25,9 +25,6 @@ cobiss: 56214
 date_start: "2022-10-01"
 date_end:
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - age of information
 - reinforcement learning

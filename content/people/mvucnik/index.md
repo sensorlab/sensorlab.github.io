@@ -23,9 +23,6 @@ cobiss: 33453
 date_start: "2010-10-01"
 date_end: "2021-10-01"
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - DevOps
 

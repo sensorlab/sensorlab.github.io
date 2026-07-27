@@ -23,9 +23,6 @@ cobiss: 55792
 date_start: "2021-06-28"
 date_end:
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - artificial intelligence
 - wireless networks

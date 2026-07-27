@@ -23,9 +23,6 @@ cobiss: 53669
 date_start: "2019-01-01"
 date_end: "2021-12-31"
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - cognitive radio networks
 - cross-layer protocol design and optimization

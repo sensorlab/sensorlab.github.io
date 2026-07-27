@@ -23,9 +23,6 @@ organizations:
 date_start: "2023-10-17"
 #date_end: "2025-12-15"
 
-# Short bio (displayed in user profile at end of posts)
-#bio: ""
-
 interests:
 - Massive MIMO
 - Reconfigurable Intelligent Surface

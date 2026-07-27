@@ -23,9 +23,6 @@ cobiss:
 date_start: "2023-09-01"
 date_end:
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - time series segmentation and clustering
 - anomaly detection detection and forecasting

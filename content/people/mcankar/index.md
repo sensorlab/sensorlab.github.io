@@ -25,9 +25,6 @@ cobiss: 31118
 date_start: "2024-10-14"
 date_end:
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - software development
 - interactive technologies

@@ -8,6 +8,10 @@ position: 10
 # Display name, can also put name in native language (UTF-8 supported)
 title: ""
 
+# Optional: display name shown instead of title, if you want the two to differ
+# (rarely needed - most profiles just use title)
+# name: ""
+
 # Role/position
 role: ""
 
@@ -23,25 +27,10 @@ cobiss: ""
 date_start: {{ .Date }}
 date_end: {{ .Date }}
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - Artificial Intelligence
 - Computational Linguistics
 - Information Retrieval
-
-education:
-  courses:
-  - course: PhD in Artificial Intelligence
-    institution: Stanford University
-    year: 2012
-  - course: MEng in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2009
-  - course: BSc in Artificial Intelligence
-    institution: Massachusetts Institute of Technology
-    year: 2008
 
 
 # Social/Academic Networking
@@ -73,4 +62,4 @@ user_groups:
 # - leaders
 ---
 
-Full CV
+Write a short biography here.

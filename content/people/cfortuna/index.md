@@ -23,9 +23,6 @@ cobiss: 29521
 date_start: "2006-01-01"
 date_end:
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests: []
 
 # Organizational groups that you belong to (for People widget)

@@ -23,9 +23,6 @@ cobiss:
 date_start: "2024-10-01"
 date_end:
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - AI planning
 - reinforcement learning

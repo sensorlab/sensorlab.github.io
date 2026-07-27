@@ -25,9 +25,6 @@ cobiss: 39131
 date_start: "2016-10-01"
 date_end:
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - Artificial Intelligence
 - Smart Infrastructure

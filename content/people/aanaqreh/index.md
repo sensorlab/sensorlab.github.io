@@ -23,9 +23,6 @@ cobiss:
 date_start: "2024-11-01"
 date_end: "2025-09-01"
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
  - Graph Theory
  - Optimization

@@ -23,9 +23,6 @@ cobiss: 54683
 date_start: "2021-10-01"
 date_end:
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - solving classification problems with the help of machine learning and AI
 - applications of graph netural networks

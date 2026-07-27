@@ -23,9 +23,6 @@ cobiss:
 date_start: "2023-10-01"
 date_end: "2024-07-01"
 
-# Short bio (displayed in user profile at end of posts)
-bio: ""
-
 interests:
 - network systems
 - MLOps
