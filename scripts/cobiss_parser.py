@@ -1,6 +1,7 @@
 """COBISS & arXiv bibliography parser for SensorLab publications."""
 
 import argparse
+import asyncio
 import contextlib
 import json
 import logging
@@ -8,17 +9,17 @@ import re
 import sys
 import time
 import xml.etree.ElementTree as ET
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
 from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Final, TypeAlias
+from typing import Final, TypeAlias
 
 import arxiv
+import httpx
 import requests
-from requests.adapters import HTTPAdapter
 from unidecode import unidecode
-from urllib3 import Retry
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -29,7 +30,12 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MEMBER_SRC_PATH = PROJECT_ROOT / "content" / "people"
 SICRIS_BIB_XML_TEMPLATE_URL = "https://bib.cobiss.net/biblioweb/direct/si/eng/cris/{0}?formatbib=ISO&format=X&code={0}&langbib=eng&formatbib=2&format=11"
 DEFAULT_TIMEOUT: Final[int] = 12
-N_RETRIES: Final[int] = 10
+
+BACKOFF_MAX_RETRIES: Final[int] = 6
+BACKOFF_BASE_DELAY: Final[float] = 5.0  # seconds
+BACKOFF_CAP: Final[float] = 300.0  # seconds
+
+COBISS_CONCURRENCY: Final[int] = 4  # self-imposed politeness limit; not a documented/rate-limited API
 
 DEFAULT_EXCLUDE_LIST: Final[list[str]] = [
     "55792",  # L. Milosheski
@@ -88,50 +94,36 @@ def timer(label: str):
 
 
 # ---------------------------------------------------------------------------
-# HTTP session
+# Retry / backoff helper (shared by the COBISS and arXiv branches)
 # ---------------------------------------------------------------------------
 
 
-class TimeoutHTTPAdapter(HTTPAdapter):
-    """HTTP adapter that applies a default timeout to requests without explicit timeout."""
+async def with_backoff[T](
+    func: Callable[[], Awaitable[T]],
+    *,
+    retry_on: tuple[type[BaseException], ...],
+    on_retry: Callable[[BaseException, int, float], None] | None = None,
+    max_retries: int = BACKOFF_MAX_RETRIES,
+    base_delay: float = BACKOFF_BASE_DELAY,
+    cap: float = BACKOFF_CAP,
+) -> T:
+    """Call func(), retrying with exponential backoff on any exception in retry_on.
 
-    def __init__(self, *args, timeout: int = DEFAULT_TIMEOUT, **kwargs):
-        self._timeout = timeout
-        super().__init__(*args, **kwargs)
+    Raises the last exception once max_retries is exhausted; callers decide their own
+    fallback behavior (e.g. skip this researcher and continue with the rest).
+    """
+    for attempt in range(max_retries + 1):
+        try:
+            return await func()
+        except retry_on as e:
+            if attempt == max_retries:
+                raise
+            delay = min(base_delay * (2**attempt), cap)
+            if on_retry:
+                on_retry(e, attempt, delay)
+            await asyncio.sleep(delay)
 
-    def send(
-        self,
-        request,
-        stream: bool = False,
-        timeout=None,
-        verify: bool | str = True,
-        cert: Any = None,
-        proxies=None,
-    ):
-        if timeout is None:
-            timeout = self._timeout
-        return super().send(
-            request,
-            stream=stream,
-            timeout=timeout,
-            verify=verify,
-            cert=cert,
-            proxies=proxies,
-        )
-
-
-def make_session() -> requests.Session:
-    """Create a session with exponential backoff retry strategy."""
-    retry_strategy = Retry(
-        total=N_RETRIES,
-        backoff_factor=2,
-        respect_retry_after_header=False,
-    )
-    adapter = TimeoutHTTPAdapter(max_retries=retry_strategy, timeout=DEFAULT_TIMEOUT)
-    session = requests.Session()
-    session.mount("http://", adapter)
-    session.mount("https://", adapter)
-    return session
+    raise AssertionError("unreachable")  # loop above always returns or raises
 
 
 # ---------------------------------------------------------------------------
@@ -190,50 +182,59 @@ def _extract_datetime(content: str, prefix: str, default: datetime = datetime.mi
 # ---------------------------------------------------------------------------
 
 
-def get_bib_in_xml(researcher: Member) -> str | None:
+async def get_bib_in_xml(researcher: Member, client: httpx.AsyncClient) -> str | None:
     """Get researcher's bibliography as XML from COBISS."""
     start_url = SICRIS_BIB_XML_TEMPLATE_URL.format(researcher.cobiss)
     logger.info(f"Requesting biblio for `{researcher.name}` ({researcher.cobiss})")
 
-    session = make_session()
+    retry_on = (httpx.TransportError, httpx.HTTPStatusError)
 
-    # Obtain redirect URL
-    redirect_url: str | None = None
-    for attempt in range(1, N_RETRIES + 1):
-        logger.debug(f"Attempt {attempt}/{N_RETRIES} to obtain redirect.")
-        response = session.get(start_url)
-        logger.debug(f"Return status: {response.status_code}, Redirect: {response.url}")
-        if response.url:
-            redirect_url = response.url
-            break
+    def log_retry(e: BaseException, attempt: int, delay: float) -> None:
+        logger.warning(
+            f"COBISS request failed for {researcher.cobiss} ({type(e).__name__}); "
+            f"retrying in {delay:.0f}s (attempt {attempt + 1}/{BACKOFF_MAX_RETRIES})"
+        )
 
-    if not redirect_url:
-        logger.error(f"Failed to obtain redirect for {researcher.cobiss} after {N_RETRIES} attempts")
+    async def _get(url: str) -> httpx.Response:
+        response = await client.get(url)
+        response.raise_for_status()
+        return response
+
+    # Obtain redirect URL. httpx's client follows redirects (configured below), so the
+    # final response's URL is the one COBISS actually wants us to fetch the XML from.
+    try:
+        response = await with_backoff(lambda: _get(start_url), retry_on=retry_on, on_retry=log_retry)
+    except retry_on as e:
+        logger.error(f"Failed to obtain redirect for {researcher.cobiss}: {e}")
         return None
 
-    # Obtain XML via redirect
-    for attempt in range(1, N_RETRIES + 1):
+    redirect_url = str(response.url)
+    logger.debug(f"Redirect: {redirect_url}")
+
+    # Obtain XML via redirect. COBISS may respond with an HTML "please wait" page that
+    # meta-refreshes itself after N seconds instead of the final XML — that's an expected,
+    # server-directed wait, not a failure, so it's handled separately from with_backoff
+    # (which is reserved for genuine transport/HTTP errors).
+    for poll in range(1, BACKOFF_MAX_RETRIES + 1):
         try:
-            logger.debug(f"Attempt {attempt}/{N_RETRIES} to obtain XML file.")
-            response = session.get(redirect_url)
+            response = await with_backoff(lambda: _get(redirect_url), retry_on=retry_on, on_retry=log_retry)
+        except retry_on as e:
+            logger.error(f'Invalid result for "{researcher.cobiss}": {e}')
+            return None
 
-            if response.text.startswith("<?xml") and "<Bibliography" in response.text:
-                return response.text
+        if response.text.startswith("<?xml") and "<Bibliography" in response.text:
+            return response.text
 
-            # Check for AJAX refresh redirect
-            if match := re.search(r'http-equiv="refresh" content="(\d+)"', response.text):
-                refresh_time = int(match.group(1))
-                logger.debug(f"Refresh in {refresh_time}s")
-                time.sleep(refresh_time)
-                continue
+        if match := re.search(r'http-equiv="refresh" content="(\d+)"', response.text):
+            refresh_time = int(match.group(1))
+            logger.debug(f"Refresh in {refresh_time}s ({poll}/{BACKOFF_MAX_RETRIES})")
+            await asyncio.sleep(refresh_time)
+            continue
 
-            time.sleep(DEFAULT_TIMEOUT)
+        logger.debug(f"Unexpected response body; retrying in {DEFAULT_TIMEOUT}s ({poll}/{BACKOFF_MAX_RETRIES})")
+        await asyncio.sleep(DEFAULT_TIMEOUT)
 
-        except requests.ConnectionError as e:
-            logger.error(f'Connection error at "{redirect_url}": {e}')
-
-    session.close()
-    logger.error(f'Invalid result for "{researcher.cobiss}"')
+    logger.error(f'Invalid result for "{researcher.cobiss}": exceeded poll limit')
     return None
 
 
@@ -249,102 +250,130 @@ def _element_text(element: ET.Element | None, tag: str) -> str:
     return ""
 
 
-def get_cobiss_data(researchers: MemberList, exclude_list: ExcludeList = None) -> list[PublicationDict]:
-    """Combine all researchers' publications into a single list. Filters duplicates by COBISS ID."""
-    member_cobiss_ids = {r.cobiss for r in researchers if r.cobiss}
-    bib_items: dict[str, PublicationDict] = {}
+def _parse_researcher_bib(raw_xml: str, member_cobiss_ids: set[str]) -> list[PublicationDict]:
+    """Parse one researcher's raw COBISS bibliography XML into a list of publication entries.
+    May contain publications also returned for a co-authoring researcher; deduping across
+    researchers happens afterward, in _dedupe_by_cobiss_id."""
+    entries: list[PublicationDict] = []
+    xml_root = ET.fromstring(raw_xml)
 
+    for elem in xml_root.iterfind(".//BiblioEntry"):
+        cobiss_elem_raw = elem.find("COBISS")
+        pub_cobiss_id = cobiss_elem_raw.attrib.get("id", "") if cobiss_elem_raw is not None else ""
+        if not pub_cobiss_id:
+            continue
+
+        # Validate typology
+        if elem.find("Typology") is None:
+            title = _element_text(elem, "Title")
+            logger.warning(f'Skipping "{pub_cobiss_id}": missing typology. Title: "{title}"')
+            continue
+
+        entry: PublicationDict = {}
+
+        # Helper for splitting on '=' (some fields have "Slovene = English")
+        def english_version(raw: str) -> str:
+            return raw.split("=")[-1].strip() if raw else ""
+
+        entry["title"] = _SPACE_BEFORE_COLON.sub(":", english_version(_element_text(elem, "Title")))
+        entry["title_short"] = _SPACE_BEFORE_COLON.sub(":", english_version(_element_text(elem, "TitleShort")))
+        entry["year"] = _element_text(elem, "PubYear")
+
+        entry["code"] = None
+        if (_typology := elem.find("Typology")) is not None:  # noqa: SIM102
+            if (_code := _typology.get("code")) is not None:
+                entry["code"] = _code
+
+        # Identifiers
+        cobiss_elem = elem.find("COBISS")
+        entry["cobiss_id"] = pub_cobiss_id
+        entry["cobiss_url"] = cobiss_elem.text if cobiss_elem is not None else ""
+        entry["doi"] = _parse_doi(elem)
+        identifier = elem.find("Identifier")
+        entry["isbn"] = _element_text(identifier, "ISBN") if identifier is not None else ""
+
+        # Authors
+        entry["authors"] = []
+        author_group = elem.find("AuthorGroup")
+        if author_group is not None:
+            for idx, author in enumerate(author_group.findall("Author")):
+                author_cobiss_id = (author.findtext("CodeRes") or "").strip()
+
+                person: AuthorDict = {
+                    "order": idx,
+                    "name": f"{_element_text(author, 'FirstName')} {_element_text(author, 'LastName')}".strip(),
+                    "cobiss_id": author_cobiss_id,
+                    "responsibility": author.attrib.get("responsibility", ""),
+                    "is_employee": author_cobiss_id in member_cobiss_ids,
+                }
+                entry["authors"].append(person)
+
+        # Journal / Conference
+        for bib_set in elem.findall("BiblioSet"):
+            relation = bib_set.attrib.get("relation")
+            if relation == "journal":
+                entry["journal"] = _SPACE_BEFORE_COLON.sub(":", english_version(_element_text(bib_set, "Title")))
+            if bib_set.attrib.get("typeTeX") == "inproceedings":
+                conference = english_version(_element_text(bib_set, "TitleShort")).split("=")[-1].strip()
+                entry["conference"] = _SPACE_BEFORE_COLON.sub(":", conference)
+
+        # Volume
+        physical = elem.find("PhysicalAttributes")
+        if physical is not None:
+            volume_elem = physical.find("VolumeNum")
+            if volume_elem is not None and volume_elem.text:
+                entry["volume"] = volume_elem.text
+
+        entries.append(entry)
+
+    return entries
+
+
+def _dedupe_by_cobiss_id(entries: list[PublicationDict]) -> list[PublicationDict]:
+    """Collapse duplicate COBISS IDs (the same publication appears in every co-author's
+    bibliography), keeping the first occurrence of each."""
+    seen: dict[str, PublicationDict] = {}
+    for entry in entries:
+        cobiss_id = entry.get("cobiss_id", "")
+        if cobiss_id and cobiss_id not in seen:
+            seen[cobiss_id] = entry
+    return list(seen.values())
+
+
+async def get_cobiss_data(researchers: MemberList, exclude_list: ExcludeList = None) -> list[PublicationDict]:
+    """Fetch and combine all researchers' publications into a single list, deduped by COBISS ID.
+
+    Researcher bibliographies are fetched concurrently (bounded by COBISS_CONCURRENCY, a
+    self-imposed politeness limit since this isn't a documented, rate-limited API).
+    """
+    member_cobiss_ids = {r.cobiss for r in researchers if r.cobiss}
+    semaphore = asyncio.Semaphore(COBISS_CONCURRENCY)
+
+    to_fetch: list[Member] = []
     for researcher in researchers:
-        # Skip invalid / excluded researchers
         if not researcher.cobiss:
             logger.debug(f"Skipping {researcher.name}: empty COBISS ID")
-            continue
-        if exclude_list and researcher.cobiss in exclude_list:
+        elif exclude_list and researcher.cobiss in exclude_list:
             logger.debug(f"Skipping {researcher.name}: on exclude list")
-            continue
+        else:
+            to_fetch.append(researcher)
 
-        raw_xml = get_bib_in_xml(researcher)
+    async def fetch_one(researcher: Member, client: httpx.AsyncClient) -> list[PublicationDict]:
+        async with semaphore:
+            raw_xml = await get_bib_in_xml(researcher, client)
         if not raw_xml:
             logger.warning(f"{researcher.name} ({researcher.cobiss}) returned empty XML")
-            continue
+            return []
+        return _parse_researcher_bib(raw_xml, member_cobiss_ids)
 
-        xml_root = ET.fromstring(raw_xml)
+    async with httpx.AsyncClient(timeout=DEFAULT_TIMEOUT, follow_redirects=True) as client:
+        results = await asyncio.gather(*(fetch_one(researcher, client) for researcher in to_fetch))
 
-        for elem in xml_root.iterfind(".//BiblioEntry"):
-            cobiss_elem_raw = elem.find("COBISS")
-            pub_cobiss_id = cobiss_elem_raw.attrib.get("id", "") if cobiss_elem_raw is not None else ""
-            if not pub_cobiss_id:
-                continue
+    all_entries = [entry for chunk in results for entry in chunk]
+    deduped = _dedupe_by_cobiss_id(all_entries)
+    logger.info(f"Biblio contains {len(deduped)} entries")
 
-            if pub_cobiss_id in bib_items:
-                continue
-
-            # Validate typology
-            if elem.find("Typology") is None:
-                title = _element_text(elem, "Title")
-                logger.warning(f'Skipping "{pub_cobiss_id}": missing typology. Title: "{title}"')
-                continue
-
-            entry: PublicationDict = {}
-
-            # Helper for splitting on '=' (some fields have "Slovene = English")
-            def english_version(raw: str) -> str:
-                return raw.split("=")[-1].strip() if raw else ""
-
-            entry["title"] = _SPACE_BEFORE_COLON.sub(":", english_version(_element_text(elem, "Title")))
-            entry["title_short"] = _SPACE_BEFORE_COLON.sub(":", english_version(_element_text(elem, "TitleShort")))
-            entry["year"] = _element_text(elem, "PubYear")
-
-            entry["code"] = None
-            if (_typology := elem.find("Typology")) is not None:  # noqa: SIM102
-                if (_code := _typology.get("code")) is not None:
-                    entry["code"] = _code
-
-            # Identifiers
-            cobiss_elem = elem.find("COBISS")
-            entry["cobiss_id"] = pub_cobiss_id
-            entry["cobiss_url"] = cobiss_elem.text if cobiss_elem is not None else ""
-            entry["doi"] = _parse_doi(elem)
-            identifier = elem.find("Identifier")
-            entry["isbn"] = _element_text(identifier, "ISBN") if identifier is not None else ""
-
-            # Authors
-            entry["authors"] = []
-            author_group = elem.find("AuthorGroup")
-            if author_group is not None:
-                for idx, author in enumerate(author_group.findall("Author")):
-                    author_cobiss_id = (author.findtext("CodeRes") or "").strip()
-
-                    person: AuthorDict = {
-                        "order": idx,
-                        "name": f"{_element_text(author, 'FirstName')} {_element_text(author, 'LastName')}".strip(),
-                        "cobiss_id": author_cobiss_id,
-                        "responsibility": author.attrib.get("responsibility", ""),
-                        "is_employee": author_cobiss_id in member_cobiss_ids,
-                    }
-                    entry["authors"].append(person)
-
-            # Journal / Conference
-            for bib_set in elem.findall("BiblioSet"):
-                relation = bib_set.attrib.get("relation")
-                if relation == "journal":
-                    entry["journal"] = _SPACE_BEFORE_COLON.sub(":", english_version(_element_text(bib_set, "Title")))
-                if bib_set.attrib.get("typeTeX") == "inproceedings":
-                    conference = english_version(_element_text(bib_set, "TitleShort")).split("=")[-1].strip()
-                    entry["conference"] = _SPACE_BEFORE_COLON.sub(":", conference)
-
-            # Volume
-            physical = elem.find("PhysicalAttributes")
-            if physical is not None:
-                volume_elem = physical.find("VolumeNum")
-                if volume_elem is not None and volume_elem.text:
-                    entry["volume"] = volume_elem.text
-
-            bib_items[pub_cobiss_id] = entry
-
-        logger.info(f"Biblio now contains {len(bib_items)} entries")
-
-    return sorted(bib_items.values(), key=lambda x: int(x.get("cobiss_id", 0) or 0), reverse=True)
+    return sorted(deduped, key=lambda x: int(x.get("cobiss_id", 0) or 0), reverse=True)
 
 
 # ---------------------------------------------------------------------------
@@ -381,14 +410,25 @@ def get_clean_ascii_name(text: str) -> str:
     return unidecode(text)
 
 
-def get_arxiv_data(researchers: MemberList, exclude_list: ExcludeList = None) -> list[PublicationDict]:
-    """Fetch publications from arXiv for all researchers."""
-    client = arxiv.Client()
+async def get_arxiv_data(researchers: MemberList, exclude_list: ExcludeList = None) -> list[PublicationDict]:
+    """Fetch publications from arXiv for all researchers.
+
+    Researchers are queried sequentially, not concurrently: arXiv's terms of use ask for
+    "no more than one request every three seconds", which arxiv.Client enforces internally
+    via its own pacing. Querying researchers concurrently would defeat that self-pacing and
+    risk more rate limiting, not less — the opposite of what with_backoff is trying to fix.
+    Real concurrency instead comes from running this whole branch alongside the COBISS
+    branch (see _fetch_sources).
+    """
+    # num_retries=0: let with_backoff own all retry/backoff decisions instead of stacking
+    # the library's fixed-delay retries underneath our exponential ones.
+    client = arxiv.Client(num_retries=0)
     researcher_names: dict[str, str] = {
         get_clean_ascii_name(r.name).lower(): r.cobiss for r in researchers if r.cobiss
     }
 
     entries: dict[str, PublicationDict] = {}
+    retry_on = (arxiv.HTTPError, arxiv.UnexpectedEmptyPageError, requests.exceptions.ConnectionError)
 
     for researcher in researchers:
         if exclude_list and researcher.cobiss in exclude_list:
@@ -405,7 +445,24 @@ def get_arxiv_data(researchers: MemberList, exclude_list: ExcludeList = None) ->
             max_results=250,
         )
 
-        for result in client.results(search):
+        async def _fetch(search: arxiv.Search = search) -> list[arxiv.Result]:
+            return await asyncio.to_thread(lambda: list(client.results(search)))
+
+        def log_retry(e: BaseException, attempt: int, delay: float) -> None:
+            status = getattr(e, "status", None)
+            reason = f"HTTP {status}" if status is not None else type(e).__name__
+            logger.warning(
+                f"arXiv request failed ({reason}); retrying in {delay:.0f}s "
+                f"(attempt {attempt + 1}/{BACKOFF_MAX_RETRIES})"
+            )
+
+        try:
+            results = await with_backoff(_fetch, retry_on=retry_on, on_retry=log_retry)
+        except retry_on as e:
+            logger.error(f"Giving up on arXiv query for {researcher.name}: {e}")
+            results = []
+
+        for result in results:
             authors: list[AuthorDict] = []
             for idx, author in enumerate(result.authors):
                 clean_author = get_clean_ascii_name(author.name).lower()
@@ -644,6 +701,51 @@ def print_summary(publications: list[PublicationDict], members: MemberList) -> N
 # ---------------------------------------------------------------------------
 
 
+async def _fetch_sources(
+    members: MemberList,
+    exclude_list: ExcludeList,
+    output_paths: dict[str, Path],
+    fetched_cobiss: bool,
+    fetched_arxiv: bool,
+) -> tuple[list[PublicationDict], list[PublicationDict]]:
+    """Fetch (or load from disk) both sources concurrently, since they hit independent
+    services. Each branch persists its own debug JSON as soon as it finishes.
+    return_exceptions=True is required, not optional: with a plain gather, one branch
+    raising would cancel the other mid-flight, which could destroy its progress before its
+    own write_json runs — exactly the failure mode this is meant to prevent, and it becomes
+    a real risk once both branches run concurrently instead of sequentially.
+    """
+
+    async def cobiss() -> list[PublicationDict]:
+        if not fetched_cobiss:
+            logger.info("Skipping COBISS fetch; loading from cobiss.debug.json")
+            return read_json(output_paths["cobiss_debug"])
+        with timer("COBISS data retrieval"):
+            entries = await get_cobiss_data(researchers=members, exclude_list=exclude_list)
+        write_json(output_paths["cobiss_debug"], entries)
+        return entries
+
+    async def arxiv_source() -> list[PublicationDict]:
+        if not fetched_arxiv:
+            logger.info("Skipping arXiv fetch; loading from arxiv.debug.json")
+            return read_json(output_paths["arxiv_debug"])
+        with timer("arXiv data retrieval"):
+            entries = await get_arxiv_data(researchers=members, exclude_list=exclude_list)
+        write_json(output_paths["arxiv_debug"], entries)
+        return entries
+
+    cobiss_result, arxiv_result = await asyncio.gather(cobiss(), arxiv_source(), return_exceptions=True)
+
+    for result in (cobiss_result, arxiv_result):
+        if isinstance(result, BaseException):
+            raise result
+
+    assert not isinstance(cobiss_result, BaseException)
+    assert not isinstance(arxiv_result, BaseException)
+
+    return cobiss_result, arxiv_result
+
+
 def main() -> None:
     parser = get_parser()
     args = parser.parse_args()
@@ -660,31 +762,15 @@ def main() -> None:
 
     output_paths = _derive_output_paths(args.output)
 
-    # Determine which sources were fetched vs loaded
-    fetched_cobiss = not args.skip_cobiss
-    fetched_arxiv = not args.skip_arxiv
-
-    # COBISS: fetch or load from debug file
-    if fetched_cobiss:
-        with timer("COBISS data retrieval"):
-            cobiss_entries = get_cobiss_data(researchers=members, exclude_list=exclude_list)
-    else:
-        logger.info("Skipping COBISS fetch; loading from cobiss.debug.json")
-        cobiss_entries = read_json(output_paths["cobiss_debug"])
-
-    # arXiv: fetch or load from debug file
-    if fetched_arxiv:
-        with timer("arXiv data retrieval"):
-            arxiv_entries = get_arxiv_data(researchers=members, exclude_list=exclude_list)
-    else:
-        logger.info("Skipping arXiv fetch; loading from arxiv.debug.json")
-        arxiv_entries = read_json(output_paths["arxiv_debug"])
-
-    # Write debug files only for sources that were fetched
-    if fetched_cobiss:
-        write_json(output_paths["cobiss_debug"], cobiss_entries)
-    if fetched_arxiv:
-        write_json(output_paths["arxiv_debug"], arxiv_entries)
+    cobiss_entries, arxiv_entries = asyncio.run(
+        _fetch_sources(
+            members=members,
+            exclude_list=exclude_list,
+            output_paths=output_paths,
+            fetched_cobiss=not args.skip_cobiss,
+            fetched_arxiv=not args.skip_arxiv,
+        )
+    )
 
     # Merge and filter for production output
     publications = merge_sources(cobiss=cobiss_entries, arxiv=arxiv_entries)

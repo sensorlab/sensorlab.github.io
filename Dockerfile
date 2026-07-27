@@ -57,4 +57,5 @@ RUN python3 -m pip install \
     arxiv \
     requests \
     unidecode \
-    ujson
+    ujson \
+    httpx
