@@ -2,7 +2,7 @@ baseURL = "/"
 
 title = "SensorLab"
 
-languageCode = "en"
+locale = "en"
 defaultContentLanguage = "en"
 
 
@@ -38,12 +38,12 @@ copyright = "SensorLab"
 
 [languages]
     [languages.en]
-        languageName = "English"
+        label = "English"
         title = "SensorLab — Jozef Stefan Institute"
         weight = 1
 
     [languages.sl]
-        languageName = "Slovensko"
+        label = "Slovensko"
         title = 'SensorLab — Institut "Jožef Stefan"'
         weight = 2
 
@@ -115,7 +115,7 @@ copyright = "SensorLab"
 [security]
   enableInlineShortcodes = true
   [security.exec]
-    allow = ['^dart-sass-embedded$', '^go$', '^babel$', '^npx$', '^postcss$']
+    allow = ['^dart-sass-embedded$', '^go$', '^babel$', '^npx$', '^postcss$', '^node$']
     osEnv = ['(?i)^(PATH|PATHEXT|APPDATA|TMP|TEMP|TERM)$']
 
   [security.funcs]

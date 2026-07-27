@@ -90,7 +90,7 @@
 {{ if $member.cobiss }}
 
     {{ $publications := slice }}
-    {{ range $publication := $.Site.Data.publications }}
+    {{ range $publication := hugo.Data.publications }}
         {{ range $author := $publication.authors }}
             {{ if eq (string $author.cobiss_id) (string $member.cobiss) }}
                 {{ $publications = $publications | append $publication }}

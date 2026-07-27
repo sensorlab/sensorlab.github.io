@@ -50,7 +50,7 @@
 
 {{/* canonical links to alternative representations */}}
 <link rel="canonical" href="{{ .Permalink }}" />
-<link rel="alternate" hreflang="{{ site.LanguageCode | default "en-us" }}" href="{{ .Permalink }}" />
+<link rel="alternate" hreflang="{{ site.Language.Locale | default "en" }}" href="{{ .Permalink }}" />
 {{ range .Translations }}
     <link rel="alternate" hreflang="{{ .Lang }}" href="{{ .Permalink }}" />
 {{ end }}
