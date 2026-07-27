@@ -1,8 +1,5 @@
 <li>
     <a href="{{ .Permalink }}" class="text-decoration-none">
-        {{- with .Params.prefix -}}
-            <small class="text-body-secondary">{{ . }}</small>&nbsp;
-        {{- end -}}
         {{- .Params.title -}}
         {{- with index .Params.organizations 0 -}}
             <small class="text-body-secondary">, {{ .name -}}</small>
