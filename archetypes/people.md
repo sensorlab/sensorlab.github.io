@@ -7,10 +7,10 @@ position: 10
 
 # Display name, can also put name in native language (UTF-8 supported).
 # For a nickname/preferred name, embed it in quotes, e.g. Mihael "Miha" Mohorčič
-title: ""
+title: "Firstname Lastname"
 
 # Role/position
-role: ""
+role: "e.g. PhD Student, Postdoc, Research Fellow"
 
 # Organizations/Affiliations
 organizations:
