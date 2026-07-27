@@ -39,11 +39,24 @@ Requires Hugo **extended** edition (see `Dockerfile`/CI for pinned version, curr
 ## Architecture
 
 ### Content model (Hugo content types under `content/`)
-- `content/people/<username>/index.md` — one directory per lab member (past & present). Front matter includes `cobiss` (SICRIS researcher ID — empty/absent means excluded from the publication pipeline), `date_start`/`date_end` (empty `date_end` = current member), `position` (manual sort order), `organizations`, `interests`, `education`, `social` (Bootstrap icon name + link pairs), `user_groups`. See `archetypes/people.md` for the full annotated schema.
+- `content/people/<username>/index.md` — one directory per lab member (past & present). See **People profiles** below for the full schema and how to add someone.
 - `content/projects/<PROJECT-NAME>/index.md` — one directory per funded project (`title`, `summary`, `date_start`/`date_end`, `project_url`, `tags`, `featured_image`). See `archetypes/project.md`.
 - `content/publications/` — publication list page; actual publication *data* comes from `data/publications.json`, not markdown files (see pipeline below), and is rendered via the `{{< publicationlist ids="..." >}}` shortcode (`layouts/shortcodes/publicationlist.html`) which matches on COBISS ID, arXiv ID, or DOI.
 - `content/opportunities/`, `content/about/`, `content/results/`, numbered files like `content/00-anomaly-detection.md` … `content/11-agentic-ai.md` — research-area/results pages surfaced on the homepage.
 - New content should be scaffolded from `archetypes/*.md` (`default.md`, `post.md`, `people.md`, `project.md`) via `hugo new`, per the workflow documented in README.md.
+
+### People profiles (`content/people/<username>/index.md`)
+Each person is a Hugo leaf bundle: a directory (username convention: first-name initial + surname, lowercase, no diacritics, e.g. `gcerar`, `mmohorcic`) containing `index.md` plus that person's photo file side by side — the photo must live in the same directory (not `static/`), referenced by filename via the `avatar` front-matter key as a Hugo page resource. If `avatar` doesn't resolve to a real file, templates fall back to `assets/images/unk.png`.
+
+**To add a new person:** `hugo new content/people/<username>/index.md`, which scaffolds from `archetypes/people.md`. That archetype uses descriptive placeholders (`title: "Firstname Lastname"`, `role: "e.g. PhD Student, Postdoc, Research Fellow"`) rather than blanks, so it's obvious what to fill in. Then drop their photo into the new directory and point `avatar` at its filename.
+
+Fields actually read by the templates (`layouts/people/{list,member,single,alumni}.html`):
+- `title` — the *only* display-name field (there's no separate `name` or `prefix` — both were removed as dead/unused). For a nickname or preferred form, embed it in quotes within `title` itself, e.g. `Mihael "Miha" Mohorčič`.
+- `avatar`, `position` (manual sort order for the Members grid — higher sorts first, `sort ... "desc"`), `role`, `organizations`, `interests` — rendered as-is.
+- `cobiss` — SICRIS researcher ID. Empty/absent excludes the person from `scripts/cobiss_parser.py`'s roster entirely. Leave it genuinely empty rather than a placeholder — it's fed directly into live COBISS/arXiv API calls, unlike the cosmetic fields above.
+- `date_start`/`date_end` — informational "Joined"/"Departed" dates on the profile page. Section placement (Members vs. Alumni) is controlled by `user_groups`, not `date_end`.
+- `user_groups` — a list; including `alumni` moves someone from the "Members" grid to the "Alumni" list on `/people/` (see `layouts/people/list.html`). `researchers` is the default active-member group.
+- `social` — a list of `{text, link}` pairs rendered as a comma-separated links line (e.g. `text: Scholar`, `link: https://...`) — plain text labels, not icon classes, despite what older revisions of this archetype used to show. Only a handful of profiles currently have this filled in.
 
 ### Publication data pipeline (`scripts/cobiss_parser.py`)
 This is the one piece of "real" logic in the repo, distinct from the templating. The whole script is asyncio-based:
