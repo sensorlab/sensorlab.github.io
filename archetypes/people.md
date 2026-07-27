@@ -5,12 +5,9 @@ avatar: "person.jpg"
 # position index is used for sorting/positioning on the website
 position: 10
 
-# Display name, can also put name in native language (UTF-8 supported)
+# Display name, can also put name in native language (UTF-8 supported).
+# For a nickname/preferred name, embed it in quotes, e.g. Mihael "Miha" Mohorčič
 title: ""
-
-# Optional: display name shown instead of title, if you want the two to differ
-# (rarely needed - most profiles just use title)
-# name: ""
 
 # Role/position
 role: ""
