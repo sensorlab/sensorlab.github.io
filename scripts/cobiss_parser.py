@@ -245,7 +245,7 @@ async def get_bib_in_xml(researcher: Member, client: httpx.AsyncClient) -> str |
 
 def _element_text(element: ET.Element | None, tag: str) -> str:
     """Safely extract text from a child element."""
-    if element and (el := element.find(tag)) is not None:
+    if element and (el := element.find(tag)) is not None and el.text:
         return el.text.strip()
     return ""
 
