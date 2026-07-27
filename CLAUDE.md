@@ -40,10 +40,10 @@ Requires Hugo **extended** edition (see `Dockerfile`/CI for pinned version, curr
 
 ### Content model (Hugo content types under `content/`)
 - `content/people/<username>/index.md` — one directory per lab member (past & present). See **People profiles** below for the full schema and how to add someone.
-- `content/projects/<PROJECT-NAME>/index.md` — one directory per funded project (`title`, `summary`, `date_start`/`date_end`, `project_url`, `tags`, `featured_image`). See `archetypes/project.md`.
+- `content/projects/<PROJECT-NAME>/index.md` — one directory per funded project. See **Project pages** below for the full schema and how to add one.
 - `content/publications/` — publication list page; actual publication *data* comes from `data/publications.json`, not markdown files (see pipeline below), and is rendered via the `{{< publicationlist ids="..." >}}` shortcode (`layouts/shortcodes/publicationlist.html`) which matches on COBISS ID, arXiv ID, or DOI.
 - `content/opportunities/`, `content/about/`, `content/results/`, numbered files like `content/00-anomaly-detection.md` … `content/11-agentic-ai.md` — research-area/results pages surfaced on the homepage.
-- New content should be scaffolded from `archetypes/*.md` (`default.md`, `post.md`, `people.md`, `project.md`) via `hugo new`, per the workflow documented in README.md.
+- New content should be scaffolded from `archetypes/*.md` (`default.md`, `post.md`, `people.md`, `projects.md`) via `hugo new`, per the workflow documented in README.md. **Archetype filenames must match the section name exactly** (plural `projects.md` for the plural `content/projects/` section) — Hugo's archetype lookup is section-name-based, and a mismatch fails silently (falls back to `default.md`) rather than erroring. This bit `archetypes/project.md` for a long time before being caught and fixed.
 
 ### People profiles (`content/people/<username>/index.md`)
 Each person is a Hugo leaf bundle: a directory (username convention: first-name initial + surname, lowercase, no diacritics, e.g. `gcerar`, `mmohorcic`) containing `index.md` plus that person's photo file side by side — the photo must live in the same directory (not `static/`), referenced by filename via the `avatar` front-matter key as a Hugo page resource. If `avatar` doesn't resolve to a real file, templates fall back to `assets/images/unk.png`.
@@ -57,6 +57,18 @@ Fields actually read by the templates (`layouts/people/{list,member,single,alumn
 - `date_start`/`date_end` — informational "Joined"/"Departed" dates on the profile page. Section placement (Members vs. Alumni) is controlled by `user_groups`, not `date_end`.
 - `user_groups` — a list; including `alumni` moves someone from the "Members" grid to the "Alumni" list on `/people/` (see `layouts/people/list.html`). `researchers` is the default active-member group.
 - `social` — a list of `{text, link}` pairs rendered as a comma-separated links line (e.g. `text: Scholar`, `link: https://...`) — plain text labels, not icon classes, despite what older revisions of this archetype used to show. Only a handful of profiles currently have this filled in.
+
+### Project pages (`content/projects/<PROJECT-NAME>/index.md`)
+Each funded project is a Hugo leaf bundle, one directory per project (naming convention: the project's acronym/short name as it appears publicly, e.g. `NANCY`, `6G-OPTICON`).
+
+**To add a new project:** `hugo new content/projects/<PROJECT-NAME>/index.md`, which scaffolds from `archetypes/projects.md`.
+
+Fields read by `layouts/projects/{list,single}.html`:
+- `title`, `summary`, `tags`, `date_start`/`date_end` (shown as "Duration:") — rendered as-is.
+- `featured_image` — thumbnail/banner image, resolved as a page resource next to `index.md` first, then as a global asset by that filename; the list page additionally falls back to `assets/images/project-default.png` if neither exists (the single page does not).
+- `project_url` — rendered as a "Website:" link when set (22 of 26 current projects have this; wasn't actually rendered anywhere until this was noticed and fixed).
+- `grant_code`, `budget` — optional, each shown as its own line only when set.
+- Body content is free-form Markdown. Use the `{{< figure2 src="..." >}}` shortcode to embed an image from the project's own directory, and `{{< publicationlist ids="...">}}` to link related publications by COBISS/arXiv/DOI id — see `archetypes/projects.md` for working examples of both. There's no equivalent mechanism yet to back-reference `content/results/*.md` entries from a project page.
 
 ### Publication data pipeline (`scripts/cobiss_parser.py`)
 This is the one piece of "real" logic in the repo, distinct from the templating. The whole script is asyncio-based:
