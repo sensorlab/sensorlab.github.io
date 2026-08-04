@@ -33,6 +33,6 @@ user_groups:
 ---
 
 
-I am a research fellow working at the Department of Communications Systems at the Jozef Stefan Institute in Ljubljana, Slovenia. I also work with the Data Science team in Bloomberg Media and co-founded Comsensus.
+I am a research fellow working at the Department of Communications Systems at the Jozef Stefan Institute in Ljubljana, Slovenia. I also work with the Data Science team in Bloomberg Media and co-founded ComSensus.
 
 In my research I use technologies from the broad field of artificial intelligence, including machine learning, data mining and symbolic AI to solve problems in wireless and IoT networks. For more details, see my publications on Google Scholar, Research Gate, and my LinkedIn profile.

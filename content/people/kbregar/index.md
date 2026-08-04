@@ -15,7 +15,7 @@ role: "Research Fellow"
 organizations:
 - name: Jožef Stefan Institute
   url: https://ijs.si
-- name: Comsensus
+- name: ComSensus
   url: https://comsensus.eu
 
 # COBISS/SICRIS identifier

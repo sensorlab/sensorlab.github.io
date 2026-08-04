@@ -13,7 +13,7 @@ role: "Senior researcher"
 
 # Organizations/Affiliations
 organizations:
-- name: Comsensus
+- name: ComSensus
   url: https://comsensus.eu
 - name: Jožef Stefan Institute
   url: https://ijs.si
