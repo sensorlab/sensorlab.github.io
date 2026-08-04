@@ -26,10 +26,10 @@ date_start: "2016-10-01"
 date_end:
 
 interests:
-- Artificial Intelligence
-- Smart Infrastructure
-- Wireless Networks
-- MLOps
+- Wireless Networks & AI
+- Radio Localization
+- Research Computing & AI Infrastructure
+- Smart Energy Systems
 
 # Social/Academic Networking
 # Links to social accounts and ways to interract, if any
@@ -57,4 +57,4 @@ user_groups:
 
 Gregor Cerar earned his Bachelor's degree (2013) and Master's degree (2016) from the [Faculty of Electrical Engineering](https://www.fe.uni-lj.si/en/) at the University of Ljubljana, where he completed the Telecommunications study program. He obtained his Ph.D. in Information and Communication Technologies (ICT) in 2021 from the [International Postgraduate School of Jožef Stefan](https://www.mps.si/en/), in collaboration with the [Department of Communication Systems](https://e6.ijs.si/) at the Jožef Stefan Institute.
 
-Currently, he holds a part-time postdoctoral position with the [Department of Communication Systems](https://e6.ijs.si/) at the [Jožef Stefan Institute](http://ijs.si) and works as a research engineer at [ComSensus](https://www.comsensus.eu/).
+Currently, he holds a position as a professional research associate with the [Department of Communication Systems](https://e6.ijs.si/) at the [Jožef Stefan Institute](http://ijs.si), also supporting the department's research infrastructure and technical operations. He also works as a research engineer in the research and software team at [ComSensus](https://www.comsensus.eu/), and is a member of the [ComSensus research group](https://cris.cobiss.net/ecris/si/sl/group/8341).
