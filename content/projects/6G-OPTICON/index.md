@@ -13,7 +13,7 @@ date_start: "2026-06-01T00:00:00Z"
 date_end: "2029-05-31T00:00:00Z"
 
 # Project website URL
-project_url: "https://cordis.europa.eu/project/id/101292327"
+project_url: "http://6g-opticon.eu/"
 
 # Tags/Categories
 tags:
