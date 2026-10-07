@@ -4,10 +4,8 @@
     <section>
         <h1>Members</h1>
         <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start my-2">
-        {{ range sort .Pages ".Params.position" "desc" }}
-            {{ if not (in .Params.user_groups "alumni") }}
-                {{ .Render "member" }}
-            {{ end }}
+        {{ range sort (where .RegularPages "File.Dir" "like" "^people/active/") ".Params.position" "desc" }}
+            {{ .Render "member" }}
         {{ end }}
         </ul>
     </section>
@@ -17,10 +15,8 @@
     <section>
         <h1>Alumni</h1>
         <ul class="list-unstyled">
-        {{ range sort .Pages ".Params.title" "asc" }}
-            {{ if in .Params.user_groups "alumni" }}
-                {{ .Render "alumni" }}
-            {{ end }}
+        {{ range sort (where .RegularPages "File.Dir" "like" "^people/alumni/") ".Params.title" "asc" }}
+            {{ .Render "alumni" }}
         {{ end }}
         </ul>
     </section>

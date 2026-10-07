@@ -51,8 +51,8 @@ social:
 # - text: CV
 #   link: files/cv.pdf
 
-# Organizational groups that you belong to (for People widget)
-#   Set this to `[]` or comment out if you are not using People widget.
+# Optional organizational groups. Membership status is determined by the
+# profile folder: content/people/active/ or content/people/alumni/.
 user_groups:
 - researchers
 # - students
