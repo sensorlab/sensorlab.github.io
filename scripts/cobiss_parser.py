@@ -34,6 +34,8 @@ DEFAULT_TIMEOUT: Final[int] = 12
 BACKOFF_MAX_RETRIES: Final[int] = 6
 BACKOFF_BASE_DELAY: Final[float] = 5.0  # seconds
 BACKOFF_CAP: Final[float] = 300.0  # seconds
+ARXIV_EMPTY_MAX_RETRIES: Final[int] = 3
+ARXIV_REQUEST_ERRORS = (arxiv.HTTPError, arxiv.UnexpectedEmptyPageError, requests.exceptions.ConnectionError)
 
 COBISS_CONCURRENCY: Final[int] = 4  # self-imposed politeness limit; not a documented/rate-limited API
 
@@ -402,6 +404,10 @@ def _parse_doi(elem: ET.Element) -> str:
 # ---------------------------------------------------------------------------
 
 
+class ArxivEmptyResponseError(RuntimeError):
+    """An entire refresh returned no papers despite having eligible researchers."""
+
+
 @lru_cache(maxsize=512)
 def get_clean_ascii_name(text: str) -> str:
     """Normalize a name to ASCII characters, removing quoted text."""
@@ -428,7 +434,7 @@ async def get_arxiv_data(researchers: MemberList, exclude_list: ExcludeList = No
     }
 
     entries: dict[str, PublicationDict] = {}
-    retry_on = (arxiv.HTTPError, arxiv.UnexpectedEmptyPageError, requests.exceptions.ConnectionError)
+    retry_on = ARXIV_REQUEST_ERRORS
 
     for researcher in researchers:
         if exclude_list and researcher.cobiss in exclude_list:
@@ -458,9 +464,14 @@ async def get_arxiv_data(researchers: MemberList, exclude_list: ExcludeList = No
 
         try:
             results = await with_backoff(_fetch, retry_on=retry_on, on_retry=log_retry)
+            if not results:
+                # Empty first pages do not raise in arxiv.Client. Confirm once;
+                # authors with no arXiv papers legitimately return an empty list.
+                logger.warning(f"Empty arXiv search for {researcher.name}; confirming with another request")
+                results = await with_backoff(_fetch, retry_on=retry_on, on_retry=log_retry)
         except retry_on as e:
             logger.error(f"Giving up on arXiv query for {researcher.name}: {e}")
-            results = []
+            raise
 
         for result in results:
             authors: list[AuthorDict] = []
@@ -729,8 +740,43 @@ async def _fetch_sources(
         if not fetched_arxiv:
             logger.info("Skipping arXiv fetch; loading from arxiv.debug.json")
             return read_json(output_paths["arxiv_debug"])
-        with timer("arXiv data retrieval"):
+        has_researchers = any(member.cobiss and member.cobiss not in exclude_list for member in members)
+
+        async def fetch() -> list[PublicationDict]:
             entries = await get_arxiv_data(researchers=members, exclude_list=exclude_list)
+            if has_researchers and not entries:
+                raise ArxivEmptyResponseError("arXiv returned no entries")
+            return entries
+
+        def log_empty_retry(error: BaseException, attempt: int, delay: float) -> None:
+            logger.warning(
+                f"{error}; retrying the arXiv refresh in {delay:.0f}s (retry {attempt + 1}/{ARXIV_EMPTY_MAX_RETRIES})"
+            )
+
+        with timer("arXiv data retrieval"):
+            try:
+                entries = await with_backoff(
+                    fetch,
+                    retry_on=(ArxivEmptyResponseError,),
+                    on_retry=log_empty_retry,
+                    max_retries=ARXIV_EMPTY_MAX_RETRIES,
+                )
+            except (*ARXIV_REQUEST_ERRORS, ArxivEmptyResponseError) as error:
+                logger.error(f"arXiv refresh failed after retries: {error}")
+                entries = []
+
+        if has_researchers and not entries:
+            snapshot = output_paths["arxiv_debug"]
+            try:
+                cached = read_json(snapshot) if snapshot.exists() else []
+            except (OSError, UnicodeError, json.JSONDecodeError) as error:
+                raise RuntimeError("arXiv refresh failed and its snapshot is invalid") from error
+
+            if isinstance(cached, list) and cached and all(isinstance(entry, dict) for entry in cached):
+                logger.warning("arXiv refresh failed; using the existing snapshot")
+                return cached
+            raise RuntimeError("arXiv refresh failed and no valid non-empty snapshot is available")
+
         write_json(output_paths["arxiv_debug"], entries)
         return entries
 
