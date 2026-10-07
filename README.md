@@ -30,7 +30,19 @@ Keep usernames unique across both folders. Profile URLs remain
 `/people/<username>/` when a person moves. Only `content/people/` needs an
 `_index.md`; do not add one inside the grouping folders.
 
-To check folder-based rendering and stable URLs, run
+Use an ordered `roles` list for positions:
+
+```yaml
+roles:
+  - Research Fellow
+  - Infrastructure Coordinator
+```
+
+The first role appears on the member card; all roles appear on the detailed
+profile. Existing `role` strings and lists still work. A non-empty `roles`
+value takes precedence over `role`; missing or empty roles are omitted.
+
+To check folder-based rendering, stable URLs, and role display, run
 `python3 -m unittest discover -s scripts -p test_people_layout.py` with Hugo installed.
 
 ### Add a new funded project

@@ -34,7 +34,7 @@ Requires Hugo **extended** edition (see `Dockerfile`/CI for pinned version, curr
 - Lint with `ruff` (config in `ruff.toml`, line length 119, target py312)
 
 ### Verification
-- `python3 -m unittest discover -s scripts -p test_people_layout.py` — verify folder-based membership, sorting, stable profile URLs, and links back to the People page. Requires Python 3.11+ and Hugo on `PATH`.
+- `python3 -m unittest discover -s scripts -p test_people_layout.py` — verify folder-based membership, sorting, stable profile URLs, role compatibility and visibility, and links back to the People page. Requires Python 3.11+ and Hugo on `PATH`.
 - `python3 -m unittest discover -s scripts -p 'test_*.py'` — run all regression tests; also requires the Python parser dependencies.
 - `hugo --gc --minify --environment production` — verify the complete site build with production asset processing.
 
@@ -53,7 +53,7 @@ Requires Hugo **extended** edition (see `Dockerfile`/CI for pinned version, curr
 ### People profiles (`content/people/{active,alumni}/<username>/index.md`)
 Each person is a Hugo leaf bundle: a directory (username convention: first-name initial + surname, lowercase, no diacritics, e.g. `gcerar`, `mmohorcic`) containing `index.md` plus that person's photo file side by side — the photo must live in the same directory (not `static/`), referenced by filename via the `avatar` front-matter key as a Hugo page resource. If `avatar` doesn't resolve to a real file, templates fall back to `assets/images/unk.png`.
 
-**To add a new person:** `hugo new content/people/active/<username>/index.md`, which scaffolds from `archetypes/people.md`. Use `alumni/` for a former member. That archetype uses descriptive placeholders (`title: "Firstname Lastname"`, `role: "e.g. PhD Student, Postdoc, Research Fellow"`) rather than blanks, so it's obvious what to fill in. Then drop their photo into the new directory and point `avatar` at its filename. Move the entire bundle between `active/` and `alumni/` to change membership status. Keep usernames unique across both folders; permalinks preserve `/people/<username>/`. Do not add `_index.md` to the grouping folders; they are directories, not nested sections.
+**To add a new person:** `hugo new content/people/active/<username>/index.md`, which scaffolds from `archetypes/people.md`. Use `alumni/` for a former member. That archetype uses descriptive placeholders (`title: "Firstname Lastname"` and a `roles` list with an example position) rather than blanks, so it's obvious what to fill in. Then drop their photo into the new directory and point `avatar` at its filename. Move the entire bundle between `active/` and `alumni/` to change membership status. Keep usernames unique across both folders; permalinks preserve `/people/<username>/`. Do not add `_index.md` to the grouping folders; they are directories, not nested sections.
 
 **Membership rendering:** `layouts/people/list.html` filters `.RegularPages` by `File.Dir`, matching `^people/active/` for the Members grid and `^people/alumni/` for the Alumni list. Keep membership determined by the folder. The `people = "/people/:contentbasename/"` permalink in `hugo.toml` preserves profile URLs when bundles move.
 
@@ -61,7 +61,8 @@ Each person is a Hugo leaf bundle: a directory (username convention: first-name 
 
 Fields actually read by the templates (`layouts/people/{list,member,single,alumni}.html`):
 - `title` — the *only* display-name field (there's no separate `name` or `prefix` — both were removed as dead/unused). For a nickname or preferred form, embed it in quotes within `title` itself, e.g. `Mihael "Miha" Mohorčič`.
-- `avatar`, `position` (manual sort order for the Members grid — higher sorts first, `sort ... "desc"`), `role`, `organizations`, `interests` — rendered as-is.
+- `avatar`, `position` (manual sort order for the Members grid — higher sorts first, `sort ... "desc"`), `organizations`, `interests` — rendered as-is.
+- `roles` — an ordered list of positions. Only the first (primary) role appears on member cards; detailed profiles show every role in order. Legacy `role` accepts a string or list and is used when `roles` is empty or absent. Both templates use `layouts/partials/people/roles.html` to normalize the value. Empty or missing roles are omitted; existing profiles do not need migration.
 - `cobiss` — SICRIS researcher ID. Empty/absent excludes the person from `scripts/cobiss_parser.py`'s roster entirely. Leave it genuinely empty rather than a placeholder — it's fed directly into live COBISS/arXiv API calls, unlike the cosmetic fields above.
 - `date_start`/`date_end` — informational "Joined"/"Departed" dates on the profile page. Placement (Members vs. Alumni) is controlled by the `active/` or `alumni/` folder, not `date_end`.
 - `user_groups` — optional organizational metadata; it does not control membership status. Existing values are preserved.

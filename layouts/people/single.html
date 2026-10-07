@@ -35,8 +35,8 @@
             </h2>
 
             <ul class="list-unstyled">
-                {{- with .Params.role -}}
-                <li class="mb-2"><strong>Role:</strong>&nbsp;{{ . | title }}</li>
+                {{- with partial "people/roles.html" . -}}
+                <li class="mb-2"><strong>{{ if gt (len .) 1 }}Roles{{ else }}Role{{ end }}:</strong>&nbsp;{{ range $index, $role := . }}{{ if $index }}; {{ end }}{{ $role | title }}{{ end }}</li>
                 {{- end -}}
 
                 {{- with $member.date_start -}}

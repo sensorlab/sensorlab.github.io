@@ -20,7 +20,9 @@
                 <h5 class="card-title">
                     {{- .Params.title -}}
                 </h5>
-                <p class="card-text text-body-secondary">{{ .Params.role | markdownify | title }}</p>
+                {{ with partial "people/roles.html" . }}
+                <p class="card-text text-body-secondary">{{ index . 0 | markdownify | title }}</p>
+                {{ end }}
             </div>
         </div>
     </a>

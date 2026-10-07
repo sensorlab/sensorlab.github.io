@@ -9,8 +9,12 @@ position: 10
 # For a nickname/preferred name, embed it in quotes, e.g. Mihael "Miha" Mohorčič
 title: "Firstname Lastname"
 
-# Role/position
-role: "e.g. PhD Student, Postdoc, Research Fellow"
+# Roles/positions: the first is primary and appears on the member card.
+# All roles appear on the detailed profile, in this order.
+# Legacy `role` (string or list) is supported when `roles` is empty or absent.
+roles:
+- "e.g. PhD Student, Postdoc, Research Fellow"
+# - "Additional role"
 
 # Organizations/Affiliations
 organizations:

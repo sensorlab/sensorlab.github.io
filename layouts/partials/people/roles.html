@@ -1,0 +1,5 @@
+{{- $roles := .Params.roles | default .Params.role | default slice -}}
+{{- if not (reflect.IsSlice $roles) -}}
+    {{- $roles = slice $roles -}}
+{{- end -}}
+{{- return $roles -}}
