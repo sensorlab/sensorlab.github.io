@@ -1,0 +1,36 @@
+---
+# personal photo
+avatar: "lmilosheski.jpg"
+
+# position index is used for sorting/positioning on the website
+position: 20
+
+# Display name
+title: "Ljupcho Milosheski"
+
+# Role/position
+role: "Postdoc"
+
+# Organizations/Affiliations
+organizations:
+- name: Interdisciplinary Centre for Security, Reliability and Trust (SnT), University of Luxembourg
+  url: https://www.uni.lu/snt-en/
+
+# COBISS/SICRIS identifier
+cobiss: 55792
+
+# The date when joined / departed from the lab. Empty if not used
+date_start: "2021-06-28"
+date_end: "2026-08-30"
+
+interests:
+- artificial intelligence
+- wireless networks
+- signal processing
+
+# Organizational groups that you belong to (for People widget)
+#   Set this to `[]` or comment out if you are not using People widget.
+user_groups:
+- alumni
+
+---

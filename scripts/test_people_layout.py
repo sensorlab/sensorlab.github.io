@@ -41,6 +41,9 @@ class PeopleLayoutTest(unittest.TestCase):
                 ("alumni", "dave", "Dave Former", 20, "alumni"),
                 ("active", "eva", "Eva Active", 0, "researchers"),
                 ("active", "frank", "Frank Active", 0, "researchers"),
+                ("active", "grace", "Grace Active", 0, "fulltime"),
+                # Listed once, under the first matching section.
+                ("active", "henry", "Henry Active", 0, "parttime, phd"),
             ]:
                 bundle = people / group / username
                 bundle.mkdir(parents=True)
@@ -51,6 +54,8 @@ class PeopleLayoutTest(unittest.TestCase):
                     "dave": "role: []\n",
                     "eva": 'role: ["Software Engineer", "Systems Administrator"]\n',
                     "frank": "",
+                    "grace": 'roles: ["Researcher"]\n',
+                    "henry": 'role: "PhD Student"\n',
                 }[username]
                 (bundle / "index.md").write_text(
                     f"---\ntitle: {title}\nposition: {position}\nuser_groups: [{tag}]\n{role_fields}---\n"
@@ -71,6 +76,20 @@ class PeopleLayoutTest(unittest.TestCase):
             self.assertNotIn("Alice Active", alumni)
             self.assertNotIn("Bob Active", alumni)
             self.assertLess(alumni.index("Carol Former"), alumni.index("Dave Former"))
+            # Sections follow the fixed order; empty sections are omitted.
+            headings = ["Full-time researchers", "PhD students", "Other members"]
+            positions = [members.index(f"<h2>{heading}</h2>") for heading in headings]
+            self.assertEqual(positions, sorted(positions))
+            self.assertNotIn("<h2>Other students</h2>", members)
+            self.assertNotIn("<h2>Part-time researchers</h2>", members)
+            fulltime, phd, other = (
+                members[start:end] for start, end in zip(positions, positions[1:] + [len(members)])
+            )
+            self.assertIn("Grace Active", fulltime)
+            self.assertIn("Henry Active", phd)
+            self.assertEqual(members.count("Henry Active"), 1)
+            for title in ["Alice Active", "Bob Active", "Eva Active", "Frank Active"]:
+                self.assertIn(title, other)
             self.assertIn("Research Fellow", members)
             self.assertIn("Group Lead", members)
             self.assertIn("Software Engineer", members)
@@ -84,6 +103,8 @@ class PeopleLayoutTest(unittest.TestCase):
                 "dave": [],
                 "eva": ["Software Engineer", "Systems Administrator"],
                 "frank": [],
+                "grace": ["Researcher"],
+                "henry": ["PhD Student"],
             }
             for username, roles in expected_roles.items():
                 self.assertIn(f"https://example.org/people/{username}/", listing)

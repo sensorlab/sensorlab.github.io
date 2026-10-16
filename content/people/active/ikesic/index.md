@@ -31,7 +31,7 @@ interests:
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
+- phd
 ---
 
 I received my Bachelor's degree in electrical engineering from the Faculty of Electrical Engineering, University of Ljubljana, in September 2023. Currently I am enrolled in the master’s study programme in Electrical Engineering, module - Information and Communication technologies, at the same Faculty. I joined Sensorlab in September 2023. My research interests include time series analysis (time series segmentation, clustering, anomaly detection and forecasting), through the use of graph-based methodologies and graph neural networks.

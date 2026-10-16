@@ -31,7 +31,7 @@ interests:
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
+- students
 ---
 
 I am a computer science student at the University of Ljubljana, currently in the final year of my Bachelor’s degree at the Faculty of Computer and Information Science. My research interests are focused on time series classification and reconstruction using deep learning and the development of specialized neural network architectures.

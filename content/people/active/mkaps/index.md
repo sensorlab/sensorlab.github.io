@@ -32,7 +32,7 @@ interests:
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
+- students
 ---
 
 I am a bachelor’s student of Computer Science and Mathematics. At the Jožef Stefan Institute, I am involved in research-oriented projects in machine learning, with a primary focus on applications to time series data.

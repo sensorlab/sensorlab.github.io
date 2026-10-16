@@ -33,7 +33,7 @@ interests:
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
+- students
 ---
 
 I received my bachelor’s degree in Computer and Information Science from the University of Ljubljana, Faculty of Computer and Information Science. Currently, I am pursuing a master’s degree in Data Science at the Technical University of Graz. My research interests include knowledge graphs and anomaly detection on time series data using deep learning. 

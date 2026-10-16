@@ -9,7 +9,7 @@ position: 0
 title: "Andrej Čop"
 
 # Role/position
-role: "MSc student"
+role: "PhD student"
 
 # Organizations/Affiliations
 organizations:
@@ -21,7 +21,7 @@ cobiss:
 
 # The date when joined / departed from the lab. Empty if not used
 date_start: "2023-10-01"
-date_end: "2024-07-01"
+date_end:
 
 interests:
 - network systems
@@ -32,7 +32,7 @@ interests:
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- alumni
+- phd
 ---
 
 Andrej Čop received his bachelor degree in computer and information science at University of Ljubljana and is currently pursuing his master's degree in computational engineering at Friedrich-Alexander University Erlangen-Nürnberg, focusing on HPC and ML. He works as a student research assistant contributing to network systems and MLOps research. He is involved in the EU project NANCY. Previously, he participated as an intern in the CERN Openlab summer student program.

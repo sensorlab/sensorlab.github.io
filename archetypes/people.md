@@ -57,10 +57,10 @@ social:
 
 # Optional organizational groups. Membership status is determined by the
 # profile folder: content/people/active/ or content/people/alumni/.
+# Active members are listed under the first matching People page section:
+# fulltime, phd, students, parttime. Others appear under "Other members".
 user_groups:
-- researchers
-# - students
-# - leaders
+- students
 ---
 
 Write a short biography here.

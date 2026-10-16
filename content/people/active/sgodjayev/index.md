@@ -32,7 +32,7 @@ interests:
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
+- phd
 ---
 
 I received my Master's degree in Data Science from Eötvös Loránd University, Budapest in 2024. My research is about AI planning methods and I am currently pursuing PhD in Jozef Stefan International Postgraduate School.

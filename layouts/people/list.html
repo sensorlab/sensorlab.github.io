@@ -1,14 +1,37 @@
 {{ define "main" }}
 
+{{/* Member sections, in display order. Membership is set by the profile folder; within Members,
+     each person is listed once, under the first section matching their `user_groups`. */}}
+{{ $groups := slice
+    (dict "key" "fulltime" "title" "Full-time researchers")
+    (dict "key" "phd" "title" "PhD students")
+    (dict "key" "students" "title" "Other students")
+    (dict "key" "parttime" "title" "Part-time researchers")
+}}
+{{ $remaining := where .RegularPages "File.Dir" "like" "^people/active/" }}
+{{ $sections := slice }}
+{{ range $groups }}
+    {{ $members := where $remaining "Params.user_groups" "intersect" (slice .key) }}
+    {{ $remaining = complement $members $remaining }}
+    {{ $sections = $sections | append (dict "title" .title "members" $members) }}
+{{ end }}
+{{ $sections = $sections | append (dict "title" "Other members" "members" $remaining) }}
+
 <main class="flex-fill container my-4" aria-role="main">
-    <section>
-        <h1>Members</h1>
-        <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start my-2">
-        {{ range sort (where .RegularPages "File.Dir" "like" "^people/active/") ".Params.position" "desc" }}
-            {{ .Render "member" }}
+    <h1>Members</h1>
+    {{ range $sections }}
+        {{ $title := .title }}
+        {{ with .members }}
+        <section class="mb-4">
+            <h2>{{ $title }}</h2>
+            <ul class="list-unstyled row d-flex align-items-stretch justify-content-center justify-content-sm-start my-2">
+            {{ range sort (sort . ".Params.title") ".Params.position" "desc" }}
+                {{ .Render "member" }}
+            {{ end }}
+            </ul>
+        </section>
         {{ end }}
-        </ul>
-    </section>
+    {{ end }}
 
     <hr class="bg-primary border-2 border-top border-primary">
 

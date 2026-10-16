@@ -1,15 +1,15 @@
 ---
 # personal photo
-avatar: "lmilosheski.jpg"
+avatar:
 
 # position index is used for sorting/positioning on the website
-position: 20
+position: 0
 
 # Display name
-title: "Ljupcho Milosheski"
+title: "Ibrahim Azouze"
 
 # Role/position
-role: "Postdoc"
+role: "PhD student"
 
 # Organizations/Affiliations
 organizations:
@@ -17,21 +17,16 @@ organizations:
   url: https://ijs.si
 
 # COBISS/SICRIS identifier
-cobiss: 55792
+cobiss:
 
 # The date when joined / departed from the lab. Empty if not used
-date_start: "2021-06-28"
+date_start: ""
 date_end:
 
-interests:
-- artificial intelligence
-- wireless networks
-- signal processing
+interests: []
 
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
-- postdocs
-
+- phd
 ---

@@ -32,7 +32,7 @@ interests:
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- researchers
+- phd
 ---
 
 Ana Jeknić received her BSc and MSc degrees from the Faculty of Electrical Engineering at the University of Montenegro, specializing in Electronics, Telecommunications, and Computers (BSc) and Telecommunications (MSc) in 2020 and 2024, respectively. She was a Teaching Assistant at the Faculty of Electrical Engineering at the University of Montenegro from 2021 until 2024. She currently works as a young researcher in the Department of Communication Systems at the Jožef Stefan Institute, Ljubljana, and is pursuing her Ph.D. in Information and Communication Technologies at the Jožef Stefan International Postgraduate School. Her research interests include wireless networks, terahertz communications, 6G communication systems, and integrated sensing and communication.

@@ -25,6 +25,9 @@ New SensorLab webpage at [sensorlab.github.io](https://sensorlab.github.io) and 
 3. When someone leaves, move their entire folder from `active/` to `alumni/` and
    fill in `date_end` when known. The folder determines placement on the People
    page; `user_groups` does not control membership status.
+4. Within Members, `user_groups` selects the section: `fulltime`, `phd`,
+   `students` or `parttime`, in that order. A person is listed once, under the
+   first matching section; anyone without one appears under "Other members".
 
 Keep usernames unique across both folders. Profile URLs remain
 `/people/<username>/` when a person moves. Only `content/people/` needs an
