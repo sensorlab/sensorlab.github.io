@@ -24,9 +24,10 @@ date_start: "2023-10-01"
 date_end:
 
 interests:
-- network systems
+- AI agents
 - MLOps
-- deep learning
+- distributed systems
+- infrastructure
 
 
 # Organizational groups that you belong to (for People widget)
@@ -35,4 +36,4 @@ user_groups:
 - phd
 ---
 
-Andrej Čop received his bachelor degree in computer and information science at University of Ljubljana and is currently pursuing his master's degree in computational engineering at Friedrich-Alexander University Erlangen-Nürnberg, focusing on HPC and ML. He works as a student research assistant contributing to network systems and MLOps research. He is involved in the EU project NANCY. Previously, he participated as an intern in the CERN Openlab summer student program.
+Andrej Čop received a joint MSc degree in computational engineering at FAU Erlangen, Germany and USI Lugano, Switzerland in 2026. His research interests are AI agents, MLOps, distributed systems, and infrastructure. He was involved in the EU project NANCY and participated as an intern at CERN OpenLab.
