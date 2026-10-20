@@ -1,6 +1,6 @@
 ---
 # personal photo
-avatar:
+avatar: "tstrnad.jpg"
 
 # position index is used for sorting/positioning on the website
 position: 0
