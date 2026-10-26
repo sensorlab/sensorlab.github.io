@@ -1,6 +1,6 @@
 ---
 # personal photo
-avatar: "taiyou.jpeg"
+avatar: "taiyou.jpg"
 
 # position index is used for sorting/positioning on the website
 position: 40
@@ -13,8 +13,8 @@ role: "Researcher"
 
 # Organizations/Affiliations
 organizations:
-- name: Jožef Stefan Institute
-  url: https://ijs.si
+  - name: Jožef Stefan Institute
+    url: https://ijs.si
 
 # COBISS/SICRIS identifier
 cobiss:
@@ -24,17 +24,17 @@ date_start: ""
 date_end:
 
 interests:
-- distributed optimization
-- multi-agent systems
-- swarm intelligence
-- evolutionary computation
+  - distributed optimization
+  - multi-agent systems
+  - swarm intelligence
+  - evolutionary computation
 
 social:
-- text: Scholar
-  link: https://scholar.google.com/citations?user=82b6BdcAAAAJ&hl=en
+  - text: Scholar
+    link: https://scholar.google.com/citations?user=82b6BdcAAAAJ&hl=en
 
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
 user_groups:
-- fulltime
+  - fulltime
 ---
