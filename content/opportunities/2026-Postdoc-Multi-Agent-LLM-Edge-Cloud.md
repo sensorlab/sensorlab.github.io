@@ -1,7 +1,7 @@
 ---
 title: "Postdoctoral Researcher in Multi-Agent LLM Systems for the Edge–Cloud Continuum"
 publishDate: 2026-07-09
-# closingDate: 2026-12-31
+closingDate: 2026-10-31
 salary: € 2900 – 4300 monthly gross (depending on qualifications)
 employmentType: temporary position longer than 6 months
 contractType: full-time
