@@ -7,7 +7,7 @@ employmentType: temporary position longer than 6 months
 contractType: full-time
 position: postdoctoral researcher
 location: Ljubljana, Slovenia (on-site)
-draft: false
+draft: true
 ---
 
 **We are hiring a postdoctoral researcher to help lead a research line on effective collaboration in multi-agent LLM systems, brought to real edge–cloud infrastructure.**
